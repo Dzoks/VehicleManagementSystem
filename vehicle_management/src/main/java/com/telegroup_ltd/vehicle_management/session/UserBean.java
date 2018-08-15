@@ -15,9 +15,9 @@ public class UserBean {
     private Boolean loggedIn;
 
     @PostConstruct
-    void init(){
-        user=new User();
-        loggedIn=false;
+    void init() {
+        user = new User();
+        loggedIn = false;
     }
 
     public User getUser() {

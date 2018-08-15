@@ -1,7 +1,6 @@
 package com.telegroup_ltd.vehicle_management.controller.genericLogger;
 
 
-
 import com.rits.cloning.Cloner;
 import com.telegroup_ltd.vehicle_management.common.CommonController;
 import com.telegroup_ltd.vehicle_management.model.Logger;

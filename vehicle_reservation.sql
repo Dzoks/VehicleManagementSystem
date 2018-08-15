@@ -24,10 +24,12 @@ CREATE TABLE IF NOT EXISTS `company` (
   `name` varchar(64) NOT NULL,
   `deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.company: ~0 rows (approximately)
+-- Dumping data for table vehicle_reservation.company: ~1 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
+INSERT INTO `company` (`id`, `name`, `deleted`) VALUES
+	(1, 'Telegroup', 0);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.expense

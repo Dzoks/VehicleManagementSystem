@@ -2,7 +2,6 @@ package com.telegroup_ltd.vehicle_management.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
