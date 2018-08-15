@@ -30,6 +30,9 @@ public class GenericController<T, ID extends Serializable> extends GenericLogger
     protected JpaRepository<T, ID> repo;
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    protected UserBean userBean;
+
 
     @Value("${badRequest.insert}")
     private String badRequestInsert;

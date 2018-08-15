@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class CommonController {
 
-    @Autowired
-    protected UserBean userBean;
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
