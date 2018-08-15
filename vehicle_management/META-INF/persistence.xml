@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="persistenceUnit">
+        <class>com.telegroup_ltd.vehicle_management.model.Company</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Expense</class>
+        <class>com.telegroup_ltd.vehicle_management.model.ExpenseType</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Location</class>
+        <class>com.telegroup_ltd.vehicle_management.model.LocationHasVehicle</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Logger</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Manufacturer</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Model</class>
+        <class>com.telegroup_ltd.vehicle_management.model.NotificationType</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Reservation</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Role</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Status</class>
+        <class>com.telegroup_ltd.vehicle_management.model.User</class>
+        <class>com.telegroup_ltd.vehicle_management.model.Vehicle</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mariadb://127.0.0.1:3333/vehicle_reservation"/>
+            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
+        </properties>
+    </persistence-unit>
+</persistence>
