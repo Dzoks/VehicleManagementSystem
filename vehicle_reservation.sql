@@ -22,14 +22,15 @@ DROP TABLE IF EXISTS `company`;
 CREATE TABLE IF NOT EXISTS `company` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `deleted` tinyint(1) NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.company: ~1 rows (approximately)
+-- Dumping data for table vehicle_reservation.company: ~2 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
 INSERT INTO `company` (`id`, `name`, `deleted`) VALUES
-	(1, 'Telegroup', 0);
+	(1, 'Telegroup', 0),
+	(3, 'Test Kompanijaca', 1);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.expense
@@ -113,7 +114,7 @@ DROP TABLE IF EXISTS `logger`;
 CREATE TABLE IF NOT EXISTS `logger` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `action_type` varchar(128) NOT NULL,
-  `action_details` varchar(128) NOT NULL,
+  `action_details` varchar(1024) NOT NULL,
   `table_name` varchar(128) NOT NULL,
   `created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `atomic` tinyint(1) NOT NULL,
@@ -124,13 +125,17 @@ CREATE TABLE IF NOT EXISTS `logger` (
   KEY `R_10` (`company_id`),
   CONSTRAINT `R_10` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `R_9` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.logger: ~2 rows (approximately)
+-- Dumping data for table vehicle_reservation.logger: ~6 rows (approximately)
 /*!40000 ALTER TABLE `logger` DISABLE KEYS */;
 INSERT INTO `logger` (`id`, `action_type`, `action_details`, `table_name`, `created`, `atomic`, `user_id`, `company_id`) VALUES
 	(1, 'create', 'Kreiran je novi entitet: Company{id=2, name=\'Scout\', deleted=0}', 'Company', '2018-08-16 13:50:30', 1, 1, NULL),
-	(2, 'delete', 'Obrisan je entitet: Company{id=2, name=\'Scout\', deleted=0}.', 'Company', '2018-08-16 13:55:30', 1, 1, NULL);
+	(2, 'delete', 'Obrisan je entitet: Company{id=2, name=\'Scout\', deleted=0}.', 'Company', '2018-08-16 13:55:30', 1, 1, NULL),
+	(3, 'create', 'Kreiran je novi entitet: Company{id=3, name=\'Test Kompanija\', deleted=0}.', 'Company', '2018-08-16 23:37:51', 1, 1, NULL),
+	(4, 'update', 'A&#x017E;uriran je entitet: Company{id=3, name=\'Test Kompanijac\', deleted=0} na novu vrijednost: Company{id=3, name=\'Test Kompanijaca\', deleted=0}.', 'Company', '2018-08-16 23:41:28', 1, 1, NULL),
+	(5, 'delete', 'Obrisan je entitet: Company{id=3, name=\'Test Kompanijaca\', deleted=1}.', 'Company', '2018-08-17 00:19:40', 1, 1, NULL),
+	(6, 'delete', 'Obrisan je entitet: Company{id=3, name=\'Test Kompanijaca\', deleted=1}.', 'Company', '2018-08-17 00:25:04', 1, 1, NULL);
 /*!40000 ALTER TABLE `logger` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.manufacturer

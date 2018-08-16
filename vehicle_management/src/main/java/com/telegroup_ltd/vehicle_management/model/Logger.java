@@ -1,5 +1,7 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -63,7 +65,7 @@ public class Logger {
     }
 
     @Basic
-    @Column(name = "action_details", nullable = false, length = 128)
+    @Column(name = "action_details", nullable = false, length = 1024)
     public String getActionDetails() {
         return actionDetails;
     }
@@ -84,6 +86,7 @@ public class Logger {
 
     @Basic
     @Column(name = "created", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm",timezone="Europe/Belgrade")
     public Timestamp getCreated() {
         return created;
     }

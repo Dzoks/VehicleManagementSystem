@@ -665,5 +665,11 @@ var util = {
 
         var blob = new Blob(byteArrays, {type: contentType});
         return blob;
+    },
+    formatter:webix.Date.dateToStr("%d.%m.%Y. %H:%i"),
+    parser:webix.Date.strToDate("%d.%m.%Y. %H:%i"),
+    elementsConfig:{
+        labelWidth: 140,
+        bottomPadding: 18
     }
 };

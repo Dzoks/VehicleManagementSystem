@@ -15,7 +15,7 @@ var commonViews = {
         };
     },
     // confirm dijalog na sprskom
-    brisanjePotvrda: function (titleEntity, textEntity) {
+    deleteConfirmSerbian: function (titleEntity, textEntity) {
         var text = titleEntity;
         if (textEntity) text = textEntity;
         return {
@@ -27,7 +27,7 @@ var commonViews = {
         };
     },
 
-    deaktivacijaPotvrda: function (titleEntity, textEntity) {
+    deactivationConfirSerbian: function (titleEntity, textEntity) {
         var text = titleEntity;
         if (textEntity) text = textEntity;
         return {

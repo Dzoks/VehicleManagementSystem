@@ -53,7 +53,7 @@ var pagerCols = [
         fillspace: 3,
         on: {
             onItemClick: function (pageNumber, mouseEvent, clickedElement) {
-                // TODO prevent default sa
+                //  prevent default sa
                 // return false;
                 // i onda slati ajax req sa odgovarajucim argumentima
             },

@@ -312,62 +312,18 @@ var connection = {
 
                 commitEdit();
                 return true;
-            }
-        );
-
-        $$(dtId).attachEvent("onBeforeDelete", function (id) {
-
-            var forDelete = webix.storage.local.get("for_delete");
-
-            if (forDelete.indexOf(id) > -1) {
-
-                var index = forDelete.indexOf(id);
-                if (index > -1) {
-                    forDelete.splice(index, 1);
-                }
-                webix.storage.local.put("for_delete", forDelete);
-
-                return true;
-            }
-
-            forDelete.push(id);
-            webix.storage.local.put("for_delete", forDelete);
-
-            var deleteLink = link + "/" + id;
-
-            util.preloader.inc();
-            webix.ajax().headers({
-                "Content-type": "application/json"
-            }).del(deleteLink, {
-                error: function (text, data, xhr) {
-                    if (xhr.status == 401) {
-                        if (connection.showSEM) {
-                            util.messages.showSessionExpiredError();
-                            connection.showSEM = false;
-                        }
-                        connection.reload();
-                    } else {
-                        util.messages.showErrorMessage("Greška pri brisanju podataka");
-                        var forDelete = webix.storage.local.get("for_delete");
-                        var index = forDelete.indexOf(id);
-                        if (index > -1) {
-                            forDelete.splice(index, 1);
-                        }
-                        webix.storage.local.put("for_delete", forDelete);
-                    }
-                    util.preloader.dec();
-                },
-                success: function (text, data, xhr) {
-                    try {
-                        $$(dtId).remove(id);
-                    } catch (ex) {
-                    }
-                    util.preloader.dec();
-                }
             });
 
-            return false;
+        $$(dtId).attachEvent("onBeforeDelete", function (id) {
+            var deleteLink = link + "/" + id;
+            util.preloader.inc();
+            webix.ajax().del(deleteLink).then(function (result) {
+                util.messages.showMessage("Uspješno brisanje!");
+            }).fail(function (err) {
+                util.messages.showErrorMessage(err.responseText);
+                return false;
 
+            });
         });
     },
 

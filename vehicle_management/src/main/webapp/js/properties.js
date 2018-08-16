@@ -3,3 +3,4 @@ var role={
     companyAdministrator:2,
     user:3
 };
+var successMessage="Success";

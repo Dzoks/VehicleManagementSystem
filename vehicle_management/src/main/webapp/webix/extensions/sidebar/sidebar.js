@@ -1,4 +1,4 @@
-//TODO CONSIDER BLUE CATEGORY SELECTED
+// CONSIDER BLUE CATEGORY SELECTED
 webix.protoUI({
     name: "sidebar",
     defaults: {
