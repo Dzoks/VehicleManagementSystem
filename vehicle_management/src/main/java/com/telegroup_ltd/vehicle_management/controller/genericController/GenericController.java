@@ -45,12 +45,12 @@ public class GenericController<T, ID extends Serializable> extends GenericLogger
 
     @Transactional
     @RequestMapping(method = RequestMethod.GET)
-    public List<T> getAll() throws BadRequestException, ForbiddenException {
+    public List<T> getAll() throws ForbiddenException {
         return repo.findAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public T findById(@PathVariable("id") ID id) throws BadRequestException, ForbiddenException {
+    public T findById(@PathVariable("id") ID id) throws ForbiddenException {
         return repo.findById(id).orElse(null);
     }
 

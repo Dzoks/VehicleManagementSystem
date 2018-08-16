@@ -9,4 +9,6 @@ public interface LoggerRepositoryCustom {
 
     List<LoggerCompanyUserRole> getExtendedAll();
     List<LoggerCompanyUserRole> getExtendedByCompany(Integer companyId);
+
+
 }
