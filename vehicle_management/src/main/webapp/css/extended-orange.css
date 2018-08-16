@@ -1,0 +1,159 @@
+.mainToolbar {
+    background: #c49f7e !important;
+}
+
+.white {
+    background: #ffffff !important;
+}
+
+.wrap-line{
+    line-height: 20px !important;
+    top:15px !important;
+    position: relative;
+}
+/*
+.webixDatatable .webix_cell:nth-child(odd) {
+    background: #f1f1f1;
+}*/
+
+.noteName {
+    font-size: 26px !important;
+    padding-left: 20px !important;
+    padding-top: 10px !important;
+}
+
+.usergroupName {
+    font-size: 24px !important;
+    padding-left: 10px !important;
+    padding-top: 10px !important;
+}
+
+.notePublishTime {
+    padding-top: 10px !important;
+    float: right !important;
+    padding-right: 20px !important;
+}
+
+.upload {
+    background-color: #f58220 !important;
+    color: #ffffff !important;
+    vertical-align: top !important;
+    border-width: 0px; !important
+    width: 24px !important;
+    height: 24px !important;
+    text-align: center !important;
+    margin-block-start: 8px !important;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.upload-photo {
+    margin-block-start:0px !important;
+    background-color: #f58220 !important;
+    color: #ffffff !important;
+    vertical-align: top !important;
+    border-width: 0px; !important
+    width: 24px !important;
+    height: 24px !important;
+    text-align: center !important;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    padding:12px !important;
+    margin-left: -25px !important;
+
+
+}
+
+.image-upload-invalid{
+    border-color: #fea5a8 !important;
+    background-color: #fff6f6 !important;
+}
+
+.image-upload{
+    border-radius: 6px !important;
+}
+
+.invalid-message-photo-alignment{
+    width: 362px !important;
+    margin-left: 8px !important;
+    color:#fd595f !important;
+    font-size: 13px !important;
+
+}
+.delete-file{
+    position: absolute !important;
+    right: 5px !important;
+}
+
+.relative{
+    position: relative !important;
+}
+
+.list-name{
+    overflow: hidden !important;
+    height: 32px !important;;
+    width: 200px !important;;
+    display: inline-block !important;
+    text-overflow: ellipsis !important;
+}
+
+.photo-list {
+    height: 50px !important;
+}
+.gear-name{
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+}
+
+.gear-description{
+    text-align: center;
+}
+.photo-alignment{
+    width: 100%;
+    height: 100%;
+    max-width:100%;
+    alignment: right;
+    max-height:100%;
+}
+
+.room-name-scheduler{
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    font-family: Roboto,Arial !important;
+    width: 100% !important;
+    margin-left: 15px !important;
+    margin-top: 5px !important;
+}
+.webix_cal_icon_clear { display:none }
+
+.rounded-top{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.custom_invalid_message_registration.webix_invalid .webix_inp_bottom_label {
+    font-size: 13px;
+    color: #fd595f;
+    display: ruby-text-container;
+}
+.custom_menu_alignment_style{
+    align-items: center !important;
+    display: -webkit-inline-flex !important;
+    vertical-align: top !important;
+    border-width: 0px !important;
+    margin-top: 4px !important;
+    margin-left: 4px !important;
+    width: 261px !important;
+    height: 42px  !important;
+}
+.custom_menu_list_item.webix_menu-x .webix_list_item {
+    display: inline-block;
+    line-height: 30px;
+    border-right: 0;
+    border-left: 0;
+    background: burlywood;
+    color: #fff;
+    font-size: 15px;
+}

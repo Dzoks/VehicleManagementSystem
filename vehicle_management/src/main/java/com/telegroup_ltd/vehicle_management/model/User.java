@@ -12,17 +12,17 @@ import java.util.Objects;
         classes = @ConstructorResult(
                 targetClass = User.class,
                 columns = {
-                        @ColumnResult(name="id",type = Integer.class),
-                        @ColumnResult(name="username",type = String.class),
-                        @ColumnResult(name="first_name",type = String.class),
-                        @ColumnResult(name="last_name",type = String.class),
-                        @ColumnResult(name="registration_date", type = Date.class),
-                        @ColumnResult(name="email",type = String.class),
-                        @ColumnResult(name="role_id",type = Integer.class),
-                        @ColumnResult(name = "status_id",type = Integer.class),
-                        @ColumnResult(name="company_id",type = Integer.class),
-                        @ColumnResult(name = "notification_type_id",type=Integer.class),
-                        @ColumnResult(name = "location_id",type = Integer.class),
+                        @ColumnResult(name = "id", type = Integer.class),
+                        @ColumnResult(name = "username", type = String.class),
+                        @ColumnResult(name = "first_name", type = String.class),
+                        @ColumnResult(name = "last_name", type = String.class),
+                        @ColumnResult(name = "registration_date", type = Date.class),
+                        @ColumnResult(name = "email", type = String.class),
+                        @ColumnResult(name = "role_id", type = Integer.class),
+                        @ColumnResult(name = "status_id", type = Integer.class),
+                        @ColumnResult(name = "company_id", type = Integer.class),
+                        @ColumnResult(name = "notification_type_id", type = Integer.class),
+                        @ColumnResult(name = "location_id", type = Integer.class),
 
 
                 }
@@ -45,16 +45,16 @@ public class User {
     private Integer notificationTypeId;
     private Integer locationId;
 
-    public User(){
+    public User() {
 
     }
 
-    public User(Integer id, String username, String firstName, String lastName, Date registrationDate,String email, Integer roleId, Integer statusId, Integer companyId, Integer notificationTypeId, Integer locationId) {
+    public User(Integer id, String username, String firstName, String lastName, Date registrationDate, String email, Integer roleId, Integer statusId, Integer companyId, Integer notificationTypeId, Integer locationId) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.registrationDate = registrationDate==null?null:new Timestamp(registrationDate.getTime());
+        this.registrationDate = registrationDate == null ? null : new Timestamp(registrationDate.getTime());
         this.email = email;
         this.roleId = roleId;
         this.statusId = statusId;

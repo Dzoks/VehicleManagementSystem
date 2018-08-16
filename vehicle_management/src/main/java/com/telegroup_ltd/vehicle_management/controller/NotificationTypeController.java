@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("notification-type")
+@RequestMapping("api/notification-type")
 @Scope("request")
 
 public class NotificationTypeController extends ReadOnlyController<NotificationType, Integer> {

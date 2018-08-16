@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("company")
+@RequestMapping("api/company")
 @Scope("request")
 public class CompanyController extends GenericController<Company, Integer> {
 

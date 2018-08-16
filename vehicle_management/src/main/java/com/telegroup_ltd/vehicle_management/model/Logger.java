@@ -26,7 +26,7 @@ public class Logger {
         this.actionType = actionType;
         this.actionDetails = actionDetails;
         this.tableName = tableName;
-        this.created = created==null ? null:new Timestamp(created.getTime());
+        this.created = created == null ? null : new Timestamp(created.getTime());
         this.atomic = atomic;
         this.userId = userId;
         this.companyId = companyId;

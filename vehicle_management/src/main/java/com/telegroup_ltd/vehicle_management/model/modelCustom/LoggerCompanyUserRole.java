@@ -8,24 +8,23 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.SqlResultSetMapping;
 import java.io.Serializable;
 import java.util.Date;
-import java.sql.Timestamp;
 
 @SqlResultSetMapping(
         name = "LoggerMapping",
         classes = @ConstructorResult(
                 targetClass = LoggerCompanyUserRole.class,
                 columns = {
-                        @ColumnResult(name = "id",type=Integer.class),
-                        @ColumnResult(name = "action_type",type=String.class),
-                        @ColumnResult(name = "action_details",type=String.class),
-                        @ColumnResult(name = "table_name",type=String.class),
-                        @ColumnResult(name = "created",type=Date.class),
-                        @ColumnResult(name = "atomic",type = Byte.class),
-                        @ColumnResult(name = "user_id",type=Integer.class),
-                        @ColumnResult(name = "company_id",type=Integer.class),
-                        @ColumnResult(name="company_name",type=String.class),
-                        @ColumnResult(name = "username",type=String.class),
-                        @ColumnResult(name="role",type=String.class)
+                        @ColumnResult(name = "id", type = Integer.class),
+                        @ColumnResult(name = "action_type", type = String.class),
+                        @ColumnResult(name = "action_details", type = String.class),
+                        @ColumnResult(name = "table_name", type = String.class),
+                        @ColumnResult(name = "created", type = Date.class),
+                        @ColumnResult(name = "atomic", type = Byte.class),
+                        @ColumnResult(name = "user_id", type = Integer.class),
+                        @ColumnResult(name = "company_id", type = Integer.class),
+                        @ColumnResult(name = "company_name", type = String.class),
+                        @ColumnResult(name = "username", type = String.class),
+                        @ColumnResult(name = "role", type = String.class)
 
                 }
         )
@@ -39,7 +38,7 @@ public class LoggerCompanyUserRole extends Logger implements Serializable {
     private String username;
     private String role;
 
-    public LoggerCompanyUserRole(){
+    public LoggerCompanyUserRole() {
     }
 
     public LoggerCompanyUserRole(Integer id, String actionType, String actionDetails, String tableName, Date created, Byte atomic, Integer userId, Integer companyId, String companyName, String username, String role) {

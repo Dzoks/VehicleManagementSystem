@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("role")
+@RequestMapping("api/role")
 @Scope("request")
 
 public class RoleController extends ReadOnlyController<Role, Integer> {
