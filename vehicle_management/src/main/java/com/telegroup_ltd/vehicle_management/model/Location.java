@@ -88,4 +88,16 @@ public class Location {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", companyId=" + companyId +
+                ", deleted=" + deleted +
+                '}';
+    }
 }

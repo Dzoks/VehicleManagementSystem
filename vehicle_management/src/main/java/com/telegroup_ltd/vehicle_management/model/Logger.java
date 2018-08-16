@@ -2,9 +2,11 @@ package com.telegroup_ltd.vehicle_management.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Logger {
     private Integer id;
     private String actionType;
@@ -17,6 +19,17 @@ public class Logger {
 
     public Logger() {
 
+    }
+
+    public Logger(Integer id, String actionType, String actionDetails, String tableName, Date created, Byte atomic, Integer userId, Integer companyId) {
+        this.id = id;
+        this.actionType = actionType;
+        this.actionDetails = actionDetails;
+        this.tableName = tableName;
+        this.created = created==null ? null:new Timestamp(created.getTime());
+        this.atomic = atomic;
+        this.userId = userId;
+        this.companyId = companyId;
     }
 
     public Logger(Integer userId, String actionType, String actionDetails, String tableName, Byte atomic, Integer companyId) {

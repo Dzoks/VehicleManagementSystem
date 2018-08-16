@@ -49,6 +49,15 @@ public class Company {
     }
 
     @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", deleted=" + deleted +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(id);
     }

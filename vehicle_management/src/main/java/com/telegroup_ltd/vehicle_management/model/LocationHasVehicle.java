@@ -67,4 +67,14 @@ public class LocationHasVehicle {
     public int hashCode() {
         return Objects.hash(startDate, vehicleId, locationId);
     }
+
+    @Override
+    public String toString() {
+        return "LocationHasVehicle{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", vehicleId=" + vehicleId +
+                ", locationId=" + locationId +
+                '}';
+    }
 }

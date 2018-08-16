@@ -8,7 +8,6 @@ public class Model {
     private Integer id;
     private String name;
     private Integer manufacturerId;
-    private Byte deleted;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -41,15 +40,6 @@ public class Model {
         this.manufacturerId = manufacturerId;
     }
 
-    @Basic
-    @Column(name = "deleted", nullable = false)
-    public Byte getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Byte deleted) {
-        this.deleted = deleted;
-    }
 
     @Override
     public boolean equals(Object o) {

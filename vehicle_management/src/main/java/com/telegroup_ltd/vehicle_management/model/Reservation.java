@@ -130,4 +130,20 @@ public class Reservation {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", startMileage=" + startMileage +
+                ", endMileage=" + endMileage +
+                ", direction='" + direction + '\'' +
+                ", deleted=" + deleted +
+                ", companyId=" + companyId +
+                ", vehicleId=" + vehicleId +
+                ", userId=" + userId +
+                '}';
+    }
 }

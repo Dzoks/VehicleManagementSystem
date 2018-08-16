@@ -7,7 +7,6 @@ import java.util.Objects;
 public class Manufacturer {
     private Integer id;
     private String name;
-    private Byte deleted;
     private Integer companyId;
 
     @Id
@@ -29,16 +28,6 @@ public class Manufacturer {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "deleted", nullable = false)
-    public Byte getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Byte deleted) {
-        this.deleted = deleted;
     }
 
     @Basic

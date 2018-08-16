@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `company` (
   `name` varchar(64) NOT NULL,
   `deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table vehicle_reservation.company: ~1 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `expense_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.expense_type: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.expense_type: ~2 rows (approximately)
 /*!40000 ALTER TABLE `expense_type` DISABLE KEYS */;
 INSERT INTO `expense_type` (`id`, `name`) VALUES
 	(1, 'Gorivo'),
@@ -124,10 +124,13 @@ CREATE TABLE IF NOT EXISTS `logger` (
   KEY `R_10` (`company_id`),
   CONSTRAINT `R_10` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `R_9` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.logger: ~0 rows (approximately)
+-- Dumping data for table vehicle_reservation.logger: ~2 rows (approximately)
 /*!40000 ALTER TABLE `logger` DISABLE KEYS */;
+INSERT INTO `logger` (`id`, `action_type`, `action_details`, `table_name`, `created`, `atomic`, `user_id`, `company_id`) VALUES
+	(1, 'create', 'Kreiran je novi entitet: Company{id=2, name=\'Scout\', deleted=0}', 'Company', '2018-08-16 13:09:49', 1, 1, 1),
+	(2, 'delete', 'Obrisan je entitet: Company{id=2, name=\'Scout\', deleted=0}.', 'Company', '2018-08-16 13:07:41', 1, 1, 1);
 /*!40000 ALTER TABLE `logger` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.manufacturer
@@ -135,7 +138,6 @@ DROP TABLE IF EXISTS `manufacturer`;
 CREATE TABLE IF NOT EXISTS `manufacturer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `deleted` tinyint(1) NOT NULL,
   `company_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `R_14` (`company_id`),
@@ -152,7 +154,6 @@ CREATE TABLE IF NOT EXISTS `model` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `manufacturer_id` int(11) NOT NULL,
-  `deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `R_12` (`manufacturer_id`),
   CONSTRAINT `R_12` FOREIGN KEY (`manufacturer_id`) REFERENCES `manufacturer` (`id`)
@@ -170,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `notification_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.notification_type: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.notification_type: ~2 rows (approximately)
 /*!40000 ALTER TABLE `notification_type` DISABLE KEYS */;
 INSERT INTO `notification_type` (`id`, `name`) VALUES
 	(1, 'Isključena'),
@@ -212,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.role: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.role: ~2 rows (approximately)
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
 INSERT INTO `role` (`id`, `name`) VALUES
 	(1, 'Administrator sistema'),
@@ -228,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.status: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.status: ~2 rows (approximately)
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
 INSERT INTO `status` (`id`, `name`) VALUES
 	(1, 'Aktivan'),
@@ -244,7 +245,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` char(128) DEFAULT NULL,
   `first_name` varchar(64) DEFAULT NULL,
   `last_name` varchar(64) DEFAULT NULL,
-  `photo` binary(1) DEFAULT NULL,
   `registration_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `token` char(64) DEFAULT NULL,
   `email` varchar(64) NOT NULL,
@@ -252,7 +252,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `status_id` int(11) NOT NULL,
   `company_id` int(11) DEFAULT NULL,
   `notification_type_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
+  `location_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `R_5` (`role_id`),
   KEY `R_6` (`status_id`),
@@ -264,10 +264,12 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `R_5` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `R_6` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`),
   CONSTRAINT `R_7` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.user: ~0 rows (approximately)
+-- Dumping data for table vehicle_reservation.user: ~1 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `registration_date`, `token`, `email`, `role_id`, `status_id`, `company_id`, `notification_type_id`, `location_id`) VALUES
+	(1, 'admin', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', 'Djordje', 'Turjacanin', '2018-08-16 12:52:59', NULL, 'turjacanin.djordje@gmail.com', 1, 1, 1, 1, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.vehicle

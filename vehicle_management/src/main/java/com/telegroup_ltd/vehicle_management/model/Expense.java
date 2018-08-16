@@ -106,6 +106,20 @@ public class Expense {
     }
 
     @Override
+    public String toString() {
+        return "Expense{" +
+                "id=" + id +
+                ", value=" + value +
+                ", description='" + description + '\'' +
+                ", deleted=" + deleted +
+                ", expenseTypeId=" + expenseTypeId +
+                ", companyId=" + companyId +
+                ", vehicleId=" + vehicleId +
+                ", date=" + date +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(id);
     }

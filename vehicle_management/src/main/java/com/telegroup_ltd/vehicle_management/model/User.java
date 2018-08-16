@@ -1,5 +1,7 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -11,7 +13,6 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private byte[] photo;
     private Timestamp registrationDate;
     private String token;
     private String email;
@@ -44,6 +45,7 @@ public class User {
 
     @Basic
     @Column(name = "password", nullable = true, length = 128)
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -73,16 +75,6 @@ public class User {
     }
 
     @Basic
-    @Column(name = "photo", nullable = true)
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
-    @Basic
     @Column(name = "registration_date", nullable = false)
     public Timestamp getRegistrationDate() {
         return registrationDate;
@@ -94,6 +86,7 @@ public class User {
 
     @Basic
     @Column(name = "token", nullable = true, length = 64)
+    @JsonIgnore
     public String getToken() {
         return token;
     }
@@ -153,7 +146,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "location_id", nullable = false)
+    @Column(name = "location_id", nullable = true)
     public Integer getLocationId() {
         return locationId;
     }
@@ -173,5 +166,22 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", email='" + email + '\'' +
+                ", roleId=" + roleId +
+                ", statusId=" + statusId +
+                ", companyId=" + companyId +
+                ", notificationTypeId=" + notificationTypeId +
+                ", locationId=" + locationId +
+                '}';
     }
 }

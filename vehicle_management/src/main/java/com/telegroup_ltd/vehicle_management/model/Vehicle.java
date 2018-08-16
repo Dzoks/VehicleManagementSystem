@@ -96,4 +96,17 @@ public class Vehicle {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", deleted=" + deleted +
+                ", modelId=" + modelId +
+                ", companyId=" + companyId +
+                ", registration='" + registration + '\'' +
+                '}';
+    }
 }
