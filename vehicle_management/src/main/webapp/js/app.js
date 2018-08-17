@@ -59,6 +59,7 @@ var showLogin = function () {
 };
 
 var showApp = function () {
+    preloadDependencies();
     var main = webix.copy(mainLayout);
     webix.ui(main, panel);
     panel = $$("app");
@@ -98,6 +99,54 @@ var showApp = function () {
         companyView.selectPanel();
         $$("mainMenu").select("company");
     }
+};
+
+var preloadDependencies=function(){
+    webix.ajax().get("api/role").then(function (data) {
+        var roles=[];
+        var array=[];
+        data.json().forEach(function (obj) {
+            roles[obj.id]=obj.value;
+            array.push(obj);
+        });
+        dependencyMap["role"]=roles;
+        dependency["role"]=array;
+
+    });
+    webix.ajax().get("api/status").then(function (data) {
+        var status=[];
+        var array=[];
+
+        data.json().forEach(function (obj) {
+            status[obj.id]=obj.value;
+            array.push(obj);
+        });
+        dependencyMap["status"]=status;
+        dependency["status"]=array;
+    });
+    webix.ajax().get("api/expense-type").then(function (data) {
+        var expenseTypes=[];
+        var array=[];
+
+        data.json().forEach(function (obj) {
+            expenseTypes[obj.id]=obj.value;
+            array.push(obj);
+        });
+        dependencyMap["expenseType"]=expenseTypes;
+        dependency["expenseType"]=array;
+    });
+    webix.ajax().get("api/notification-type").then(function (data) {
+        var notificationTypes=[];
+        var array=[];
+        data.json().forEach(function (obj) {
+            notificationTypes[obj.id]=obj.value;
+            array.push(obj);
+        });
+        dependencyMap["notificationType"]=notificationTypes;
+        dependency["notificationType"]=array;
+
+    });
+
 };
 
 //main call

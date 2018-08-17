@@ -671,5 +671,7 @@ var util = {
     elementsConfig:{
         labelWidth: 140,
         bottomPadding: 18
-    }
+    },
+
+
 };

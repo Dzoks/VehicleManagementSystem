@@ -21,8 +21,10 @@ public class UserController extends GenericController<User, Integer> {
 
     private UserRepository repository;
 
-    @Value(value = "${role.system_admin}")
-    private Integer roleSystemAdmin;
+    @Value(value = "${status.inactive}")
+    private Integer statusInactive;
+    @Value(value ="${role.system_admin}")
+    private Integer roleSystemAdministrator;
 
     public UserController(UserRepository repo) {
         super(repo);
@@ -34,11 +36,11 @@ public class UserController extends GenericController<User, Integer> {
         throw new ForbiddenException("Forbidden");
     }
 
-    @RequestMapping("/{companyId}/{roleId}")
-    public List<User> getByCompanyIdAndRoleId(@PathVariable Integer companyId, @PathVariable Integer roleId) throws ForbiddenException {
-        if (!userBean.getUser().getRoleId().equals(roleSystemAdmin) && roleId.equals(roleSystemAdmin))
+    @RequestMapping("byCompany/{companyId}")
+    public List<User> getByCompanyIdAndRoleId(@PathVariable Integer companyId) throws ForbiddenException {
+        if (!userBean.getUser().getRoleId().equals(roleSystemAdministrator)&&!companyId.equals(userBean.getUser().getCompanyId()))
             throw new ForbiddenException("Forbidden");
-        return repository.getAllByCompanyIdAndRoleId(companyId.equals(0) ? null : companyId, roleId);
+        return repository.getAllByCompanyIdAndStatusIdNot(companyId.equals(0) ? null : companyId,statusInactive);
     }
 
     @RequestMapping(value = {"/state"})

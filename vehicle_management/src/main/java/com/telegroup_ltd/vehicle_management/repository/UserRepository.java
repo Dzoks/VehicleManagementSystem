@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Integer>, UserRepositoryCustom {
 
-    List<User> getAllByCompanyIdAndRoleId(Integer companyId, Integer roleId);
+    List<User> getAllByCompanyIdAndStatusIdNot(Integer companyId, Integer statusId);
 }

@@ -13,7 +13,7 @@ var companyView={
                   {},
                   {
 
-                      width:310,
+                      width:300,
                       rows:[
                           {
                               view:"toolbar",
@@ -49,6 +49,14 @@ var companyView={
                                       if (id.row!==-1)
                                       this.editRow(id);
                                   },
+                                  onItemClick:function(id){
+                                      var companyId=id.row===-1?0:id.row;
+                                      var datatable=$$("userDT");
+                                      connection.dettachAjaxEvents("userDT");
+                                      datatable.clearAll();
+                                      datatable.load("api/user/byCompany/"+companyId);
+                                      datatable.refresh();
+                                  },
                                   onBeforeContextMenu: function (item) {
                                       if (item.row===-1)
                                           return false;
@@ -67,11 +75,11 @@ var companyView={
                               columns:[
                                   {
                                       id:"id",
-                                      hidden:true,
+                                      hidden:true
                                   },
                                   {
                                       id:"deleted",
-                                      hidden:true,
+                                      hidden:true
                                   },
                                   {
                                       id:"name",
@@ -109,17 +117,85 @@ var companyView={
 
                           },
                           {
-                              view:"tabview",
-                              width:400,
-                              cells:[
+                              // TODO richSelectFilter treba prepraviti sa integera na podatke,
+                              id:"userDT",
+                              view:"datatable",
+                              select: true,
+                              navigation: true,
+                              autowidth:true,
+                              columns:[
                                   {
-                                      header:"Administrator kompanije"
+                                      id:"id",
+                                      hidden:true
                                   },
                                   {
-                                      header:"Korisnik"
+                                      id:"email",
+                                      width:250 ,
+                                      header:[
+                                          "E-mail",
+                                          {
+                                              content:"textFilter",
+                                              sort:"string"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      id:"username",
+                                      width:150,
+                                      header:[
+                                          "Korisničko ime",
+                                          {
+                                              content:"textFilter",
+                                              sort:"string"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      id:"name",
+                                      template:"#firstName# #lastName#",
+                                      width:200 ,
+
+                                      header:[
+                                          "Ime i prezime",
+                                          {
+                                              content:"textFilter",
+                                              sort:"string"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      id:"statusId",
+                                      width:125,
+                                      template:function (obj) {
+                                          return dependencyMap['status'][obj.statusId];
+                                      },
+                                      header:[
+                                          "Status",
+
+                                          {
+                                              content:"richSelectFilter",
+                                              fillspace:true,
+                                              sort:"string"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      id:"roleId",
+                                      width:210,
+                                      template:function (obj) {
+                                          return dependencyMap['role'][obj.roleId];
+                                      },
+                                      header:[
+                                          "Status",
+                                          {
+                                              content:"richSelectFilter",
+                                              fillspace:true,
+                                              sort:"string"
+                                          }
+                                      ]
+
                                   }
                               ]
-
                           }
                       ]
                   },
@@ -161,6 +237,8 @@ var companyView={
                 }
             }
         });
+        $$("companyDT").select(-1);
+        $$("userDT").load("api/user/byCompany/0");
     },
 
     addCompanyDialog:{
@@ -233,5 +311,68 @@ var companyView={
          $$("companyDT").add(form.getValues());
          util.dismissDialog("addCompanyDialog");
         }
-    }
+    },
+    addUserDialog:{
+        id: "addUserDialog",
+        view:"popup",
+        modal: true,
+        position: "center",
+        body:{
+            rows:[
+                {
+                    view:"toolbar",
+                    css:"panelToolbar",
+                    cols:[
+                        {
+                            view:"label",
+                            width:300,
+                            template:"<span class='fa fa-user'/> Dodavanje korisnika"
+                        },
+                        {},
+                        {
+                            view: "icon",
+                            icon: "close",
+                            align: "right",
+                            click: "util.dismissDialog('addUserDialog');"
+                        }
+                    ]
+                },
+                {
+                    id:"addUserForm",
+                    view:"form",
+                    elementsConfig:{
+                        labelWidth: 100,
+                        bottomPadding: 18
+                    },
+                    elements:[
+                        {
+                            id:"email",
+                            name:"email",
+                            view:"text",
+                            label:"E-mail:",
+                            required:true,
+                            invalidMessage:"E-mail je obavezan!"
+                        },
+                        {
+                            id: "addCompanyBtn",
+                            view: "button",
+                            value: "Dodajte korisnika",
+                            type: "form",
+                            click: "companyView.addUser",
+                            align:"right",
+                            hotkey: "enter",
+                            width: 150
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+
+    showAddUserDialog:function () {
+        if (util.popupIsntAlreadyOpened("addUserDialog")) {
+            webix.ui(webix.copy(companyView.addUserDialog)).show();
+            webix.UIManager.setFocus("username");
+        }
+    },
 };

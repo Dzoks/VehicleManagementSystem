@@ -6,7 +6,7 @@ import java.util.Objects;
 @Entity
 public class Role {
     private Integer id;
-    private String name;
+    private String value;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -20,14 +20,15 @@ public class Role {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = 64)
-    public String getName() {
-        return name;
+    @Column(name = "value", nullable = false, length = 64)
+    public String getValue() {
+        return value;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setValue(String value) {
+        this.value = value;
     }
+
 
     @Override
     public boolean equals(Object o) {

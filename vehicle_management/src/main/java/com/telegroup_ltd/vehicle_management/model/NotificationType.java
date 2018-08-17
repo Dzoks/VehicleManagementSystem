@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "notification_type", schema = "vehicle_reservation", catalog = "")
 public class NotificationType {
     private Integer id;
-    private String name;
+    private String value;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -21,13 +21,13 @@ public class NotificationType {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = 64)
-    public String getName() {
-        return name;
+    @Column(name = "value", nullable = false, length = 64)
+    public String getValue() {
+        return value;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

@@ -327,6 +327,11 @@ var connection = {
         });
     },
 
+    dettachAjaxEvents: function(dtId){
+        $$(dtId).detachEvent("onBeforeEdit");
+        $$(dtId).detachEvent("onBeforeAdd");
+        $$(dtId).detachEvent("onBeforeDelete");
+    },
     fetchPaginationSettings: function (viewId, name) {
         util.preloader.inc();
 
