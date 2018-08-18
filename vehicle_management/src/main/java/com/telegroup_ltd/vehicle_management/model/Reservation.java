@@ -1,11 +1,14 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
+import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Reservation {
+public class Reservation implements Deletable, HasCompanyId {
     private Integer id;
     private Timestamp startDate;
     private Timestamp endDate;

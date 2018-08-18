@@ -1,9 +1,9 @@
-var role={
-    systemAdministrator:1,
-    companyAdministrator:2,
-    user:3
+var role = {
+    systemAdministrator: 1,
+    companyAdministrator: 2,
+    user: 3
 };
-var successMessage="Success";
+var successMessage = "Success";
 
-var dependencyMap=[];
-var dependency=[];
+var dependencyMap = [];
+var dependency = [];

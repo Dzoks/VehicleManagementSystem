@@ -240,7 +240,7 @@ var util = {
             webix.message({type: "error", text: "Vaša sesija je istekla. Prijavite se ponovo..."});
         },
         showLogoutMessage: function () {
-            webix.message({type: "defult", text: "Uspešno ste se odjavili."});
+            webix.message({type: "defult", text: "Uspješno ste se odjavili."});
         },
 
         showLogoutErrorMessage: function () {
@@ -666,9 +666,9 @@ var util = {
         var blob = new Blob(byteArrays, {type: contentType});
         return blob;
     },
-    formatter:webix.Date.dateToStr("%d.%m.%Y. %H:%i"),
-    parser:webix.Date.strToDate("%d.%m.%Y. %H:%i"),
-    elementsConfig:{
+    formatter: webix.Date.dateToStr("%d.%m.%Y. %H:%i"),
+    parser: webix.Date.strToDate("%d.%m.%Y. %H:%i"),
+    elementsConfig: {
         labelWidth: 140,
         bottomPadding: 18
     },

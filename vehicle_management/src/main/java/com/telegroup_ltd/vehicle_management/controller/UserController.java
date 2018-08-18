@@ -2,7 +2,7 @@ package com.telegroup_ltd.vehicle_management.controller;
 
 
 import com.telegroup_ltd.vehicle_management.common.exception.ForbiddenException;
-import com.telegroup_ltd.vehicle_management.controller.genericController.GenericController;
+import com.telegroup_ltd.vehicle_management.controller.genericController.GenericHasCompanyIdController;
 import com.telegroup_ltd.vehicle_management.model.LoginInfo;
 import com.telegroup_ltd.vehicle_management.model.User;
 import com.telegroup_ltd.vehicle_management.repository.UserRepository;
@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user")
 @Scope("request")
-public class UserController extends GenericController<User, Integer> {
+public class UserController extends GenericHasCompanyIdController<User, Integer> {
 
     private UserRepository repository;
 
     @Value(value = "${status.inactive}")
     private Integer statusInactive;
-    @Value(value ="${role.system_admin}")
+    @Value(value = "${role.system_admin}")
     private Integer roleSystemAdministrator;
 
     public UserController(UserRepository repo) {
@@ -31,16 +31,11 @@ public class UserController extends GenericController<User, Integer> {
         repository = repo;
     }
 
-    @Override
-    public List<User> getAll() throws ForbiddenException {
-        throw new ForbiddenException("Forbidden");
-    }
-
     @RequestMapping("byCompany/{companyId}")
     public List<User> getByCompanyIdAndRoleId(@PathVariable Integer companyId) throws ForbiddenException {
-        if (!userBean.getUser().getRoleId().equals(roleSystemAdministrator)&&!companyId.equals(userBean.getUser().getCompanyId()))
+        if (!userBean.getUser().getRoleId().equals(roleSystemAdministrator) && !companyId.equals(userBean.getUser().getCompanyId()))
             throw new ForbiddenException("Forbidden");
-        return repository.getAllByCompanyIdAndStatusIdNot(companyId.equals(0) ? null : companyId,statusInactive);
+        return repository.getAllByCompanyIdAndStatusIdNot(companyId.equals(0) ? null : companyId, statusInactive);
     }
 
     @RequestMapping(value = {"/state"})
@@ -68,5 +63,4 @@ public class UserController extends GenericController<User, Integer> {
         }
         throw new ForbiddenException("Forbidden");
     }
-
 }

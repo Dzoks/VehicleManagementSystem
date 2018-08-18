@@ -1,5 +1,8 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
+import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +10,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Location {
+public class Location implements Deletable, HasCompanyId {
     private Integer id;
     private String name;
     private Double latitude;

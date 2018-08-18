@@ -86,7 +86,7 @@ public class Logger {
 
     @Basic
     @Column(name = "created", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm",timezone="Europe/Belgrade")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm", timezone = "Europe/Belgrade")
     public Timestamp getCreated() {
         return created;
     }

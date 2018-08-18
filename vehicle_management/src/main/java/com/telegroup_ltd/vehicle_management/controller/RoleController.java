@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/role")
 @Scope("request")
-
 public class RoleController extends ReadOnlyController<Role, Integer> {
 
     public RoleController(JpaRepository<Role, Integer> repo) {

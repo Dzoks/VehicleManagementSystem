@@ -31,8 +31,8 @@ public class LoggerController extends ReadOnlyController<Logger, Integer> {
     @Override
     public List getAll() throws ForbiddenException {
         User loggedUser = userBean.getUser();
-        // if (loggedUser.getRoleId().equals(roleSystemAdmin))
-        return repository.getExtendedAll();
-        // else return repository.getExtendedByCompany(loggedUser.getCompanyId());
+        if (loggedUser.getRoleId().equals(roleSystemAdmin))
+            return repository.getExtendedAll();
+        else return repository.getExtendedByCompany(loggedUser.getCompanyId());
     }
 }

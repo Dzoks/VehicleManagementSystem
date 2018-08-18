@@ -24,7 +24,7 @@ var scriptsToLoad = [
     {
         "section": "core",
         "path": "js/",
-        "files": ["app","properties"]
+        "files": ["app", "properties"]
     }
 ];
 

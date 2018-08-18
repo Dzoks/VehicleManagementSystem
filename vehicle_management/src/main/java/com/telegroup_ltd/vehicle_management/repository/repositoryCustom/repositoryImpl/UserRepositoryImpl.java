@@ -1,11 +1,11 @@
 package com.telegroup_ltd.vehicle_management.repository.repositoryCustom.repositoryImpl;
 
-import com.telegroup_ltd.vehicle_management.common.GenericRepository;
+import com.telegroup_ltd.vehicle_management.common.CustomRepositoryImpl;
 import com.telegroup_ltd.vehicle_management.model.User;
 import com.telegroup_ltd.vehicle_management.repository.repositoryCustom.UserRepositoryCustom;
 
 
-public class UserRepositoryImpl extends GenericRepository implements UserRepositoryCustom {
+public class UserRepositoryImpl extends CustomRepositoryImpl implements UserRepositoryCustom {
 
     private static final String SQL_LOGIN_NO_COMPANY = "select id, username, first_name, last_name, registration_date," +
             "email, role_id, status_id, company_id, notification_type_id, location_id from user where username=? and password=SHA2(?,512)" +

@@ -1,10 +1,12 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Manufacturer {
+public class Manufacturer implements HasCompanyId {
     private Integer id;
     private String name;
     private Integer companyId;

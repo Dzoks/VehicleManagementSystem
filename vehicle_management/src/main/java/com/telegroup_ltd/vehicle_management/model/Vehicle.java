@@ -1,10 +1,13 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
+import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Vehicle {
+public class Vehicle implements HasCompanyId, Deletable {
     private Integer id;
     private String name;
     private String description;

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/status")
 @Scope("request")
-
 public class StatusController extends ReadOnlyController<Status, Integer> {
     public StatusController(JpaRepository<Status, Integer> repo) {
         super(repo);

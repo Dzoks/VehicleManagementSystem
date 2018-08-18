@@ -1,6 +1,7 @@
 package com.telegroup_ltd.vehicle_management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -30,7 +31,7 @@ import java.util.Objects;
 )
 
 @Entity
-public class User {
+public class User implements HasCompanyId {
     private Integer id;
     private String username;
     private String password;

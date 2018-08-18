@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/expense-type")
 @Scope("request")
-
 public class ExpenseTypeController extends ReadOnlyController<ExpenseType, Integer> {
 
     public ExpenseTypeController(JpaRepository<ExpenseType, Integer> repo) {

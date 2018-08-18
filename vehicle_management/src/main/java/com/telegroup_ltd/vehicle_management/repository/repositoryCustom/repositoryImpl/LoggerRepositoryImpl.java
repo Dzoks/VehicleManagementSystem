@@ -1,12 +1,12 @@
 package com.telegroup_ltd.vehicle_management.repository.repositoryCustom.repositoryImpl;
 
-import com.telegroup_ltd.vehicle_management.common.GenericRepository;
+import com.telegroup_ltd.vehicle_management.common.CustomRepositoryImpl;
 import com.telegroup_ltd.vehicle_management.model.modelCustom.LoggerCompanyUserRole;
 import com.telegroup_ltd.vehicle_management.repository.repositoryCustom.LoggerRepositoryCustom;
 
 import java.util.List;
 
-public class LoggerRepositoryImpl extends GenericRepository implements LoggerRepositoryCustom {
+public class LoggerRepositoryImpl extends CustomRepositoryImpl implements LoggerRepositoryCustom {
 
     private static final String SQL_GET_ALL = "select l.id, l.action_type, l.action_details, l.table_name, l.created, l.user_id, l.atomic," +
             " l.company_id,c.name as company_name,u.username,r.value as role from logger l inner join user u on l.user_id = u.id" +

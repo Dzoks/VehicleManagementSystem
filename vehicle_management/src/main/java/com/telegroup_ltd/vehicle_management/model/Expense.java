@@ -1,12 +1,15 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
+import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Expense {
+public class Expense implements Deletable, HasCompanyId {
     private Integer id;
     private BigDecimal value;
     private String description;

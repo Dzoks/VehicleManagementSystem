@@ -1,10 +1,12 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Company {
+public class Company implements Deletable {
     private Integer id;
     private String name;
     private Byte deleted;
@@ -31,7 +33,7 @@ public class Company {
     }
 
     @Basic
-    @Column(name = "deleted", nullable = false,insertable = false)
+    @Column(name = "deleted", nullable = false, insertable = false)
     public Byte getDeleted() {
         return deleted;
     }

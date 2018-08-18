@@ -1,54 +1,54 @@
-var loggerView={
-    panel:{
-        id:"loggerPanel",
-        adjust:true,
-        rows:[
+var loggerView = {
+    panel: {
+        id: "loggerPanel",
+        adjust: true,
+        rows: [
             {
-                view:"toolbar",
-                padding:8,
-                css:"panelToolbar",
-                cols:[
+                view: "toolbar",
+                padding: 8,
+                css: "panelToolbar",
+                cols: [
                     {
-                        view:"label",
-                        width:400,
-                        template:"<span class='fa fa-history'/> Korisničke akcije"
+                        view: "label",
+                        width: 400,
+                        template: "<span class='fa fa-history'/> Korisničke akcije"
                     },
                     {}
                 ]
             },
             {
-                id:"loggerDT",
-                view:"datatable",
-                css:"webixDatatable",
-                multiselect:"false",
+                id: "loggerDT",
+                view: "datatable",
+                css: "webixDatatable",
+                multiselect: "false",
                 select: false,
                 navigation: true,
                 editable: false,
                 resizeColumn: true,
                 resizeRow: true,
-                url:"api/logger",
-                tooltip:true,
-                columns:[
+                url: "api/logger",
+                tooltip: true,
+                columns: [
                     {
-                        id:"actionType",
-                        header:[
+                        id: "actionType",
+                        header: [
                             "Tip akcije",
                             {
-                                content:"textFilter",
-                                sort:"string"
+                                content: "textFilter",
+                                sort: "string"
                             }
                         ],
-                        tooltip:false,
+                        tooltip: false,
                         fillspace: true,
 
                     },
                     {
-                        id:"actionDetails",
-                        header:[
+                        id: "actionDetails",
+                        header: [
                             "Detaljnije",
                             {
-                                content:"textFilter",
-                                sort:"string"
+                                content: "textFilter",
+                                sort: "string"
                             }
                             // TODO Popraviti filter tako da radi range pretraga
                         ],
@@ -57,68 +57,68 @@ var loggerView={
 
                     },
                     {
-                        id:"tableName",
-                        header:[
+                        id: "tableName",
+                        header: [
                             "Tabela",
                             {
-                                content:"textFilter",
-                                sort:"string"
+                                content: "textFilter",
+                                sort: "string"
                             }
                         ],
-                        tooltip:false,
+                        tooltip: false,
                         fillspace: true,
 
                     },
                     {
-                        id:"created",
-                        header:[
+                        id: "created",
+                        header: [
                             "Datum",
                             {
                                 content: "dateRangeFilter",
                             }
                         ],
-                        width:225,
-                        tooltip:false,
+                        width: 225,
+                        tooltip: false,
 
                     },
                     {
-                        id:"username",
-                        header:[
+                        id: "username",
+                        header: [
                             "Korisnik",
                             {
-                                content:"textFilter",
-                                sort:"string"
+                                content: "textFilter",
+                                sort: "string"
                             }
                         ],
-                        tooltip:false,
+                        tooltip: false,
                         fillspace: true,
 
                     },
                     {
-                        id:"role",
-                        header:[
+                        id: "role",
+                        header: [
                             "Tip korisnika",
                             {
-                                content:"richSelectFilter",
-                                fillspace:true,
-                                sort:"string"
+                                content: "richSelectFilter",
+                                fillspace: true,
+                                sort: "string"
                             }
                         ],
-                        tooltip:false,
+                        tooltip: false,
                         fillspace: true,
 
                     },
                     {
-                        id:"companyName",
-                        header:[
+                        id: "companyName",
+                        header: [
                             "Kompanija",
                             {
-                                content:"richSelectFilter",
-                                fillspace:true,
-                                sort:"string"
+                                content: "richSelectFilter",
+                                fillspace: true,
+                                sort: "string"
                             }
                         ],
-                        tooltip:false,
+                        tooltip: false,
                         fillspace: true,
 
                     }
@@ -126,8 +126,8 @@ var loggerView={
             }
         ]
     },
-    
-    selectPanel:function () {
+
+    selectPanel: function () {
         $$("main").removeView(rightPanel);
         rightPanel = "loggerPanel";
         var panelCopy = webix.copy(this.panel);

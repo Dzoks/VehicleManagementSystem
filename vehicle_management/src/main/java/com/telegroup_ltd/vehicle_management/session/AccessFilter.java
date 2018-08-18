@@ -12,12 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebFilter
+@WebFilter("/api/*")
 public class AccessFilter implements Filter {
 
-
-    @Value("${path.prefix}")
-    private String prefix;
 
     @Value("#{'${path.public}'.split(',')}")
     private List<String> publicPaths;
@@ -37,18 +34,14 @@ public class AccessFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         UserBean userBean = (UserBean) springContext.getBean("userBean");
 
-        if (!request.getRequestURI().startsWith("/"+prefix)) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
+
         if (!userBean.getLoggedIn() && !publicPaths.contains(request.getRequestURI())) {
             response.sendError(401);
             return;
-        }else{
-            filterChain.doFilter(servletRequest,servletResponse);
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-
 
 
     }

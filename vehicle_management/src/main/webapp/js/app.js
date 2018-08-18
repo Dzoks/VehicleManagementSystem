@@ -7,16 +7,16 @@ var userData = null;
 var panel = {id: "empty"};
 var rightPanel = null;
 
-var menuSystemAdmin=[
+var menuSystemAdmin = [
     {
-        id:"company",
-        icon:"briefcase",
-        value:"Kompanije"
+        id: "company",
+        icon: "briefcase",
+        value: "Kompanije"
     },
     {
-        id:"logger",
-        icon:"history",
-        value:"Korisničke akcije"
+        id: "logger",
+        icon: "history",
+        value: "Korisničke akcije"
     }
 ];
 
@@ -37,8 +37,8 @@ var init = function () {
     webix.Date.startOnMonday = true;
     webix.ui(panel);
     panel = $$("empty");
-    webix.ajax().get("api/user/state").then(function(data){
-        userData=data.json();
+    webix.ajax().get("api/user/state").then(function (data) {
+        userData = data.json();
         showApp();
     }).fail(function (err) {
         showLogin();
@@ -59,7 +59,7 @@ var showLogin = function () {
 };
 
 var showApp = function () {
-    preloadDependencies();
+    var promise=preloadDependencies();
     var main = webix.copy(mainLayout);
     webix.ui(main, panel);
     panel = $$("app");
@@ -68,10 +68,10 @@ var showApp = function () {
         id: "menu-collapse",
         view: "template",
         template: '<div id="menu-collapse" class="menu-collapse">' +
-        '<span></span>' +
-        '<span></span>' +
-        '<span></span>' +
-        '</div>',
+            '<span></span>' +
+            '<span></span>' +
+            '<span></span>' +
+            '</div>',
         onClick: {
             "menu-collapse": function (e, id, trg) {
                 var elem = document.getElementById("menu-collapse");
@@ -89,63 +89,70 @@ var showApp = function () {
     });
     switch (userData.roleId) {
         case role.systemAdministrator:
-            localMenuData=menuSystemAdmin;
+            localMenuData = menuSystemAdmin;
             break;
     }
     $$("mainMenu").define("data", localMenuData);
     $$("mainMenu").define("on", menuEvents);
     rightPanel = "emptyRightPanel";
-    if (userData.roleId===role.systemAdministrator){
-        companyView.selectPanel();
-        $$("mainMenu").select("company");
-    }
+    promise.then(function (value) {
+        if (userData.roleId === role.systemAdministrator) {
+            companyView.selectPanel();
+            $$("mainMenu").select("company");
+        }
+    }).fail(function () {
+        connection.reload();
+    });
+
 };
 
-var preloadDependencies=function(){
-    webix.ajax().get("api/role").then(function (data) {
-        var roles=[];
-        var array=[];
+var preloadDependencies = function () {
+    var promises=[];
+    promises.push(webix.ajax().get("api/role").then(function (data) {
+        var roles = [];
+        var array = [];
         data.json().forEach(function (obj) {
-            roles[obj.id]=obj.value;
+            roles[obj.id] = obj.value;
             array.push(obj);
         });
-        dependencyMap["role"]=roles;
-        dependency["role"]=array;
+        dependencyMap["role"] = roles;
+        dependency["role"] = array;
 
-    });
-    webix.ajax().get("api/status").then(function (data) {
-        var status=[];
-        var array=[];
-
-        data.json().forEach(function (obj) {
-            status[obj.id]=obj.value;
-            array.push(obj);
-        });
-        dependencyMap["status"]=status;
-        dependency["status"]=array;
-    });
-    webix.ajax().get("api/expense-type").then(function (data) {
-        var expenseTypes=[];
-        var array=[];
+    }));
+    promises.push(webix.ajax().get("api/status").then(function (data) {
+        var status = [];
+        var array = [];
 
         data.json().forEach(function (obj) {
-            expenseTypes[obj.id]=obj.value;
+            status[obj.id] = obj.value;
             array.push(obj);
         });
-        dependencyMap["expenseType"]=expenseTypes;
-        dependency["expenseType"]=array;
-    });
-    webix.ajax().get("api/notification-type").then(function (data) {
-        var notificationTypes=[];
-        var array=[];
-        data.json().forEach(function (obj) {
-            notificationTypes[obj.id]=obj.value;
-            array.push(obj);
-        });
-        dependencyMap["notificationType"]=notificationTypes;
-        dependency["notificationType"]=array;
+        dependencyMap["status"] = status;
+        dependency["status"] = array;
+    }));
+    promises.push(webix.ajax().get("api/expense-type").then(function (data) {
+        var expenseTypes = [];
+        var array = [];
 
-    });
+        data.json().forEach(function (obj) {
+            expenseTypes[obj.id] = obj.value;
+            array.push(obj);
+        });
+        dependencyMap["expenseType"] = expenseTypes;
+        dependency["expenseType"] = array;
+    }));
+    promises.push(webix.ajax().get("api/notification-type").then(function (data) {
+        var notificationTypes = [];
+        var array = [];
+        data.json().forEach(function (obj) {
+            notificationTypes[obj.id] = obj.value;
+            array.push(obj);
+        });
+        dependencyMap["notificationType"] = notificationTypes;
+        dependency["notificationType"] = array;
+
+    }));
+    return webix.promise.all(promises);
 
 };
 
