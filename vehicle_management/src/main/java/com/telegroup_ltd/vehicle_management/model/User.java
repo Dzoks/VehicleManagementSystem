@@ -1,7 +1,9 @@
 package com.telegroup_ltd.vehicle_management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
+import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -31,6 +33,7 @@ import java.util.Objects;
 )
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements HasCompanyId {
     private Integer id;
     private String username;
@@ -92,6 +95,7 @@ public class User implements HasCompanyId {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -178,7 +182,7 @@ public class User implements HasCompanyId {
     }
 
     @Basic
-    @Column(name = "notification_type_id", nullable = false)
+    @Column(name = "notification_type_id", nullable = true)
     public Integer getNotificationTypeId() {
         return notificationTypeId;
     }

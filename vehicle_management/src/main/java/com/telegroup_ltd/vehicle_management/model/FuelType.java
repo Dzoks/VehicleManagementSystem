@@ -4,10 +4,9 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Model {
+public class FuelType {
     private Integer id;
-    private String name;
-    private Integer manufacturerId;
+    private String value;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -21,23 +20,13 @@ public class Model {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = 64)
-    public String getName() {
-        return name;
+    @Column(name = "value", nullable = false, length = 64)
+    public String getValue() {
+        return value;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic
-    @Column(name = "manufacturer_id", nullable = false)
-    public Integer getManufacturerId() {
-        return manufacturerId;
-    }
-
-    public void setManufacturerId(Integer manufacturerId) {
-        this.manufacturerId = manufacturerId;
+    public void setValue(String value) {
+        this.value = value;
     }
 
 
@@ -45,7 +34,7 @@ public class Model {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Model model = (Model) o;
+        FuelType model = (FuelType) o;
         return Objects.equals(id, model.id);
     }
 

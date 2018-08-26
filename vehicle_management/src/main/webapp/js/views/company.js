@@ -1,19 +1,23 @@
+
+var onCompanyClick=function (id) {
+    $$("companyDT").select(id);
+    var companyId = id === -1 ? 0 : id;
+    var datatable = $$("userDT");
+    connection.dettachAjaxEvents("userDT");
+    datatable.clearAll();
+    connection.attachAjaxEvents("userDT","api/user");
+
+    return datatable.load("api/user/byCompany/" + companyId);
+
+};
 var companyView = {
 
     panel: {
         id: "companyPanel",
         adjust: true,
-        rows: [
-            {
-                height: 50
-            },
-            {
-                height: 500,
-                cols: [
-                    {},
+        cols: [
                     {
-
-                        width: 300,
+                        width:500,
                         rows: [
                             {
                                 view: "toolbar",
@@ -39,6 +43,8 @@ var companyView = {
                             {
                                 id: "companyDT",
                                 view: "datatable",
+                                css:"webixDatatable",
+                                fillspace:true,
                                 header: false,
                                 select: true,
                                 navigation: true,
@@ -49,21 +55,16 @@ var companyView = {
                                         if (id.row !== -1)
                                             this.editRow(id);
                                     },
-                                    onItemClick: function (id) {
-                                        var companyId = id.row === -1 ? 0 : id.row;
-                                        var datatable = $$("userDT");
-                                        connection.dettachAjaxEvents("userDT");
-                                        datatable.clearAll();
-                                        datatable.load("api/user/byCompany/" + companyId);
-                                        datatable.refresh();
-                                    },
+                                    onItemClick:function(id){
+                                        onCompanyClick(id.row);
+                                    } ,
                                     onBeforeContextMenu: function (item) {
                                         if (item.row === -1)
                                             return false;
                                         this.select(item.row);
                                     }
                                 },
-                                css: "webixDatatable",
+
                                 url: "api/company",
                                 data: [
                                     {
@@ -91,16 +92,17 @@ var companyView = {
                             }
                         ]
                     },
-                    {},
+
                     {
                         rows: [
                             {
                                 view: "toolbar",
                                 css: "panelToolbar",
+                                fillspace:true,
                                 cols: [
                                     {
                                         view: "label",
-                                        width: 150,
+                                        width: 400,
                                         template: "<span class='fa fa-user'/> Korisnici"
                                     },
                                     {},
@@ -120,9 +122,11 @@ var companyView = {
                                 // TODO richSelectFilter treba prepraviti sa integera na podatke,
                                 id: "userDT",
                                 view: "datatable",
+                                css:"webixDatatable",
                                 select: true,
                                 navigation: true,
-                                autowidth: true,
+                                fillspace: true,
+                                url:"api/user",
                                 on: {
                                     onBeforeContextMenu: function (item) {
                                         if (item.row === userData.id)
@@ -137,7 +141,7 @@ var companyView = {
                                     },
                                     {
                                         id: "email",
-                                        width: 250,
+                                        fillspace:true,
                                         header: [
                                             "E-mail",
                                             {
@@ -148,7 +152,7 @@ var companyView = {
                                     },
                                     {
                                         id: "username",
-                                        width: 150,
+                                        fillspace:true,
                                         header: [
                                             "Korisničko ime",
                                             {
@@ -159,9 +163,12 @@ var companyView = {
                                     },
                                     {
                                         id: "name",
-                                        template: "#firstName# #lastName#",
-                                        width: 200,
-
+                                        template: function(obj) {
+                                            if (obj.firstName){
+                                                return obj.firstName+" "+obj.lastName;
+                                            } else return "";
+                                        },
+                                        fillspace:true,
                                         header: [
                                             "Ime i prezime",
                                             {
@@ -172,7 +179,7 @@ var companyView = {
                                     },
                                     {
                                         id: "statusId",
-                                        width: 125,
+                                        fillspace:true,
                                         template: function (obj) {
                                             return dependencyMap['status'][obj.statusId];
                                         },
@@ -188,7 +195,7 @@ var companyView = {
                                     },
                                     {
                                         id: "roleId",
-                                        width: 210,
+                                        fillspace:true,
                                         template: function (obj) {
                                             return dependencyMap['role'][obj.roleId];
                                         },
@@ -201,16 +208,25 @@ var companyView = {
                                             }
                                         ]
 
+                                    },
+                                    {
+                                        id:"locationName",
+                                        fillspace:true,
+                                        header: [
+                                            "Lokacija",
+                                            {
+                                                content: "richSelectFilter",
+                                                fillspace: true,
+                                                sort: "string"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
                         ]
-                    },
-                    {}
+                    }
                 ]
-            },
-            {}
-        ]
+
     },
 
     selectPanel: function () {
@@ -386,6 +402,74 @@ var companyView = {
                             invalidMessage: "E-mail je obavezan!"
                         },
                         {
+                            id:"roleId",
+                            name:"roleId",
+                            label: "Uloga:",
+                            view:"richselect",
+                            required:true,
+                            invalidMessage:"Uloga je obavezna!",
+                            on:{
+                                onChange:function (newv,oldv) {
+                                    if (newv===role.systemAdministrator){
+                                        $$("companyId").define("required",false);
+                                        $$("companyId").define("disabled",true);
+                                        $$("companyId").setValue(null);
+
+                                    }else{
+                                        $$("companyId").define("required",true);
+                                        $$("companyId").define("disabled",false);
+
+
+                                    }
+                                    $$("companyId").refresh();
+
+
+                                }
+                            }
+                        },
+                        {
+                            id:"companyId",
+                            name:"companyId",
+                            label: "Kompanija:",
+                            view:"richselect",
+                            required:false,
+                            disabled:true,
+                            invalidMessage:"Kompanija je obavezna!",
+                            on: {
+                                onChange: function (newv, oldv) {
+                                    if (newv){
+                                        var locations=[];
+                                        webix.ajax().get("api/location/byCompany/"+newv).then(function (data) {
+                                            var array=data.json();
+                                            array.forEach(function (obj) {
+                                                locations.push({
+                                                    id:obj.id,
+                                                    value:obj.label
+                                                });
+
+                                            });
+                                            $$("locationId").define("options",locations);
+                                            $$("locationId").define("disabled",false);
+                                            $$("locationId").refresh();
+                                        });
+
+                                    }else{
+                                        $$("locationId").setValue(null);
+                                        $$("locationId").define("options",[]);
+                                        $$("locationId").define("disabled",true);
+                                    }
+                                    $$("locationId").refresh();
+                                }
+                            }
+                        },
+                        {
+                            id:"locationId",
+                            name:"locationId",
+                            label: "Lokacija:",
+                            view:"richselect",
+                            disabled:true,
+                        },
+                        {
                             id: "addCompanyBtn",
                             view: "button",
                             value: "Dodajte korisnika",
@@ -395,16 +479,64 @@ var companyView = {
                             hotkey: "enter",
                             width: 150
                         }
-                    ]
+
+                    ],
+                    rules: {
+                        "email": function (value) {
+                            if (!value) {
+                                $$('addUserForm').elements.email.config.invalidMessage = 'E-mail je obavezan!';
+                                return false;
+                            }
+                            if (!webix.rules.isEmail(value)) {
+                                $$('addUserForm').elements.email.config.invalidMessage = 'E-mail nije u validnom formatu!';
+                                return false;
+                            }
+                            return true;
+                        }
+                    }
                 }
             ]
         }
     },
 
+
     showAddUserDialog: function () {
         if (util.popupIsntAlreadyOpened("addUserDialog")) {
             webix.ui(webix.copy(companyView.addUserDialog)).show();
             webix.UIManager.setFocus("username");
+            $$("roleId").define("options",dependency.role);
+            $$("roleId").refresh();
+
+            var currentCompanies=[];
+            $$("companyDT").eachRow(function (row){
+                if (row!=-1) {
+                    currentCompanies.push({
+                        id: row,
+                        value: $$("companyDT").getItem(row).name
+                    })
+                }
+            });
+
+            $$("roleId").define("options",dependency.role);
+            $$("roleId").refresh();
+            $$("companyId").define("options",currentCompanies);
+            $$("companyId").refresh();
         }
     },
+
+    addUser:function () {
+        var form=$$("addUserForm");
+        if (form.validate()){
+            var user=form.getValues();
+            user.statusId=userStatus.onHold;
+            var companyId=user.companyId?user.companyId:-1;
+            onCompanyClick(companyId).then(function () {
+                $$("userDT").add(user);
+                util.dismissDialog('addUserDialog');
+            });
+
+        }
+    },
+
+    // dwTODO NE UCITA SVE
 };

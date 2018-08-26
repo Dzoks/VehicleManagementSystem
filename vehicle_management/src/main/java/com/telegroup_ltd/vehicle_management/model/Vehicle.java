@@ -9,12 +9,15 @@ import java.util.Objects;
 @Entity
 public class Vehicle implements HasCompanyId, Deletable {
     private Integer id;
+    private String manufacturer;
+    private String model;
     private String name;
+    private String registration;
     private String description;
     private Byte deleted;
-    private Integer modelId;
     private Integer companyId;
-    private String registration;
+    private Integer fuelTypeId;
+    private Integer locationId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -57,15 +60,6 @@ public class Vehicle implements HasCompanyId, Deletable {
         this.deleted = deleted;
     }
 
-    @Basic
-    @Column(name = "model_id", nullable = false)
-    public Integer getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(Integer modelId) {
-        this.modelId = modelId;
-    }
 
     @Basic
     @Column(name = "company_id", nullable = false)
@@ -107,9 +101,67 @@ public class Vehicle implements HasCompanyId, Deletable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
-                ", modelId=" + modelId +
+                ", model='" + model + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
                 ", companyId=" + companyId +
                 ", registration='" + registration + '\'' +
+                ", fuelTypeId=" + fuelTypeId +
+                ", locationId=" + locationId +
                 '}';
+    }
+
+    @Basic
+    @Column(name = "fuel_type_id", nullable = false)
+    public Integer getFuelTypeId() {
+        return fuelTypeId;
+    }
+
+    public void setFuelTypeId(Integer fuelTypeId) {
+        this.fuelTypeId = fuelTypeId;
+    }
+
+    @Basic
+    @Column(name = "location_id", nullable = true)
+    public Integer getLocationId() {
+        return locationId;
+    }
+
+
+    public void setLocationId(Integer locationId) {
+        this.locationId = locationId;
+    }
+    @Basic
+    @Column(name = "manufacturer", nullable = false)
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+    @Basic
+    @Column(name = "model", nullable = false)
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Vehicle(){
+
+    }
+    public Vehicle(Integer id, String manufacturer, String model, String name, String registration, String description, Byte deleted, Integer companyId, Integer fuelTypeId, Integer locationId) {
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.name = name;
+        this.registration = registration;
+        this.description = description;
+        this.deleted = deleted;
+        this.companyId = companyId;
+        this.fuelTypeId = fuelTypeId;
+        this.locationId = locationId;
     }
 }

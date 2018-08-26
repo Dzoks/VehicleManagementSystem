@@ -162,6 +162,7 @@ var connection = {
             return false;
         });
 
+
         $$(dtId).attachEvent("onBeforeEditStop", function (state, editor, ignore) {
                 if (ignore) {
                     this.editCancel();

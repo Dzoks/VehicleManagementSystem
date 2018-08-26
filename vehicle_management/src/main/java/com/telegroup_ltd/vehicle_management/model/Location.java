@@ -3,23 +3,21 @@ package com.telegroup_ltd.vehicle_management.model;
 import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
 import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class Location implements Deletable, HasCompanyId {
     private Integer id;
-    private String name;
-    private Double latitude;
-    private Double longitude;
+    private String label;
+    private Double lat;
+    private Double lng;
     private Integer companyId;
     private Byte deleted;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     public Integer getId() {
         return id;
@@ -30,33 +28,33 @@ public class Location implements Deletable, HasCompanyId {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = 64)
-    public String getName() {
-        return name;
+    @Column(name = "label", nullable = false, length = 64)
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic
-    @Column(name = "latitude", nullable = false, precision = 0)
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Basic
-    @Column(name = "longitude", nullable = false, precision = 0)
-    public Double getLongitude() {
-        return longitude;
+    @Column(name = "lat", nullable = false, precision = 0)
+    public Double getLat() {
+        return lat;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    @Basic
+    @Column(name = "lng", nullable = false, precision = 0)
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     @Basic
@@ -70,7 +68,7 @@ public class Location implements Deletable, HasCompanyId {
     }
 
     @Basic
-    @Column(name = "deleted", nullable = false)
+    @Column(name = "deleted", nullable = false,insertable = false)
     public Byte getDeleted() {
         return deleted;
     }
@@ -96,9 +94,9 @@ public class Location implements Deletable, HasCompanyId {
     public String toString() {
         return "Location{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", name='" + label + '\'' +
+                ", latitude=" + lng +
+                ", longitude=" + lng +
                 ", companyId=" + companyId +
                 ", deleted=" + deleted +
                 '}';

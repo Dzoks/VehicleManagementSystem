@@ -35,4 +35,5 @@ public class UserBean {
     public void setLoggedIn(Boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
 }

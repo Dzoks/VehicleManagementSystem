@@ -162,3 +162,34 @@
     color: #fff;
     font-size: 15px;
 }
+
+.registration-label{
+    text-align: center !important;
+    font-size: x-large!important;
+    padding: 10px!important;
+    font-family: inherit !important;
+}
+
+.left-side-top{
+    border-top-left-radius: 10px !important;
+}
+
+.right-side-top{
+    border-top-right-radius: 10px !important;
+}
+
+.left-side-bottom{
+    border-bottom-left-radius: 10px !important;
+
+}
+
+.right-side-bottom{
+    border-bottom-right-radius: 10px !important;
+
+}
+
+.popup-css{
+    margin-top: 52px !important;
+    left:auto !important;
+    right:0px !important;
+}

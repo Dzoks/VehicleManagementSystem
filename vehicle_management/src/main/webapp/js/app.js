@@ -20,6 +20,29 @@ var menuSystemAdmin = [
     }
 ];
 
+var menyCompanyAdmin=[
+    {
+        id:"dashboard",
+        icon:"home",
+        value:"Početna"
+    },
+    {
+        id:"vehicle",
+        icon:"car",
+        value:"Vozila"
+    },
+    {
+        id: "logger",
+        icon: "history",
+        value: "Korisničke akcije"
+    },
+    {
+        id:"user",
+        icon:"user",
+        value:"Korisnici"
+    }
+];
+
 var menuActions = function (id) {
     switch (id) {
         case "logger":
@@ -27,6 +50,15 @@ var menuActions = function (id) {
             break;
         case "company":
             companyView.selectPanel();
+            break;
+        case "vehicle":
+            vehicleView.selectPanel();
+            break;
+        case "dashboard":
+            locationView.selectPanel();
+            break;
+        case "user":
+            userView.selectPanel();
             break;
     }
 };
@@ -37,6 +69,23 @@ var init = function () {
     webix.Date.startOnMonday = true;
     webix.ui(panel);
     panel = $$("empty");
+    var urlQuery=window.location.search;
+    if (urlQuery && urlQuery.startsWith('?q=reg')){
+        var token=urlQuery.split('=')[2];
+        webix.ajax().get("api/user/check/"+token).then(function (result) {
+            var userId=result.json();
+            showRegistration(userId);
+        }).fail(function (err) {
+            util.messages.showErrorMessage("Token je istekao ili nije validan!");
+            checkState();
+        })
+    }else{
+        checkState();
+    }
+
+};
+
+var checkState=function(){
     webix.ajax().get("api/user/state").then(function (data) {
         userData = data.json();
         showApp();
@@ -55,6 +104,16 @@ var showLogin = function () {
     var login = webix.copy(loginLayout);
     webix.ui(login, panel);
     panel = $$("login");
+
+};
+
+var showRegistration = function (userId) {
+    var registration=webix.copy(registrationLayout);
+    webix.ui(registration,panel);
+    panel=$$("registration");
+    $$("registrationForm").setValues({
+        id:userId
+    });
 
 };
 
@@ -91,6 +150,9 @@ var showApp = function () {
         case role.systemAdministrator:
             localMenuData = menuSystemAdmin;
             break;
+        case role.companyAdministrator:
+            localMenuData=menyCompanyAdmin;
+            break;
     }
     $$("mainMenu").define("data", localMenuData);
     $$("mainMenu").define("on", menuEvents);
@@ -99,9 +161,12 @@ var showApp = function () {
         if (userData.roleId === role.systemAdministrator) {
             companyView.selectPanel();
             $$("mainMenu").select("company");
+        }else{
+            locationView.selectPanel();
+            $$("mainMenu").select("dashboard");
         }
-    }).fail(function () {
-        connection.reload();
+    }).fail(function (err) {
+     //   connection.reload();
     });
 
 };
@@ -150,6 +215,17 @@ var preloadDependencies = function () {
         });
         dependencyMap["notificationType"] = notificationTypes;
         dependency["notificationType"] = array;
+
+    }));
+    promises.push(webix.ajax().get("api/fuel-type").then(function (data) {
+        var fuel = [];
+        var array = [];
+        data.json().forEach(function (obj) {
+            fuel[obj.id] = obj.value;
+            array.push(obj);
+        });
+        dependencyMap['fuelType'] = fuel;
+        dependency['fuelType'] = array;
 
     }));
     return webix.promise.all(promises);

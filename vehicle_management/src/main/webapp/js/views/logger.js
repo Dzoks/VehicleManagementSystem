@@ -132,5 +132,8 @@ var loggerView = {
         rightPanel = "loggerPanel";
         var panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
+        if (userData.companyId) {
+            $$("loggerDT").hideColumn("companyName");
+        }
     }
 };

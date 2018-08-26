@@ -34,16 +34,16 @@ public class AccessFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         UserBean userBean = (UserBean) springContext.getBean("userBean");
 
-
-        if (!userBean.getLoggedIn() && !publicPaths.contains(request.getRequestURI())) {
+/*
+        if (!request.getRequestURI().startsWith("/api/user/register")&&!request.getRequestURI().startsWith("/api/user/check/")&& !userBean.getLoggedIn() && !publicPaths.contains(request.getRequestURI()) ) {
             response.sendError(401);
             return;
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-
-
+*/
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
