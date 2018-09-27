@@ -179,18 +179,19 @@ var locationView={
                                 locationView.markerToEdit=null;
                                 $$("locationMap").add(locationView.oldMarker);
                                 locationView.oldMarker=null;
+                            }else {
+                                if (locationView.markerExists)
+                                    $$("locationMap").remove("marker");
+                                locationView.markerExists = true;
+                                var marker = {
+                                    id: "marker",
+                                    lat: results[0].geometry.location.lat(),
+                                    lng: results[0].geometry.location.lng(),
+                                    draggable: true
+                                };
+                                $$("locationMap").add(marker);
+                                var map = $$("locationMap").getMap().val.setCenter(marker);
                             }
-                            if (locationView.markerExists)
-                            $$("locationMap").remove("marker");
-                            locationView.markerExists=true;
-                            var marker={
-                                id:"marker",
-                                lat:results[0].geometry.location.lat(),
-                                lng:results[0].geometry.location.lng(),
-                                draggable:true
-                            };
-                            $$("locationMap").add(marker);
-                            var map=$$("locationMap").getMap().val.setCenter(marker);
                         } else {
                             util.messages.showErrorMessage("Nije moguće pronaći unesenu adresu!");
                         }
@@ -330,12 +331,12 @@ var locationView={
                 locationView.markerToEdit=locationToAdd;
                 webix.ajax().header({
                     "Content-Type":"application/json"
-                }).put("api/location/"+marker.id,locationToAdd).then(function (result) {
+                }).put("api/location/"+marker.id,JSON.stringify(locationToAdd)).then(function (result) {
                     $$("locationMap").add(locationView.markerToEdit);
                     locationView.markerToEdit=false;
                     locationView.oldMarker=false;
                     util.messages.showMessage("Uspješna izmjena");
-                    util.dismissDialog('addLocationDialog');
+                    util.dismissDialog("addLocationDialog");
                 }).fail(function (err) {
                     util.showErrorMessage(err.responseText);
                 });

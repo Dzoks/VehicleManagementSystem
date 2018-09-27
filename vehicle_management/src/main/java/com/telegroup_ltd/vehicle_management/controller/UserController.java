@@ -128,7 +128,7 @@ public class UserController extends GenericHasCompanyIdController<User, Integer>
     @RequestMapping(value = "/check/{token}",method = RequestMethod.GET)
     public Integer checkToken(@PathVariable String token) throws ForbiddenException {
         User user=repository.getByToken(token);
-        if (user==null && user.getRegistrationDate().toLocalDateTime().plusDays(1).isBefore(LocalDateTime.now()))
+        if (user==null || user.getRegistrationDate().toLocalDateTime().plusDays(1).isBefore(LocalDateTime.now()))
             throw new ForbiddenException("Forbidden");
         return user.getId();
     }

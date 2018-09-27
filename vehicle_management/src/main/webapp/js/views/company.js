@@ -17,7 +17,7 @@ var companyView = {
         adjust: true,
         cols: [
                     {
-                        width:500,
+                        width:300,
                         rows: [
                             {
                                 view: "toolbar",
@@ -188,22 +188,43 @@ var companyView = {
 
                                             {
                                                 content: "richSelectFilter",
-                                                fillspace: true,
+                                                suggest: {
+                                                    body: {
+                                                        template: function (obj) {	// template for options list
+                                                            if (obj.$empty)
+                                                                return "";
+                                                            return dependencyMap['status'][obj.value];
+                                                        }
+                                                    }
+
+                                                },
+                                                    fillspace: true,
                                                 sort: "string"
                                             }
                                         ]
                                     },
                                     {
                                         id: "roleId",
-                                        fillspace:true,
+                                        width:230,
                                         template: function (obj) {
                                             return dependencyMap['role'][obj.roleId];
                                         },
                                         header: [
-                                            "Status",
+                                            "Tip korisnika",
                                             {
+
                                                 content: "richSelectFilter",
-                                                fillspace: true,
+                                                suggest: {
+                                                    body: {
+
+                                                        template: function (obj) {	// template for options list
+                                                            if (obj.$empty)
+                                                                return "";
+                                                            return dependencyMap['role'][obj.value];
+                                                        }
+                                                    }
+
+                                                },
                                                 sort: "string"
                                             }
                                         ]

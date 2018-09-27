@@ -97,6 +97,16 @@ var userView={
                             {
                                 content: "richSelectFilter",
                                 fillspace: true,
+                                suggest: {
+                                    body: {
+                                        template: function (obj) {	// template for options list
+                                            if (obj.$empty)
+                                                return "";
+                                            return dependencyMap['status'][obj.value];
+                                        }
+                                    }
+
+                                },
                                 sort: "string"
                             }
                         ]
@@ -108,11 +118,22 @@ var userView={
                             return dependencyMap['role'][obj.roleId];
                         },
                         header: [
-                            "Status",
+                            "Tip korisnika",
                             {
                                 content: "richSelectFilter",
                                 fillspace: true,
-                                sort: "string"
+                                sort: "string",
+                                suggest: {
+                                    body: {
+
+                                        template: function (obj) {	// template for options list
+                                            if (obj.$empty)
+                                                return "";
+                                            return dependencyMap['role'][obj.value];
+                                        }
+                                    }
+
+                                },
                             }
                         ]
 
