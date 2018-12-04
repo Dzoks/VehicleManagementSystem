@@ -113,7 +113,7 @@ var loggerView = {
                         header: [
                             "Kompanija",
                             {
-                                content: "richSelectFilter",
+                                content: "textFilter",
                                 fillspace: true,
                                 sort: "string"
                             }

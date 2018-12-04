@@ -53,44 +53,84 @@ var vehicleView = {
                     {
                         id:"registration",
                         header:[
-                            "Registracija"
+                            "Registracija",
+                            {
+                                content: "textFilter",
+                                fillspace: true,
+                                sort: "string"
+                            }
                         ],
                         fillspace:true
                     },
                     {
                         id:"manufacturer",
                         header:[
-                            "Proizvođač"
+                            "Proizvođač",
+                            {
+                                content: "textFilter",
+                                fillspace: true,
+                                sort: "string"
+                            }
                         ],
                         fillspace:true
                     },
                     {
                         id:"model",
                         header:[
-                            "Model"
+                            "Model",
+                            {
+                                content: "textFilter",
+                                fillspace: true,
+                                sort: "string"
+                            }
                         ],
                         fillspace:true
                     },
                     {
                         id:"name",
                         header:[
-                            "Naziv"
+                            "Naziv",
+                            {
+                                content: "textFilter",
+                                fillspace: true,
+                                sort: "string"
+                            }
                         ],
                         fillspace:true
                     },
                     {
                         id:"description",
                         header:[
-                            "Opis"
+                            "Opis",
+                            {
+                                content: "textFilter",
+                                fillspace: true,
+                                sort: "string"
+                            }
                         ],
                         fillspace:true
                     },
                     {
                         id:"fuelTypeId",
                         header:[
-                            "Tip goriva"
+                            "Tip goriva",
+                            {
+                                content: "richSelectFilter",
+                                fillspace: true,
+                                sort: "string",
+                                suggest: {
+                                    body: {
+                                        template: function (obj) {	// template for options list
+                                            if (obj.$empty)
+                                                return "";
+                                            return dependencyMap['fuelType'][obj.value];
+                                        }
+                                    }
+
+                                },
+                            }
                         ],
-                        template:function (obj) {
+                        template: function (obj) {
                             return dependencyMap['fuelType'][obj.fuelTypeId];
                         },
                         fillspace:true
@@ -98,7 +138,12 @@ var vehicleView = {
                     {
                         id:"locationName",
                         header:[
-                            "Lokacija"
+                            "Lokacija",
+                            {
+                                content: "textFilter",
+                                fillspace: true,
+                                sort: "string"
+                            }
                         ],
                         fillspace:true
                     }

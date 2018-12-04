@@ -78,7 +78,7 @@ var init = function () {
         }).fail(function (err) {
             util.messages.showErrorMessage("Token je istekao ili nije validan!");
             checkState();
-        })
+        });
     }else{
         checkState();
     }
@@ -91,7 +91,7 @@ var checkState=function(){
         showApp();
     }).fail(function (err) {
         showLogin();
-    })
+    });
 };
 
 var menuEvents = {

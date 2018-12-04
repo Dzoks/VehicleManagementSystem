@@ -183,14 +183,14 @@ var login = function () {
 var logout = function () {
 
     webix.ajax().get("/api/user/logout", function (xhr) {
-        if (xhr.status = "200") {
-            userData = null;
-            util.messages.showLogoutMessage();
-            connection.reload();
-        } else {
-            util.messages.showLogoutErrorMessage();
-            connection.reload();
-        }
+            if (xhr.status = "200") {
+                userData = null;
+                util.messages.showLogoutMessage();
+                connection.reload();
+            } else {
+                util.messages.showLogoutErrorMessage();
+                connection.reload();
+            }
     });
 };
 

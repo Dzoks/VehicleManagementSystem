@@ -144,7 +144,7 @@ var userView={
                         header: [
                             "Lokacija",
                             {
-                                content: "richSelectFilter",
+                                content: "textFilter",
                                 fillspace: true,
                                 sort: "string"
                             }

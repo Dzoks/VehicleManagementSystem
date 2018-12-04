@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `expense_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.expense_type: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.expense_type: ~2 rows (approximately)
 /*!40000 ALTER TABLE `expense_type` DISABLE KEYS */;
 INSERT INTO `expense_type` (`id`, `value`) VALUES
 	(1, 'Gorivo'),
@@ -104,14 +104,14 @@ CREATE TABLE IF NOT EXISTS `location` (
   CONSTRAINT `R_11` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.location: ~7 rows (approximately)
+-- Dumping data for table vehicle_reservation.location: ~6 rows (approximately)
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
 INSERT INTO `location` (`id`, `label`, `lat`, `lng`, `company_id`, `deleted`) VALUES
 	(4, 'Lokacija 22', 5, 5, 3, 0),
 	(6, 'Lokacija 22', 5, 5, 3, 1),
 	(8, 'Majina kuća', 44.994626, 17.41418329999999, 1, 0),
-	(9, 'Banja Luka', 44.77413090075676, 17.21503259277347, 1, 0),
-	(10, 'Ilova City', 44.91228411363978, 17.679590702343603, 1, 0),
+	(9, 'Banja Luka', 44.76389371237716, 17.203359619140656, 1, 0),
+	(10, 'Ilova City', 44.929787327362334, 17.653498173046728, 1, 0),
 	(11, 'Hrvacani', 44.79965139999999, 17.138052399999992, 1, 1),
 	(12, 'Trn', 44.8243333, 17.171148300000027, 1, 1);
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
@@ -132,9 +132,9 @@ CREATE TABLE IF NOT EXISTS `logger` (
   KEY `R_10` (`company_id`),
   CONSTRAINT `R_10` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `R_9` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.logger: ~75 rows (approximately)
+-- Dumping data for table vehicle_reservation.logger: ~84 rows (approximately)
 /*!40000 ALTER TABLE `logger` DISABLE KEYS */;
 INSERT INTO `logger` (`id`, `action_type`, `action_details`, `table_name`, `created`, `atomic`, `user_id`, `company_id`) VALUES
 	(1, 'create', 'Kreiran je novi entitet: Company{id=2, name=\'Scout\', deleted=0}', 'Company', '2018-08-16 13:50:30', 1, 1, NULL),
@@ -211,7 +211,19 @@ INSERT INTO `logger` (`id`, `action_type`, `action_details`, `table_name`, `crea
 	(74, 'create', 'Kreiran je novi entitet: Vehicle{id=3, name=\'Suza\', description=\'1993\', deleted=null, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-064\', fuelTypeId=1, locationId=9}.', 'Vehicle', '2018-08-26 23:58:42', 1, 27, 1),
 	(75, 'create', 'Kreiran je novi entitet: Vehicle{id=4, name=\'asd\', description=\'\', deleted=null, model=\'asd\', manufacturer=\'sds\', companyId=1, registration=\'das\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-08-27 00:00:47', 1, 27, 1),
 	(76, 'delete', 'Obrisan je entitet: Vehicle{id=4, name=\'asd\', description=\'\', deleted=1, model=\'asd\', manufacturer=\'sds\', companyId=1, registration=\'das\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-08-27 00:05:02', 1, 27, 1),
-	(77, 'delete', 'Obrisan je entitet: Vehicle{id=3, name=\'Suza\', description=\'1993\', deleted=1, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-064\', fuelTypeId=1, locationId=9}.', 'Vehicle', '2018-08-27 00:11:02', 1, 27, 1);
+	(77, 'delete', 'Obrisan je entitet: Vehicle{id=3, name=\'Suza\', description=\'1993\', deleted=1, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-064\', fuelTypeId=1, locationId=9}.', 'Vehicle', '2018-08-27 00:11:02', 1, 27, 1),
+	(78, 'update', 'A&#x017E;uriran je entitet: Location{id=10, name=\'Ilova City\', latitude=17.679590702343603, longitude=17.679590702343603, companyId=1, deleted=0} na novu vrijednost: Location{id=10, name=\'Ilova City\', latitude=17.653498173046728, longitude=17.653498173046728, companyId=1, deleted=0}.', 'Location', '2018-08-27 09:50:25', 1, 27, 1),
+	(79, 'update', 'A&#x017E;uriran je entitet: Location{id=9, name=\'Banja Luka\', latitude=17.21503259277347, longitude=17.21503259277347, companyId=1, deleted=0} na novu vrijednost: Location{id=9, name=\'Banja Luka\', latitude=17.21228601074222, longitude=17.21228601074222, companyId=1, deleted=0}.', 'Location', '2018-08-27 10:44:05', 1, 27, 1),
+	(80, 'update', 'A&#x017E;uriran je entitet: Location{id=9, name=\'Banja Luka\', latitude=17.21228601074222, longitude=17.21228601074222, companyId=1, deleted=0} na novu vrijednost: Location{id=9, name=\'Banja Luka\', latitude=17.203359619140656, longitude=17.203359619140656, companyId=1, deleted=0}.', 'Location', '2018-08-27 10:44:16', 1, 27, 1),
+	(81, 'update', 'A&#x017E;uriran je entitet: Location{id=9, name=\'Banja Luka\', latitude=17.203359619140656, longitude=17.203359619140656, companyId=1, deleted=0} na novu vrijednost: Location{id=9, name=\'Banja Luka\', latitude=17.203359619140656, longitude=17.203359619140656, companyId=1, deleted=0}.', 'Location', '2018-08-27 10:47:26', 1, 27, 1),
+	(82, 'create', 'Kreiran je novi entitet: Vehicle{id=11, name=\'ads\', description=\'\', deleted=null, model=\'ads\', manufacturer=\'sd\', companyId=1, registration=\'ads\', fuelTypeId=1, locationId=9}.', 'Vehicle', '2018-12-04 15:34:07', 1, 27, 1),
+	(83, 'create', 'Kreiran je novi entitet: Vehicle{id=12, name=\'dasdas\', description=\'dasd\', deleted=null, model=\'adsdasdas\', manufacturer=\'cdsdsa\', companyId=1, registration=\'dasdas\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-12-04 15:35:07', 1, 27, 1),
+	(84, 'create', 'Kreiran je novi entitet: Vehicle{id=13, name=\'dasdas\', description=\'\', deleted=null, model=\'dadas\', manufacturer=\'saddas\', companyId=1, registration=\'das\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-12-04 15:37:24', 1, 27, 1),
+	(85, 'create', 'Kreiran je novi entitet: Vehicle{id=14, name=\'Hej\', description=\'as\', deleted=null, model=\'Hej\', manufacturer=\'Hej\', companyId=1, registration=\'Hej\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-12-04 15:42:18', 1, 27, 1),
+	(86, 'delete', 'Obrisan je entitet: Vehicle{id=14, name=\'Hej\', description=\'as\', deleted=1, model=\'Hej\', manufacturer=\'Hej\', companyId=1, registration=\'Hej\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-12-04 15:44:16', 1, 27, 1),
+	(87, 'delete', 'Obrisan je entitet: Vehicle{id=12, name=\'dasdas\', description=\'dasd\', deleted=1, model=\'adsdasdas\', manufacturer=\'cdsdsa\', companyId=1, registration=\'dasdas\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-12-04 15:44:36', 1, 27, 1),
+	(88, 'delete', 'Obrisan je entitet: Vehicle{id=13, name=\'dasdas\', description=\'\', deleted=1, model=\'dadas\', manufacturer=\'saddas\', companyId=1, registration=\'das\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2018-12-04 15:44:44', 1, 27, 1),
+	(89, 'delete', 'Obrisan je entitet: Vehicle{id=11, name=\'ads\', description=\'\', deleted=1, model=\'ads\', manufacturer=\'sd\', companyId=1, registration=\'ads\', fuelTypeId=1, locationId=9}.', 'Vehicle', '2018-12-04 15:44:47', 1, 27, 1);
 /*!40000 ALTER TABLE `logger` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.notification_type
@@ -222,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `notification_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.notification_type: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.notification_type: ~2 rows (approximately)
 /*!40000 ALTER TABLE `notification_type` DISABLE KEYS */;
 INSERT INTO `notification_type` (`id`, `value`) VALUES
 	(1, 'Isključena'),
@@ -264,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.role: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.role: ~2 rows (approximately)
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
 INSERT INTO `role` (`id`, `value`) VALUES
 	(1, 'Administrator sistema'),
@@ -280,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.status: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.status: ~2 rows (approximately)
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
 INSERT INTO `status` (`id`, `value`) VALUES
 	(1, 'Aktivan'),
@@ -333,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `vehicle` (
   `manufacturer` varchar(64) NOT NULL,
   `model` varchar(64) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `deleted` tinyint(1) DEFAULT 0,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0,
   `company_id` int(11) NOT NULL,
   `registration` varchar(64) NOT NULL,
   `location_id` int(11) DEFAULT NULL,
@@ -345,13 +357,17 @@ CREATE TABLE IF NOT EXISTS `vehicle` (
   CONSTRAINT `R_16` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `vehicle_fuel_type_id_fk` FOREIGN KEY (`fuel_type_id`) REFERENCES `fuel_type` (`id`),
   CONSTRAINT `vehicle_location_id_fk` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.vehicle: ~2 rows (approximately)
+-- Dumping data for table vehicle_reservation.vehicle: ~6 rows (approximately)
 /*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
 INSERT INTO `vehicle` (`id`, `name`, `manufacturer`, `model`, `description`, `deleted`, `company_id`, `registration`, `location_id`, `fuel_type_id`) VALUES
 	(1, 'IV 1.9 TDI', 'VW', 'Golf', 'Vozila ga baba iz njemacke', 0, 1, '823-J-231', 8, 1),
-	(2, 'Suza', 'Opel', 'Kadet', '', 0, 1, '825-J-064', 10, 1);
+	(2, 'Suza', 'Opel', 'Kadet', '', 0, 1, '825-J-064', 10, 1),
+	(11, 'ads', 'sd', 'ads', '', 1, 1, 'ads', 9, 1),
+	(12, 'dasdas', 'cdsdsa', 'adsdasdas', 'dasd', 1, 1, 'dasdas', 8, 1),
+	(13, 'dasdas', 'saddas', 'dadas', '', 1, 1, 'das', 8, 1),
+	(14, 'Hej', 'Hej', 'Hej', 'as', 1, 1, 'Hej', 8, 1);
 /*!40000 ALTER TABLE `vehicle` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

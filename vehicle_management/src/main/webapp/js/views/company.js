@@ -16,9 +16,15 @@ var companyView = {
         id: "companyPanel",
         adjust: true,
         cols: [
+            {
+                gravity:0.05
+            },
                     {
                         width:300,
                         rows: [
+                            {
+                                gravity:0.05
+                            },
                             {
                                 view: "toolbar",
                                 css: "panelToolbar",
@@ -28,7 +34,7 @@ var companyView = {
                                         width: 150,
                                         template: "<span class='fa fa-briefcase'/> Kompanije"
                                     },
-                                    {},
+                                    { },
                                     {
                                         id: "addCompanyBtn",
                                         view: "button",
@@ -89,12 +95,18 @@ var companyView = {
                                         fillspace: true
                                     }
                                 ]
+                            },
+                            {
+                                gravity:0.05
                             }
                         ]
                     },
 
                     {
                         rows: [
+                            {
+                                gravity:0.05
+                            },
                             {
                                 view: "toolbar",
                                 css: "panelToolbar",
@@ -236,16 +248,22 @@ var companyView = {
                                         header: [
                                             "Lokacija",
                                             {
-                                                content: "richSelectFilter",
+                                                content: "textFilter",
                                                 fillspace: true,
                                                 sort: "string"
                                             }
                                         ]
                                     }
                                 ]
+                            },
+                            {
+                                gravity:0.05
                             }
                         ]
-                    }
+                    },
+            {
+                gravity:0.05
+            }
                 ]
 
     },
