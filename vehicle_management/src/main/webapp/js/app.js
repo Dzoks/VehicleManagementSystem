@@ -1,13 +1,13 @@
-var MENU_STATES = {
+const MENU_STATES = {
     COLLAPSED: 0,
     EXPANDED: 1
 };
-var menuState = MENU_STATES.COLLAPSED;
-var userData = null;
-var panel = {id: "empty"};
-var rightPanel = null;
+let menuState = MENU_STATES.COLLAPSED;
+let userData = null;
+let panel = {id: "empty"};
+let rightPanel = null;
 
-var menuSystemAdmin = [
+const menuSystemAdmin = [
     {
         id: "company",
         icon: "briefcase",
@@ -20,7 +20,7 @@ var menuSystemAdmin = [
     }
 ];
 
-var menyCompanyAdmin=[
+const menyCompanyAdmin=[
     {
         id:"dashboard",
         icon:"home",
@@ -43,7 +43,7 @@ var menyCompanyAdmin=[
     }
 ];
 
-var menuActions = function (id) {
+const menuActions = function (id) {
     switch (id) {
         case "logger":
             loggerView.selectPanel();
@@ -63,19 +63,19 @@ var menuActions = function (id) {
     }
 };
 
-var init = function () {
+const init = function () {
     if (!webix.env.touch && webix.ui.scrollSize) webix.CustomScroll.init();
     webix.i18n.setLocale("sr-SP");
     webix.Date.startOnMonday = true;
     webix.ui(panel);
     panel = $$("empty");
-    var urlQuery=window.location.search;
+    const urlQuery=window.location.search;
     if (urlQuery && urlQuery.startsWith('?q=reg')){
-        var token=urlQuery.split('=')[2];
-        webix.ajax().get("api/user/check/"+token).then(function (result) {
-            var userId=result.json();
+        const token=urlQuery.split('=')[2];
+        connection.sendAjax("GET","api/user/check/"+token).then(result=> {
+            const userId=result.json();
             showRegistration(userId);
-        }).fail(function (err) {
+        }).fail(err=> {
             util.messages.showErrorMessage("Token je istekao ili nije validan!");
             checkState();
         });
@@ -85,30 +85,30 @@ var init = function () {
 
 };
 
-var checkState=function(){
-    webix.ajax().get("api/user/state").then(function (data) {
+const checkState=function(){
+    connection.sendAjax("GET","api/user/state").then(data=> {
         userData = data.json();
         showApp();
-    }).fail(function (err) {
+    }).fail(err=> {
         showLogin();
     });
 };
 
-var menuEvents = {
+const menuEvents = {
     onItemClick: function (item) {
         menuActions(item);
     }
 };
 
-var showLogin = function () {
-    var login = webix.copy(loginLayout);
+const showLogin = function () {
+    const login = webix.copy(loginLayout);
     webix.ui(login, panel);
     panel = $$("login");
 
 };
 
-var showRegistration = function (userId) {
-    var registration=webix.copy(registrationLayout);
+const showRegistration = function (userId) {
+    const registration=webix.copy(registrationLayout);
     webix.ui(registration,panel);
     panel=$$("registration");
     $$("registrationForm").setValues({
@@ -117,12 +117,12 @@ var showRegistration = function (userId) {
 
 };
 
-var showApp = function () {
-    var promise=preloadDependencies();
-    var main = webix.copy(mainLayout);
+const showApp = function () {
+    const promise=preloadDependencies();
+    const main = webix.copy(mainLayout);
     webix.ui(main, panel);
     panel = $$("app");
-    var localMenuData = null;
+    let localMenuData = null;
     webix.ui({
         id: "menu-collapse",
         view: "template",
@@ -133,7 +133,7 @@ var showApp = function () {
             '</div>',
         onClick: {
             "menu-collapse": function (e, id, trg) {
-                var elem = document.getElementById("menu-collapse");
+                const elem = document.getElementById("menu-collapse");
                 if (menuState == MENU_STATES.COLLAPSED) {
                     elem.className = "menu-collapse open";
                     menuState = MENU_STATES.EXPANDED;
@@ -157,7 +157,7 @@ var showApp = function () {
     $$("mainMenu").define("data", localMenuData);
     $$("mainMenu").define("on", menuEvents);
     rightPanel = "emptyRightPanel";
-    promise.then(function (value) {
+    promise.then(value=> {
         if (userData.roleId === role.systemAdministrator) {
             companyView.selectPanel();
             $$("mainMenu").select("company");
@@ -165,18 +165,18 @@ var showApp = function () {
             locationView.selectPanel();
             $$("mainMenu").select("dashboard");
         }
-    }).fail(function (err) {
+    }).fail(err=> {
      //   connection.reload();
     });
 
 };
 
-var preloadDependencies = function () {
-    var promises=[];
-    promises.push(webix.ajax().get("api/role").then(function (data) {
-        var roles = [];
-        var array = [];
-        data.json().forEach(function (obj) {
+const preloadDependencies = function () {
+    const promises=[];
+    promises.push(connection.sendAjax("GET","api/role").then(data=> {
+        const roles = [];
+        const array = [];
+        data.json().forEach(obj=> {
             roles[obj.id] = obj.value;
             array.push(obj);
         });
@@ -184,32 +184,32 @@ var preloadDependencies = function () {
         dependency["role"] = array;
 
     }));
-    promises.push(webix.ajax().get("api/status").then(function (data) {
-        var status = [];
-        var array = [];
+    promises.push(connection.sendAjax("GET","api/status").then(data=> {
+        const status = [];
+        const array = [];
 
-        data.json().forEach(function (obj) {
+        data.json().forEach(obj=> {
             status[obj.id] = obj.value;
             array.push(obj);
         });
         dependencyMap["status"] = status;
         dependency["status"] = array;
     }));
-    promises.push(webix.ajax().get("api/expense-type").then(function (data) {
-        var expenseTypes = [];
-        var array = [];
+    promises.push(connection.sendAjax("GET","api/expense-type").then(data=> {
+        const expenseTypes = [];
+        const array = [];
 
-        data.json().forEach(function (obj) {
+        data.json().forEach(obj=> {
             expenseTypes[obj.id] = obj.value;
             array.push(obj);
         });
         dependencyMap["expenseType"] = expenseTypes;
         dependency["expenseType"] = array;
     }));
-    promises.push(webix.ajax().get("api/notification-type").then(function (data) {
-        var notificationTypes = [];
-        var array = [];
-        data.json().forEach(function (obj) {
+    promises.push(connection.sendAjax("GET","api/notification-type").then(data=> {
+        const notificationTypes = [];
+        const array = [];
+        data.json().forEach(obj=> {
             notificationTypes[obj.id] = obj.value;
             array.push(obj);
         });
@@ -217,10 +217,10 @@ var preloadDependencies = function () {
         dependency["notificationType"] = array;
 
     }));
-    promises.push(webix.ajax().get("api/fuel-type").then(function (data) {
-        var fuel = [];
-        var array = [];
-        data.json().forEach(function (obj) {
+    promises.push(connection.sendAjax("GET","api/fuel-type").then(data=> {
+        const fuel = [];
+        const array = [];
+        data.json().forEach(obj=> {
             fuel[obj.id] = obj.value;
             array.push(obj);
         });

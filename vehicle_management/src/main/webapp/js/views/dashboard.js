@@ -1,5 +1,5 @@
 
-var locationView={
+const locationView={
     
     panel:{
         id:"locationPanel",
@@ -13,7 +13,7 @@ var locationView={
                     {
                         view: "label",
                         width: 400,
-                        template: "<span class='fa fa-location-arrow'/> Lokacije"
+                        template: "<span class='fa fa-location-arrow'></span> Lokacije"
                     },
                     {},
                     {
@@ -33,27 +33,27 @@ var locationView={
                 url:"api/location",
                 on:{
                     onAfterLoad:function () {
-                        var markers=[];
-                        var map=$$("locationMap").getMap().val;
+                        const markers=[];
+                        const map=$$("locationMap").getMap().val;
 
                         $$("locationMap").data.each(function (obj) {
                          markers.push(obj);
                         });
-                        var bounds = new google.maps.LatLngBounds();
+                        const bounds = new google.maps.LatLngBounds();
                         for (var i = 0; i < markers.length; i++) {
                             bounds.extend(markers[i]);
                         }
                         map.fitBounds(bounds);
                     },
                     onItemClick:function (id, marker) {
-                        var contentString=marker.label;
+                        let contentString=marker.label;
                         contentString+="<br>";
                         contentString+="<a href='#' onclick='vehicleView.selectPanel("+id+")' >Vozila</a>";
                         contentString+="<br>";
                         contentString+="<a href='#' onclick='locationView.setEdit("+id+");'>Izmjenite</a>";
                         contentString+="<br>";
                         contentString+="<a href='#' onclick='locationView.deleteLocation("+id+")'>Obrišite</a>"
-                        var infowindow = new google.maps.InfoWindow({
+                        const infowindow = new google.maps.InfoWindow({
                             content: contentString,
                         });
                         infowindow.open($$("locationMap").getMap().val, marker);
@@ -63,7 +63,7 @@ var locationView={
                     }
                 },
                 zoom:8,
-                key:"AIzaSyDLrWtIdZaoYBiQlrvI8V_4gKFH6TBJ4c4"
+             //   key:"AIzaSyDLrWtIdZaoYBiQlrvI8V_4gKFH6TBJ4c4"
             }
         ]
     },
@@ -96,7 +96,7 @@ var locationView={
                 {
                     view: "label",
 
-                    template: "<span class='fa fa-location-arrow'/> Dodavanje lokacije"
+                    template: "<span class='fa fa-location-arrow'></span> Dodavanje lokacije"
                 },
                 {},
                 {
@@ -170,8 +170,8 @@ var locationView={
             webix.UIManager.setFocus("label");
             $$("address").attachEvent("onKeyPress",function (code,ev) {
                 if (code===13) {
-                    var geocoder = new google.maps.Geocoder();
-                    var myAddress = $$("address").getValue();
+                    const geocoder = new google.maps.Geocoder();
+                    const myAddress = $$("address").getValue();
                     geocoder.geocode({'address': myAddress}, function (results, status) {
                         if (status === 'OK') {
                             if(locationView.markerToEdit){
@@ -183,14 +183,14 @@ var locationView={
                                 if (locationView.markerExists)
                                     $$("locationMap").remove("marker");
                                 locationView.markerExists = true;
-                                var marker = {
+                                const marker = {
                                     id: "marker",
                                     lat: results[0].geometry.location.lat(),
                                     lng: results[0].geometry.location.lng(),
                                     draggable: true
                                 };
                                 $$("locationMap").add(marker);
-                                var map = $$("locationMap").getMap().val.setCenter(marker);
+                                const map = $$("locationMap").getMap().val.setCenter(marker);
                             }
                         } else {
                             util.messages.showErrorMessage("Nije moguće pronaći unesenu adresu!");
@@ -205,31 +205,28 @@ var locationView={
 
     addLocation:function(){
 
-        var form=$$("addLocationForm");
+        const form=$$("addLocationForm");
         if (form.validate()){
 
             if (!locationView.markerExists){
                 form.elements.address.setValue("");
                 form.validate();
-                return;
             }else{
-                var marker=$$("locationMap").getItem("marker");
+                const marker=$$("locationMap").getItem("marker");
                 $$("locationMap").remove("marker");
-                var locationToAdd={
+                const locationToAdd={
                     lat:marker.lat,
                     lng:marker.lng,
                     label:$$("label").getValue(),
                     companyId:userData.companyId
                 };
-                webix.ajax().header({
-                    "Content-Type":"application/json"
-                }).post("api/location",locationToAdd).then(function (result) {
-                    var location=result.json();
+                connection.sendAjax("POST","api/location",locationToAdd).then(result=> {
+                    const location=result.json();
                     $$("locationMap").add(location);
                     locationView.markerExists=false;
                     util.messages.showMessage("Uspješno dodavanje");
                     util.dismissDialog('addLocationDialog');
-                }).fail(function (err) {
+                }).fail(err=> {
                     util.showErrorMessage(err.responseText);
                 });
 
@@ -244,12 +241,12 @@ var locationView={
     selectPanel: function () {
         $$("main").removeView(rightPanel);
         rightPanel = "locationPanel";
-        var panelCopy = webix.copy(this.panel);
+        const panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
         $$("locationMap").attachEvent("onAfterDrop", function(id, item){
-            var geocoder = new google.maps.Geocoder();
-            var marker=$$("locationMap").getItem(id);
-            var latlng = {lat: marker.lat, lng: marker.lng};
+            const geocoder = new google.maps.Geocoder();
+            const marker=$$("locationMap").getItem(id);
+            const latlng = {lat: marker.lat, lng: marker.lng};
             geocoder.geocode({'location': latlng}, function (results, status) {
                 if (status === 'OK') {
                     $$("address").setValue(results[0].formatted_address);
@@ -259,7 +256,7 @@ var locationView={
     },
     
     setEdit:function (id) {
-        var markerToEdit=$$("locationMap").getItem(id);
+        const markerToEdit=$$("locationMap").getItem(id);
         $$("locationMap").remove(id);
         locationView.oldMarker={
             lat:markerToEdit.lat,
@@ -277,8 +274,8 @@ var locationView={
         $$("addLocationBtn").hide();
         webix.UIManager.setFocus("label");
         $$("label").setValue(markerToEdit.label);
-        var geocoder = new google.maps.Geocoder();
-        var latlng = {lat: markerToEdit.lat, lng: markerToEdit.lng};
+        const geocoder = new google.maps.Geocoder();
+        const latlng = {lat: markerToEdit.lat, lng: markerToEdit.lng};
         geocoder.geocode({'location': latlng}, function (results, status) {
             if (status === 'OK') {
                 $$("address").setValue(results[0].formatted_address);
@@ -310,17 +307,16 @@ var locationView={
     },
 
     saveLocation:function(){
-        var form=$$("addLocationForm");
+        const form=$$("addLocationForm");
         if (form.validate()){
 
             if (!locationView.markerToEdit){
                 form.elements.address.setValue("");
                 form.validate();
-                return;
             }else{
-                var marker=locationView.markerToEdit;
+                const marker=locationView.markerToEdit;
                 $$("locationMap").remove(locationView.markerToEdit.id);
-                var locationToAdd={
+                const locationToAdd={
                     id:marker.id,
                     lat:marker.lat,
                     lng:marker.lng,
@@ -329,15 +325,13 @@ var locationView={
                     companyId:userData.companyId
                 };
                 locationView.markerToEdit=locationToAdd;
-                webix.ajax().header({
-                    "Content-Type":"application/json"
-                }).put("api/location/"+marker.id,JSON.stringify(locationToAdd)).then(function (result) {
+                connection.sendAjax("PUT","api/location/"+marker.id,locationToAdd).then(result=> {
                     $$("locationMap").add(locationView.markerToEdit);
                     locationView.markerToEdit=false;
                     locationView.oldMarker=false;
                     util.messages.showMessage("Uspješna izmjena");
                     util.dismissDialog("addLocationDialog");
-                }).fail(function (err) {
+                }).fail(err=> {
                     util.showErrorMessage(err.responseText);
                 });
 
@@ -346,9 +340,9 @@ var locationView={
     },
 
     deleteLocation:function (id) {
-        webix.ajax().del("api/location/"+id).then(function (value) {
+        connection.sendAjax("DELETE","api/location/"+id).then(value => {
             $$("locationMap").remove(id);
-        }).fail(function (err) {
+        }).fail(err=> {
             util.messages.showErrorMessage(err.responseText);
         });
     }

@@ -1,4 +1,4 @@
-var mainLayout = {
+const mainLayout = {
     id: "app",
     width: "auto",
     height: "auto",
@@ -90,7 +90,7 @@ var mainLayout = {
 };
 
 
-var loginLayout = {
+const loginLayout = {
     id: "login",
     width: "auto",
     height: "auto",
@@ -166,21 +166,19 @@ var loginLayout = {
     ]
 };
 
-var login = function () {
-    var form = $$("loginForm");
+const login = function () {
+    const form = $$("loginForm");
     if (form.validate()) {
-        webix.ajax().header({
-            "Content-Type": "application/json"
-        }).post("/api/user/login", form.getValues()).then(function (data) {
+        connection.sendAjax("POST","/api/user/login", form.getValues()).then(data=> {
             userData = data.json();
             showApp();
-        }).fail(function (err) {
+        }).fail(err=> {
             util.messages.showErrorMessage("Prijavljivanje nije uspjelo!");
         });
     }
 };
 
-var logout = function () {
+const logout = function () {
 
     webix.ajax().get("/api/user/logout", function (xhr) {
             if (xhr.status = "200") {
@@ -194,7 +192,7 @@ var logout = function () {
     });
 };
 
-var registrationLayout = {
+const registrationLayout = {
     id: "registration",
     width: "auto",
     height: "auto",
@@ -289,39 +287,31 @@ var registrationLayout = {
     ]
 };
 
-var register=function () {
-    var form=$$("registrationForm");
+const register=function () {
+    const form=$$("registrationForm");
     if (form.validate()){
-        webix.ajax().header({
-            "Content-Type": "application/json"
-        }).post("api/user/register",form.getValues()).then(function (result) {
+        connection.sendAjax("POST","api/user/register",form.getValues()).then(function (result) {
             util.messages.showMessage("Uspješna registracija. Sada se možete prijaviti na sistem.");
 
             setTimeout(function () {
-                webix.ajax().get("api/user/state").then(function (data) {
-                    return webix.ajax().get("/api/user/logout");
-                }).then(function (value) {
-                    var url=window.location;
+                connection.sendAjax("GET","api/user/state").then(data=> {
+                    return connection.sendAjax("GET","/api/user/logout");
+                }).then(value=> {
+                    const url=window.location;
                     url.replace(url.protocol+"//"+url.host);
-                }).fail(function (err) {
-                        var url=window.location;
+                }).fail(err=> {
+                        const url=window.location;
                         url.replace(url.protocol+"//"+url.host);
                 });
-                /*if (userData)
-                    logout();
-                else{
-                    var url=window.location;
-                    url.replace(url.protocol+"//"+url.host);
-                }*/
             },2000);
 
-        }).fail(function (err) {
+        }).fail(err=> {
             util.messages.showErrorMessage(err.responseText);
-        })
+        });
     }
 };
 
-var userView={
+const userDialog={
     panel:{
         id:"userDialog",
         view:"popup",
@@ -376,7 +366,7 @@ var userView={
                             view: "button",
                             value: "Sačuvajte",
                             type: "form",
-                            click: "userView.save",
+                            click: "userDialog.save",
                             align: "right",
                             hotkey: "enter",
                             width: 150

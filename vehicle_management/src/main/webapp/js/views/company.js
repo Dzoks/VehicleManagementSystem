@@ -1,8 +1,8 @@
 
-var onCompanyClick=function (id) {
+const onCompanyClick=function (id) {
     $$("companyDT").select(id);
-    var companyId = id === -1 ? 0 : id;
-    var datatable = $$("userDT");
+    const companyId = id === -1 ? 0 : id;
+    const datatable = $$("userDT");
     connection.dettachAjaxEvents("userDT");
     datatable.clearAll();
     connection.attachAjaxEvents("userDT","api/user");
@@ -10,7 +10,7 @@ var onCompanyClick=function (id) {
     return datatable.load("api/user/byCompany/" + companyId);
 
 };
-var companyView = {
+const companyView = {
 
     panel: {
         id: "companyPanel",
@@ -131,7 +131,6 @@ var companyView = {
 
                             },
                             {
-                                // TODO richSelectFilter treba prepraviti sa integera na podatke,
                                 id: "userDT",
                                 view: "datatable",
                                 css:"webixDatatable",
@@ -271,7 +270,7 @@ var companyView = {
     selectPanel: function () {
         $$("main").removeView(rightPanel);
         rightPanel = "companyPanel";
-        var panelCopy = webix.copy(this.panel);
+        const panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
         connection.attachAjaxEvents("companyDT", "api/company");
         webix.ui({
@@ -288,9 +287,9 @@ var companyView = {
             master: $$("companyDT"),
             on: {
                 onItemClick: function (id) {
-                    var context = this.getContext();
-                    var delBox = (webix.copy(commonViews.deleteConfirmSerbian("kompanije", "kompaniju")));
-                    delBox.callback = function (result) {
+                    const context = this.getContext();
+                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("kompanije", "kompaniju")));
+                    delBox.callback = result=> {
                         if (result) {
                             $$("companyDT").remove(context.id.row);
                         }
@@ -313,9 +312,9 @@ var companyView = {
             master: $$("userDT"),
             on: {
                 onItemClick: function (id) {
-                    var context = this.getContext();
-                    var delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
-                    delBox.callback = function (result) {
+                    const context = this.getContext();
+                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
+                    delBox.callback = result=> {
                         if (result) {
                             $$("userDT").remove(context.id.row);
                         }
@@ -393,7 +392,7 @@ var companyView = {
     },
 
     addCompany: function () {
-        var form = $$("addCompanyForm");
+        const form = $$("addCompanyForm");
         if (form.validate()) {
             $$("companyDT").add(form.getValues());
             util.dismissDialog("addCompanyDialog");
@@ -413,7 +412,7 @@ var companyView = {
                         {
                             view: "label",
                             width: 300,
-                            template: "<span class='fa fa-user'/> Dodavanje korisnika"
+                            template: "<span class='fa fa-user'></span> Dodavanje korisnika"
                         },
                         {},
                         {
@@ -477,15 +476,14 @@ var companyView = {
                             on: {
                                 onChange: function (newv, oldv) {
                                     if (newv){
-                                        var locations=[];
-                                        webix.ajax().get("api/location/byCompany/"+newv).then(function (data) {
-                                            var array=data.json();
+                                        const locations=[];
+                                        connection.sendAjax("GET","api/location/byCompany/"+newv).then(data=> {
+                                            const array=data.json();
                                             array.forEach(function (obj) {
                                                 locations.push({
                                                     id:obj.id,
                                                     value:obj.label
                                                 });
-
                                             });
                                             $$("locationId").define("options",locations);
                                             $$("locationId").define("disabled",false);
@@ -546,8 +544,8 @@ var companyView = {
             $$("roleId").define("options",dependency.role);
             $$("roleId").refresh();
 
-            var currentCompanies=[];
-            $$("companyDT").eachRow(function (row){
+            const currentCompanies=[];
+            $$("companyDT").eachRow(row=>{
                 if (row!=-1) {
                     currentCompanies.push({
                         id: row,
@@ -564,18 +562,15 @@ var companyView = {
     },
 
     addUser:function () {
-        var form=$$("addUserForm");
+        const form=$$("addUserForm");
         if (form.validate()){
-            var user=form.getValues();
+            const user=form.getValues();
             user.statusId=userStatus.onHold;
-            var companyId=user.companyId?user.companyId:-1;
-            onCompanyClick(companyId).then(function () {
+            const companyId=user.companyId?user.companyId:-1;
+            onCompanyClick(companyId).then(() => {
                 $$("userDT").add(user);
                 util.dismissDialog('addUserDialog');
             });
-
         }
     },
-
-    // dwTODO NE UCITA SVE
 };

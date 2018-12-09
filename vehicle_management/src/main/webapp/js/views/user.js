@@ -1,4 +1,4 @@
-var userView={
+let userView={
     panel:{
         id:"userPanel",
         adjust: true,
@@ -11,7 +11,7 @@ var userView={
                     {
                         view: "label",
                         width: 400,
-                        template: "<span class='fa fa-user'/> Korisnici"
+                        template: "<span class='fa fa-user'></span> Korisnici"
                     },
                     {},
                     {
@@ -27,7 +27,6 @@ var userView={
 
             },
             {
-                // TODO richSelectFilter treba prepraviti sa integera na podatke,
                 id: "userDT",
                 view: "datatable",
                 css:"webixDatatable",
@@ -158,7 +157,7 @@ var userView={
     selectPanel:function () {
         $$("main").removeView(rightPanel);
         rightPanel = "userPanel";
-        var panelCopy = webix.copy(this.panel);
+        const panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
         connection.attachAjaxEvents("userDT",'api/user');
         webix.ui({
@@ -175,9 +174,9 @@ var userView={
             master: $$("userDT"),
             on: {
                 onItemClick: function (id) {
-                    var context = this.getContext();
-                    var delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
-                    delBox.callback = function (result) {
+                    const context = this.getContext();
+                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
+                    delBox.callback = result=> {
                         if (result) {
                             $$("userDT").remove(context.id.row);
                         }
@@ -276,16 +275,16 @@ var userView={
         if (util.popupIsntAlreadyOpened("addUserDialog")) {
             webix.ui(webix.copy(userView.addUserDialog)).show();
             webix.UIManager.setFocus("username");
-            var reducedRoles=[];
-            dependency.role.forEach(function (obj) {
+            const reducedRoles=[];
+            dependency.role.forEach(obj=> {
                 if (obj.id!==role.systemAdministrator)
                     reducedRoles.push(obj);
             });
             $$("roleId").define("options",reducedRoles);
             $$("roleId").refresh();
-            var locations=[];
-            webix.ajax().get("api/location").then(function (data) {
-                var array=data.json();
+            const locations=[];
+            connection.sendAjax("GET","api/location").then(data=> {
+                const array=data.json();
                 array.forEach(function (obj) {
                     locations.push({
                         id:obj.id,
@@ -301,9 +300,9 @@ var userView={
     },
     
     addUser:function () {
-        var form=$$("addUserForm");
+        const form=$$("addUserForm");
         if (form.validate()){
-            var user=form.getValues();
+            const user=form.getValues();
             user.statusId=userStatus.onHold;
             user.companyId=userData.companyId;
             $$("userDT").add(user);

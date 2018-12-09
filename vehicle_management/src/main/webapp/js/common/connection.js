@@ -5,6 +5,23 @@
 var connection = {
     showSEM: true,
 
+    sendAjax:function(method,url,object){
+        switch (method) {
+            case "GET":
+                return webix.ajax().get(url);
+            case "POST":
+                return webix.ajax().headers({
+                    "Content-type": "application/json"
+                }).post(url,JSON.stringify(object));
+            case "PUT":
+                return webix.ajax().headers({
+                    "Content-type": "application/json"
+                }).put(url,JSON.stringify(object));
+            case "DELETE":
+                return webix.ajax().del(url);
+        }
+    },
+
     reload: function () {
         setTimeout(function () {
             window.location.reload();
@@ -53,63 +70,6 @@ var connection = {
         return promise;
     },
 
-    sendAjax: function (method, url, callbackOk, callbackErr, item) {
-        var promise = webix.promise.defer();
-
-        var p = JSON.stringify(item);
-
-        var c = {
-            error: function (text, data, xhr) {
-                if (xhr.status == 401) {
-                    if (connection.showSEM) {
-                        util.messages.showSessionExpiredError();
-                        connection.showSEM = false;
-                    }
-                    connection.reload();
-                }
-                try {
-                    callbackErr(text, data, xhr);
-                } catch (ex) {
-                }
-                util.preloader.dec();
-                promise.reject(false);
-            },
-            success: function (text, data, xhr) {
-                try {
-                    callbackOk(text, data, xhr);
-                } catch (ex) {
-                }
-                util.preloader.dec();
-                promise.resolve(true);
-            }
-
-        };
-
-        util.preloader.inc();
-        switch (method) {
-            case "GET":
-                webix.ajax().headers({
-                    "Content-type": "application/json"
-                }).get(url, c);
-                break;
-            case "DELETE":
-                webix.ajax().headers({
-                    "Content-type": "application/json"
-                }).del(url, c);
-                break;
-            case "POST":
-                webix.ajax().headers({
-                    "Content-type": "application/json"
-                }).post(url, p, c);
-                break;
-            case "PUT":
-                webix.ajax().headers({
-                    "Content-type": "application/json"
-                }).put(url, p, c);
-                break;
-        }
-        return promise;
-    },
 
     //attach triggers to datatables
     attachAjaxEvents: function (dtId, link, customInsert, preserveId, editValidationRules) {
@@ -239,7 +199,7 @@ var connection = {
                                 };
 
 
-                                connection.sendAjax("GET", url,
+                                webix.ajax(url,
                                     function (text, data, xhr) {
                                         if (text != "true") editError();
                                         else {

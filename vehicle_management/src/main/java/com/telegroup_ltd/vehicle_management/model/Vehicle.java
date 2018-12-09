@@ -11,7 +11,6 @@ public class Vehicle implements HasCompanyId, Deletable {
     private Integer id;
     private String manufacturer;
     private String model;
-    private String name;
     private String registration;
     private String description;
     private Byte deleted;
@@ -30,15 +29,6 @@ public class Vehicle implements HasCompanyId, Deletable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 64)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Basic
     @Column(name = "description", nullable = true, length = 255)
@@ -98,7 +88,6 @@ public class Vehicle implements HasCompanyId, Deletable {
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
                 ", model='" + model + '\'' +
@@ -152,11 +141,10 @@ public class Vehicle implements HasCompanyId, Deletable {
     public Vehicle(){
 
     }
-    public Vehicle(Integer id, String manufacturer, String model, String name, String registration, String description, Byte deleted, Integer companyId, Integer fuelTypeId, Integer locationId) {
+    public Vehicle(Integer id, String manufacturer, String model, String registration, String description, Byte deleted, Integer companyId, Integer fuelTypeId, Integer locationId) {
         this.id = id;
         this.manufacturer = manufacturer;
         this.model = model;
-        this.name = name;
         this.registration = registration;
         this.description = description;
         this.deleted = deleted;

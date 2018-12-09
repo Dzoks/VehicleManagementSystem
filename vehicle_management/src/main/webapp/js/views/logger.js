@@ -1,4 +1,4 @@
-var loggerView = {
+const loggerView = {
     panel: {
         id: "loggerPanel",
         adjust: true,
@@ -11,7 +11,7 @@ var loggerView = {
                     {
                         view: "label",
                         width: 400,
-                        template: "<span class='fa fa-history'/> Korisničke akcije"
+                        template: "<span class='fa fa-history'></span> Korisničke akcije"
                     },
                     {}
                 ]
@@ -130,7 +130,7 @@ var loggerView = {
     selectPanel: function () {
         $$("main").removeView(rightPanel);
         rightPanel = "loggerPanel";
-        var panelCopy = webix.copy(this.panel);
+        const panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
         if (userData.companyId) {
             $$("loggerDT").hideColumn("companyName");

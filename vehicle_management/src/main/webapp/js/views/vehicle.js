@@ -1,4 +1,4 @@
-var vehicleView = {
+const vehicleView = {
     panel: {
         id: "vehiclePanel",
         adjust: true,
@@ -87,18 +87,6 @@ var vehicleView = {
                         fillspace:true
                     },
                     {
-                        id:"name",
-                        header:[
-                            "Naziv",
-                            {
-                                content: "textFilter",
-                                fillspace: true,
-                                sort: "string"
-                            }
-                        ],
-                        fillspace:true
-                    },
-                    {
                         id:"description",
                         header:[
                             "Opis",
@@ -158,7 +146,7 @@ var vehicleView = {
         $$("mainMenu").select("vehicle");
         $$("main").removeView(rightPanel);
         rightPanel = "vehiclePanel";
-        var panelCopy = webix.copy(this.panel);
+        const panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
 
         if (locationId){
@@ -182,9 +170,9 @@ var vehicleView = {
             master: $$("vehicleDT"),
             on: {
                 onItemClick: function (id) {
-                    var context = this.getContext();
-                    var delBox = (webix.copy(commonViews.deleteConfirmSerbian("vozila", "vozilo")));
-                    delBox.callback = function (result) {
+                    const context = this.getContext();
+                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("vozila", "vozilo")));
+                    delBox.callback = result=> {
                         if (result) {
                             $$("vehicleDT").remove(context.id.row);
                         }
@@ -235,6 +223,37 @@ var vehicleView = {
                                 {
                                     rows:[
                                         {
+                                            id:"registration",
+                                            name:"registration",
+                                            label:"Registracijski broj:",
+                                            view:"text",
+                                            required:true,
+                                            invalidMessage:"Registracijski broj je obavezan!"
+                                        },
+                                        {
+                                            id: "fuelTypeId",
+                                            name: "fuelTypeId",
+                                            label: "Tip goriva:",
+                                            view: "richselect",
+                                            required: true,
+                                            invalidMessage: "Tip goriva je obavezan!"
+                                        },
+                                        {
+                                            id: "locationId",
+                                            name: "locationId",
+                                            view: "richselect",
+                                            label: "Lokacija:",
+                                            required: true,
+                                            invalidMessage: "Lokacija je obavezna!"
+                                        },
+                                    ]
+                                },
+                                {
+                                    gravity:0.05
+                                },
+                                {
+                                    rows:[
+                                        {
                                             id:"manufacturer",
                                             name:"manufacturer",
                                             view:"text",
@@ -252,49 +271,11 @@ var vehicleView = {
                                             invalidMessage:"Model je obavezan!"
                                         },
                                         {
-                                            id:"name",
-                                            name:"name",
-                                            view:"text",
-
-                                            label:"Naziv:",
-                                            required:true,
-                                            invalidMessage:"Naziv je obavezan!"
-                                        },
-                                        {
-                                            id:"registration",
-                                            name:"registration",
-                                            label:"Registracijski broj:",
-                                            view:"text",
-
-                                            required:true,
-                                            invalidMessage:"Registracijski broj je obavezan!"
-                                        },
-                                    ]
-                                },
-                                {
-                                    rows:[
-                                        {
                                             id: "description",
                                             name: "description",
                                             view: "textarea",
                                             label: "Opis:",
                                         },
-                                        {
-                                            id: "fuelTypeId",
-                                            name: "fuelTypeId",
-                                            label: "Tip goriva:",
-                                            view: "richselect",
-                                            required: true,
-                                            invalidMessage: "Tip goriva je obavezan!"
-                                        },
-                                        {
-                                            id: "locationId",
-                                            name: "locationId",
-                                            view: "richselect",
-                                            label: "Lokacija:",
-                                            required: true,
-                                            invalidMessage: "Lokacija je obavezna!"
-                                        }
                                     ]
                                 }
                             ]
@@ -320,10 +301,10 @@ var vehicleView = {
             webix.UIManager.setFocus("manufacturer");
             $$("fuelTypeId").define("options",dependency.fuelType);
             $$("fuelTypeId").refresh();
-            var locations=[];
-            webix.ajax().get("api/location").then(function (data) {
-                var array=data.json();
-                array.forEach(function (obj) {
+            const locations=[];
+            connection.sendAjax("GET","api/location").then(data=> {
+                const array=data.json();
+                array.forEach(obj=> {
                     locations.push({
                         id:obj.id,
                         value:obj.label
@@ -343,9 +324,9 @@ var vehicleView = {
     },
 
     addVehicle:function () {
-        var form=$$("addVehicleForm");
+        const form=$$("addVehicleForm");
         if (form.validate()){
-            var vehicle=form.getValues();
+            const vehicle=form.getValues();
             vehicle.companyId=userData.companyId;
             $$("vehicleDT").add(vehicle);
             util.dismissDialog('addVehicleDialog');

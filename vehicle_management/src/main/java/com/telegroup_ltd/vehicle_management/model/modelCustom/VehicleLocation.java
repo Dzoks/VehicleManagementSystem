@@ -12,13 +12,13 @@ public class VehicleLocation extends Vehicle {
         super();
     }
 
-    public VehicleLocation(Integer id, String manufacturer, String model, String name, String registration, String description, Byte deleted, Integer companyId, Integer fuelTypeId, Integer locationId, String locationName) {
-        super(id, manufacturer, model, name, registration, description, deleted, companyId, fuelTypeId, locationId);
+    public VehicleLocation(Integer id, String manufacturer, String model, String registration, String description, Byte deleted, Integer companyId, Integer fuelTypeId, Integer locationId, String locationName) {
+        super(id, manufacturer, model, registration, description, deleted, companyId, fuelTypeId, locationId);
         this.locationName = locationName;
     }
 
     public VehicleLocation(Vehicle vehicle,String locationName){
-        super(vehicle.getId(),vehicle.getManufacturer(),vehicle.getModel(),vehicle.getName(),vehicle.getRegistration(),
+        super(vehicle.getId(),vehicle.getManufacturer(),vehicle.getModel(),vehicle.getRegistration(),
                 vehicle.getDescription(),vehicle.getDeleted(),vehicle.getCompanyId(),vehicle.getFuelTypeId(),vehicle.getLocationId());
         this.locationName=locationName;
     }
