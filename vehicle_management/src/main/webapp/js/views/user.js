@@ -166,6 +166,11 @@ let userView={
             width: "200",
             data: [
                 {
+                  id:"edit",
+                  value:"Izmjenite",
+                  icon:"pencil"
+                },
+                {
                     id: "delete",
                     value: "Obrišite",
                     icon: "trash"
@@ -175,13 +180,21 @@ let userView={
             on: {
                 onItemClick: function (id) {
                     const context = this.getContext();
-                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
-                    delBox.callback = result=> {
-                        if (result) {
-                            $$("userDT").remove(context.id.row);
-                        }
-                    };
-                    webix.confirm(delBox);
+                    switch(id){
+                        case "edit":
+                            profileView.showProfilePopup($$("userDT").getItem(context.id));
+                            break;
+
+                        case "delete":
+                            const delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
+                            delBox.callback = result=> {
+                                if (result) {
+                                    $$("userDT").remove(context.id.row);
+                                }
+                            };
+                            webix.confirm(delBox);
+                            break;
+                    }
                 }
             }
         });
@@ -295,7 +308,6 @@ let userView={
                 $$("locationId").define("options",locations);
                 $$("locationId").refresh();
             });
-
         }
     },
     
@@ -308,5 +320,7 @@ let userView={
             $$("userDT").add(user);
             util.dismissDialog('addUserDialog');
         }
-    }
+    },
+
+
 };

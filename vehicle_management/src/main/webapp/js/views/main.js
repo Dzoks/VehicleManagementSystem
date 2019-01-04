@@ -34,6 +34,11 @@ const mainLayout = {
                                     icon: "cog",
                                     submenu: [
                                         {
+                                            id:"2",
+                                            icon:"user",
+                                            value:"Profil"
+                                        },
+                                        {
                                             id: "1",
                                             icon: "sign-out",
                                             value: "Odjavite se",
@@ -44,9 +49,13 @@ const mainLayout = {
                             on: {
                                 onMenuItemClick: function (id) {
                                     switch (id) {
+                                        case "2":
+                                            profileView.showProfilePopup();
+                                            break;
                                         case "1":
                                             logout();
                                             break;
+
                                     }
                                 }
                             }
@@ -381,3 +390,4 @@ const userDialog={
 
     }
 };
+

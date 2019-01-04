@@ -5,10 +5,16 @@ import com.telegroup_ltd.vehicle_management.common.exception.ForbiddenException;
 import com.telegroup_ltd.vehicle_management.controller.genericController.GenericHasCompanyIdAndDeletableController;
 import com.telegroup_ltd.vehicle_management.model.Expense;
 import com.telegroup_ltd.vehicle_management.model.Reservation;
+import com.telegroup_ltd.vehicle_management.model.User;
+import com.telegroup_ltd.vehicle_management.model.Vehicle;
 import com.telegroup_ltd.vehicle_management.model.modelCustom.ReservationExpense;
 import com.telegroup_ltd.vehicle_management.repository.ExpenseRepository;
 import com.telegroup_ltd.vehicle_management.repository.ReservationRepository;
+import com.telegroup_ltd.vehicle_management.repository.UserRepository;
+import com.telegroup_ltd.vehicle_management.repository.VehicleRepository;
+import com.telegroup_ltd.vehicle_management.util.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +35,27 @@ public class ReservationController extends GenericHasCompanyIdAndDeletableContro
 
     private final ExpenseController expenseController;
 
+
+    private final VehicleRepository vehicleRepository;
+    private final UserRepository userRepository;
+
+    private final Notification notification;
+
+    @Value(value = "${status.active}")
+    private Integer statusActive;
+    @Value(value = "${notification.all}")
+    private Integer notificationAll;
+    @Value(value = "${notification.all}")
+    private Integer notificationLocation;
+
     @Autowired
-    public ReservationController(JpaRepository<Reservation, Integer> repo, ReservationRepository reservationRepository, ExpenseController expenseController) {
+    public ReservationController(JpaRepository<Reservation, Integer> repo, ReservationRepository reservationRepository, ExpenseController expenseController, UserRepository userRepository, VehicleRepository vehicleRepository, Notification notification) {
         super(repo);
         this.reservationRepository = reservationRepository;
         this.expenseController = expenseController;
+        this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
+        this.notification = notification;
     }
 
 
@@ -76,6 +98,15 @@ public class ReservationController extends GenericHasCompanyIdAndDeletableContro
             for (Expense expense:reservationExpense.getExpenses()){
                 expense.setReservationId(reservation.getId());
                 expenseController.insert(expense);
+            }
+            Vehicle vehicle=vehicleRepository.findById(reservation.getVehicleId()).orElse(null);
+            List<User> locationUsers=userRepository.getAllByCompanyIdAndStatusIdAndNotificationTypeIdAndLocationId(userBean.getUser().getCompanyId(),statusActive,notificationLocation,vehicle.getLocationId());
+            List<User> locationCompany=userRepository.getAllByCompanyIdAndStatusIdAndNotificationTypeIdAndLocationIdNot(userBean.getUser().getCompanyId(),statusActive,notificationAll,vehicle.getLocationId());
+            for (User user:locationUsers){
+                notification.sendReservationMessage(user.getEmail(),reservation,vehicle);
+            }
+            for (User user:locationCompany){
+                notification.sendReservationMessage(user.getEmail(),reservation,vehicle);
             }
             return reservation;
         }
@@ -124,6 +155,15 @@ public class ReservationController extends GenericHasCompanyIdAndDeletableContro
         List<Expense> expenses=expenseController.getByVehicleAndReservation(reservation.getVehicleId(),id);
         for (Expense expense:expenses){
             expenseController.delete(expense.getId());
+        }
+        Vehicle vehicle=vehicleRepository.findById(reservation.getVehicleId()).orElse(null);
+        List<User> locationUsers=userRepository.getAllByCompanyIdAndStatusIdAndNotificationTypeIdAndLocationId(userBean.getUser().getCompanyId(),statusActive,notificationLocation,vehicle.getLocationId());
+        List<User> locationCompany=userRepository.getAllByCompanyIdAndStatusIdAndNotificationTypeIdAndLocationIdNot(userBean.getUser().getCompanyId(),statusActive,notificationAll,vehicle.getLocationId());
+        for (User user:locationUsers){
+            notification.sendReservationMessage(user.getEmail(),reservation,vehicle);
+        }
+        for (User user:locationCompany){
+            notification.sendReservationMessage(user.getEmail(),reservation,vehicle);
         }
         return super.delete(id);
     }

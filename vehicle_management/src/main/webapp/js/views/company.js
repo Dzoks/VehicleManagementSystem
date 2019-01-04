@@ -304,6 +304,11 @@ const companyView = {
             width: "200",
             data: [
                 {
+                    id:"edit",
+                    value:"Izmjenite",
+                    icon:"pencil"
+                },
+                {
                     id: "delete",
                     value: "Obrišite",
                     icon: "trash"
@@ -313,13 +318,21 @@ const companyView = {
             on: {
                 onItemClick: function (id) {
                     const context = this.getContext();
-                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
-                    delBox.callback = result=> {
-                        if (result) {
-                            $$("userDT").remove(context.id.row);
-                        }
-                    };
-                    webix.confirm(delBox);
+                    switch(id){
+                        case "edit":
+                            profileView.showProfilePopup($$("userDT").getItem(context.id));
+                            break;
+
+                        case "delete":
+                            const delBox = (webix.copy(commonViews.deleteConfirmSerbian("korisnika", "korisnika")));
+                            delBox.callback = result=> {
+                                if (result) {
+                                    $$("userDT").remove(context.id.row);
+                                }
+                            };
+                            webix.confirm(delBox);
+                            break;
+                    }
                 }
             }
         });

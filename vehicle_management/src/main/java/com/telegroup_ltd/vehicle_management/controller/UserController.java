@@ -41,6 +41,9 @@ public class UserController extends GenericHasCompanyIdController<User, Integer>
     private Integer statusInactive;
     @Value(value = "${role.system_admin}")
     private Integer roleSystemAdministrator;
+
+    @Value(value = "${role.user}")
+    private Integer roleUser;
     @Value(value = "${notification.all}")
     private Integer notificationAll;
     @Value(value = "${badRequest.delete}")
@@ -174,5 +177,17 @@ public class UserController extends GenericHasCompanyIdController<User, Integer>
 
     }
 
-
+    @Override
+    @Transactional
+    public String update(@PathVariable Integer id,@RequestBody User object) throws BadRequestException, ForbiddenException {
+        int roleId=userBean.getUser().getRoleId();
+        if (!id.equals(userBean.getUser().getId())&&roleId==roleUser)
+            throw new ForbiddenException("Forbidden!");
+        User userDb=findById(id);
+        userDb.setFirstName(object.getFirstName());
+        userDb.setLastName(object.getLastName());
+        userDb.setLocationId(object.getLocationId());
+        userDb.setNotificationTypeId(object.getNotificationTypeId());
+        return super.update(id, userDb);
+    }
 }

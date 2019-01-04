@@ -18,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, Integer>, UserReposi
 
     List<User>  getAllByUsername(String username);
 
+    List<User> getAllByCompanyIdAndStatusIdAndNotificationTypeIdAndLocationId(Integer companyId,Integer statusId,Integer notificationTypeId,Integer locationId);
+    List<User> getAllByCompanyIdAndStatusIdAndNotificationTypeIdAndLocationIdNot(Integer companyId,Integer statusId,Integer notificationTypeId,Integer locationId);
+
+
 }
