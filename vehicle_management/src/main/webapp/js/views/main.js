@@ -96,7 +96,7 @@ const loginLayout = {
     height: "auto",
     rows: [
         {
-            height: 50
+            gravity:0.1
         },
         {
             cols: [
@@ -161,7 +161,11 @@ const loginLayout = {
                     ]
                 },
                 {}
+
             ]
+        },
+        {
+            gravity:0.1
         }
     ]
 };
@@ -199,7 +203,6 @@ const registrationLayout = {
     userId:null,
     rows: [
         {
-            height: 50
         },
         {
             cols: [
@@ -236,7 +239,7 @@ const registrationLayout = {
                                     name: "username",
                                     view: "text",
                                     label: "Korisničko ime:",
-                                    invalidMessage: "Korisničke ime je obavezno!",
+                                    invalidMessage: "Korisničko ime je obavezno!",
                                     required: true
                                 },
                                 {
@@ -343,7 +346,7 @@ const userDialog={
                             name: "username",
                             view: "text",
                             label: "Korisničko ime:",
-                            invalidMessage: "Korisničke ime je obavezno!",
+                            invalidMessage: "Korisničko ime je obavezno!",
                             required: true
                         },
                         {

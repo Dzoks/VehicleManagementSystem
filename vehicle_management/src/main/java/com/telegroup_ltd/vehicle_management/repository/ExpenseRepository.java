@@ -4,5 +4,11 @@ import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyIdAndDel
 import com.telegroup_ltd.vehicle_management.model.Expense;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ExpenseRepository extends JpaRepository<Expense, Integer>, HasCompanyIdAndDeletableRepository<Expense> {
+
+
+    List<Expense> getAllByVehicleIdAndCompanyIdAndDeletedOrderByDateDesc(Integer vehicleId,Integer companyId,Byte deleted);
+    List<Expense> getAllByVehicleIdAndCompanyIdAndReservationIdAndDeletedOrderByDateDesc(Integer vehicleId,Integer companyId,Integer reservationId,Byte deleted);
 }

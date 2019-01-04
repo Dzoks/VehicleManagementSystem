@@ -1,5 +1,6 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
 import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
 
@@ -18,6 +19,7 @@ public class Expense implements Deletable, HasCompanyId {
     private Integer companyId;
     private Integer vehicleId;
     private Timestamp date;
+    private Integer reservationId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -92,12 +94,24 @@ public class Expense implements Deletable, HasCompanyId {
 
     @Basic
     @Column(name = "date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm", timezone = "Europe/Belgrade")
     public Timestamp getDate() {
         return date;
     }
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+
+    @Basic
+    @Column(name = "reservation_id", nullable = true)
+    public Integer getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
     }
 
     @Override

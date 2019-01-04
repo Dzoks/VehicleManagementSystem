@@ -492,5 +492,14 @@ var util = {
         bottomPadding: 18
     },
 
+    dateToStrFormat: webix.Date.dateToStr("%d.%m.%Y. %H:%i"),
+    strToDateFormat: webix.Date.strToDate("%d.%m.%Y. %H:%i"),
 
+};
+
+webix.editors.$popup = {
+    date:{
+        view:"popup",
+        body:{ view:"calendar", timepicker:true, icons:true}
+    }
 };

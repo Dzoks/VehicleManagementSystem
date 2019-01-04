@@ -39,6 +39,9 @@ const vehicleView = {
                 on: {
                     onBeforeContextMenu: function (item) {
                         this.select(item.row);
+                    },
+                    onItemDblClick:function(id){
+                        vehicleDetailsView.selectPanel(id);
                     }
                 },
                 columns: [
@@ -298,7 +301,7 @@ const vehicleView = {
     showAddVehicleDialog:function () {
         if (util.popupIsntAlreadyOpened("addVehicleDialog")) {
             webix.ui(webix.copy(vehicleView.addVehicleDialog)).show();
-            webix.UIManager.setFocus("manufacturer");
+            webix.UIManager.setFocus("registration");
             $$("fuelTypeId").define("options",dependency.fuelType);
             $$("fuelTypeId").refresh();
             const locations=[];
@@ -309,7 +312,6 @@ const vehicleView = {
                         id:obj.id,
                         value:obj.label
                     });
-
                 });
                 $$("locationId").define("options",locations);
                 $$("locationId").refresh();

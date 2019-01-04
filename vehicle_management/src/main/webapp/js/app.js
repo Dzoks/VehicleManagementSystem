@@ -65,8 +65,11 @@ const menuActions = function (id) {
 
 const init = function () {
     if (!webix.env.touch && webix.ui.scrollSize) webix.CustomScroll.init();
+    webix.i18n.parseFormat = ("%d.%m.%Y.");
+
     webix.i18n.setLocale("sr-SP");
     webix.Date.startOnMonday = true;
+
     webix.ui(panel);
     panel = $$("empty");
     const urlQuery=window.location.search;

@@ -1,5 +1,7 @@
 package com.telegroup_ltd.vehicle_management.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telegroup_ltd.vehicle_management.common.interfaces.Deletable;
 import com.telegroup_ltd.vehicle_management.common.interfaces.HasCompanyId;
 
@@ -32,6 +34,9 @@ public class Reservation implements Deletable, HasCompanyId {
     }
 
     @Basic
+    @JsonProperty(value = "start_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm", timezone = "Europe/Belgrade")
+
     @Column(name = "start_date", nullable = false)
     public Timestamp getStartDate() {
         return startDate;
@@ -42,6 +47,8 @@ public class Reservation implements Deletable, HasCompanyId {
     }
 
     @Basic
+    @JsonProperty(value = "end_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm", timezone = "Europe/Belgrade")
     @Column(name = "end_date", nullable = false)
     public Timestamp getEndDate() {
         return endDate;
@@ -52,7 +59,7 @@ public class Reservation implements Deletable, HasCompanyId {
     }
 
     @Basic
-    @Column(name = "start_mileage", nullable = false)
+    @Column(name = "start_mileage", nullable = true)
     public Integer getStartMileage() {
         return startMileage;
     }
@@ -73,6 +80,7 @@ public class Reservation implements Deletable, HasCompanyId {
 
     @Basic
     @Column(name = "direction", nullable = false, length = 512)
+    @JsonProperty(value = "text")
     public String getDirection() {
         return direction;
     }

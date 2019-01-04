@@ -68,6 +68,15 @@ public class VehicleController extends GenericHasCompanyIdAndDeletableController
         return new VehicleLocation(inserted,location);
     }
 
+    @Override
+    @Transactional
+    public String update(@PathVariable Integer id,@RequestBody Vehicle object) throws BadRequestException, ForbiddenException {
+        Vehicle sameName=repository.findByRegistrationAndDeleted(object.getRegistration(),(byte)0);
+        if (sameName!=null)
+            throw new BadRequestException(registrationNotUnique);
+        return super.update(id, object);
+    }
+
     @RequestMapping("/byLocation/{id}")
     public List<Vehicle> getByLocation(@PathVariable Integer id){
         return repository.getAllByLocationIdAndCompanyIdAndDeletedIs(id,userBean.getUser().getCompanyId(),(byte)0);
