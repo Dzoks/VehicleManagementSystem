@@ -15,6 +15,7 @@ const vehicleView = {
                     },
                     {},
                     {
+                        id:"addVehicleBtn",
                         view:"button",
                         type: "iconButton",
                         label: "Dodajte",
@@ -159,33 +160,37 @@ const vehicleView = {
             $$("vehicleDT").load("api/vehicle/byLocation/"+locationId);
             $$("vehicleDT").refresh();
         }
-        webix.ui({
-            view: "contextmenu",
-            id: "userContextMenu",
-            width: "200",
-            data: [
-                {
-                    id: "delete",
-                    value: "Obrišite",
-                    icon: "trash"
+        if (userData.roleId===role.user){
+            $$("addVehicleBtn").hide();
+        }else{
+            webix.ui({
+                view: "contextmenu",
+                id: "userContextMenu",
+                width: "200",
+                data: [
+                    {
+                        id: "delete",
+                        value: "Obrišite",
+                        icon: "trash"
+                    }
+                ],
+                master: $$("vehicleDT"),
+                on: {
+                    onItemClick: function (id) {
+                        const context = this.getContext();
+                        const delBox = (webix.copy(commonViews.deleteConfirmSerbian("vozila", "vozilo")));
+                        delBox.callback = result=> {
+                            if (result) {
+                                $$("vehicleDT").remove(context.id.row);
+                            }
+                        };
+                        webix.confirm(delBox);
+                    }
                 }
-            ],
-            master: $$("vehicleDT"),
-            on: {
-                onItemClick: function (id) {
-                    const context = this.getContext();
-                    const delBox = (webix.copy(commonViews.deleteConfirmSerbian("vozila", "vozilo")));
-                    delBox.callback = result=> {
-                        if (result) {
-                            $$("vehicleDT").remove(context.id.row);
-                        }
-                    };
-                    webix.confirm(delBox);
-                }
-            }
-        });
+            });
+            connection.attachAjaxEvents("vehicleDT","api/vehicle");
+        }
 
-        connection.attachAjaxEvents("vehicleDT","api/vehicle");
     },
 
     addVehicleDialog:{

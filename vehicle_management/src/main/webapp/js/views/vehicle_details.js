@@ -129,6 +129,7 @@ const vehicleDetailsView={
                     },
                     {
                         view:"tabview",
+                        id:"tabView",
                         gravity:0.7,
                         cells:[
                             {
@@ -152,8 +153,11 @@ const vehicleDetailsView={
                                 }
                             },
                             {
+                                id:"expenseTab",
                                 header:"Troškovi",
                                 body:{
+                                    id:"expenseTab",
+
                                     rows:[
                                         {
                                             view: "toolbar",
@@ -279,6 +283,7 @@ const vehicleDetailsView={
         $$("main").addView(webix.copy(panelCopy));
         $$("fuelTypeId").define("options",dependency.fuelType);
         $$("fuelTypeId").refresh();
+
         webix.ui({
             view: "contextmenu",
             id: "expenseContextMenu",
@@ -347,7 +352,13 @@ const vehicleDetailsView={
             const form=$$("vehicleDetailsForm");
             vehicleDetailsView.vehicle = vehicle;
             form.setValues(vehicle);
-            $$("expenseDT").load("api/expense/byVehicle/"+vehicle.id);
+            if (userData.roleId===role.user){
+                $$("tabView").removeView('expenseTab');
+                $$("editVehicleBtn").hide();
+            }else{
+                $$("expenseDT").load("api/expense/byVehicle/"+vehicle.id);
+
+            }
             vehicleDetailsView.loadScheduler(vehicle.id);
 
         }).fail(err=>{

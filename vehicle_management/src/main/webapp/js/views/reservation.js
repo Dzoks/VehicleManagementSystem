@@ -339,6 +339,7 @@ const reservationView={
                 $$("endMileage").hide();
                 $$("enableEditBtn").hide();
                 $$("deleteBtn").hide();
+                $$("editReservationBtn").hide();
                 reservationView.expensesToDelete=[];
         }
     },
@@ -689,6 +690,4 @@ const reservationView={
             util.messages.showMessage("Uspješna izmjena!");
         }
     },
-
-    // TODO Backend validacija za dodavanje i izmjenu
 };

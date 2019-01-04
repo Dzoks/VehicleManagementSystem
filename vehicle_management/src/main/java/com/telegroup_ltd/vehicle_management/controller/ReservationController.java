@@ -71,17 +71,23 @@ public class ReservationController extends GenericHasCompanyIdAndDeletableContro
     @RequestMapping(value = "/custom",method = RequestMethod.POST)
     @Transactional
     public Reservation addCustom(@RequestBody ReservationExpense reservationExpense) throws BadRequestException, ForbiddenException {
-        Reservation reservation=super.insert(reservationExpense.getReservation());
-        for (Expense expense:reservationExpense.getExpenses()){
-            expense.setReservationId(reservation.getId());
-            expenseController.insert(expense);
+        if (isReservationIntervalValid(reservationExpense.getReservation())){
+            Reservation reservation=super.insert(reservationExpense.getReservation());
+            for (Expense expense:reservationExpense.getExpenses()){
+                expense.setReservationId(reservation.getId());
+                expenseController.insert(expense);
+            }
+            return reservation;
         }
-        return reservation;
+        throw new BadRequestException("Rezervacija se preklapa sa nekom drugom rezervacijom!");
+
     }
 
     @RequestMapping(value = "/custom/{reservationId}",method = RequestMethod.PUT)
     @Transactional
     public Reservation updateCustom(@RequestBody ReservationExpense reservationExpense,@PathVariable Integer reservationId) throws BadRequestException, ForbiddenException {
+        if (!isReservationIntervalValid(reservationExpense.getReservation()))
+            throw new BadRequestException("Rezervacija se preklapa sa nekom drugom rezervacijom!");
         if (super.update(reservationId,reservationExpense.getReservation()).equals("Success")){
 
             for (Expense expense : reservationExpense.getExpenses()) {
@@ -120,5 +126,15 @@ public class ReservationController extends GenericHasCompanyIdAndDeletableContro
             expenseController.delete(expense.getId());
         }
         return super.delete(id);
+    }
+
+    private boolean isReservationIntervalValid(Reservation reservation){
+        if (reservationRepository.countAllByVehicleIdAndCompanyIdAndDeletedAndStartDateBeforeAndEndDateAfter(reservation.getVehicleId(),reservation.getCompanyId(),(byte)0,reservation.getStartDate(),reservation.getEndDate())>0)
+            return false;
+        if (reservationRepository.countAllByVehicleIdAndCompanyIdAndDeletedAndStartDateBetween(reservation.getVehicleId(),reservation.getCompanyId(),(byte)0,reservation.getStartDate(),reservation.getEndDate())>0)
+            return false;
+        if (reservationRepository.countAllByVehicleIdAndCompanyIdAndDeletedAndEndDateBetween(reservation.getVehicleId(),reservation.getCompanyId(),(byte)0,reservation.getStartDate(),reservation.getEndDate())>0)
+            return false;
+        return true;
     }
 }

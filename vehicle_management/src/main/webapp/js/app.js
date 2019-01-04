@@ -43,6 +43,19 @@ const menyCompanyAdmin=[
     }
 ];
 
+const menuCompanyUser=[
+    {
+        id:"dashboard",
+        icon:"home",
+        value:"Početna"
+    },
+    {
+        id:"vehicle",
+        icon:"car",
+        value:"Vozila"
+    },
+];
+
 const menuActions = function (id) {
     switch (id) {
         case "logger":
@@ -155,6 +168,9 @@ const showApp = function () {
             break;
         case role.companyAdministrator:
             localMenuData=menyCompanyAdmin;
+            break;
+        case role.user:
+            localMenuData=menuCompanyUser;
             break;
     }
     $$("mainMenu").define("data", localMenuData);

@@ -17,7 +17,7 @@ const locationView={
                     },
                     {},
                     {
-                        id: "addUserBtn",
+                        id: "addLocationBtn",
                         view: "button",
                         type: "iconButton",
                         label: "Dodajte",
@@ -46,20 +46,20 @@ const locationView={
                         map.fitBounds(bounds);
                     },
                     onItemClick:function (id, marker) {
-                        let contentString=marker.label;
-                        contentString+="<br>";
-                        contentString+="<a href='#' onclick='vehicleView.selectPanel("+id+")' >Vozila</a>";
-                        contentString+="<br>";
-                        contentString+="<a href='#' onclick='locationView.setEdit("+id+");'>Izmjenite</a>";
-                        contentString+="<br>";
-                        contentString+="<a href='#' onclick='locationView.deleteLocation("+id+")'>Obrišite</a>"
-                        const infowindow = new google.maps.InfoWindow({
-                            content: contentString,
-                        });
-                        infowindow.open($$("locationMap").getMap().val, marker);
+                        if (userData.roleId===role.companyAdministrator){
+                            let contentString=marker.label;
+                            contentString+="<br>";
+                            contentString+="<a href='#' onclick='vehicleView.selectPanel("+id+")' >Vozila</a>";
+                            contentString+="<br>";
+                            contentString+="<a href='#' onclick='locationView.setEdit("+id+");'>Izmjenite</a>";
+                            contentString+="<br>";
+                            contentString+="<a href='#' onclick='locationView.deleteLocation("+id+")'>Obrišite</a>"
+                            const infowindow = new google.maps.InfoWindow({
+                                content: contentString,
+                            });
+                            infowindow.open($$("locationMap").getMap().val, marker);
 
-
-
+                        }
                     }
                 },
                 zoom:8,
@@ -243,6 +243,9 @@ const locationView={
         rightPanel = "locationPanel";
         const panelCopy = webix.copy(this.panel);
         $$("main").addView(webix.copy(panelCopy));
+        if (userData.roleId===role.user){
+            $$("addLocationBtn").hide();
+        }
         $$("locationMap").attachEvent("onAfterDrop", function(id, item){
             const geocoder = new google.maps.Geocoder();
             const marker=$$("locationMap").getItem(id);
