@@ -20,7 +20,18 @@ const mainLayout = {
                             id: "appNameLabel",
                             view: "label",
                             css: "appNameLabel",
+                            width:250,
                             label: "Vehicle Management System"
+                        },
+                        {
+                            id: "showReportBtn",
+                            view: "button",
+                            hidden:true,
+                            type: "iconButton",
+                            label: "Izvještaji",
+                            icon: "bar-chart",
+                            autowidth:true,
+                            click: 'reportView.showGlobalReportPopup',
                         },
                         {},
                         {
@@ -30,7 +41,8 @@ const mainLayout = {
                             openAction: "click",
                             data: [
                                 {
-                                    value: "<span class='fa fa-angle-down'/>",
+                                    height:100,
+                                    value: "<span  class='fa fa-angle-down'/>",
                                     icon: "cog",
                                     submenu: [
                                         {

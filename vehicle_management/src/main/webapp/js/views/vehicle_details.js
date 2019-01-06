@@ -167,6 +167,14 @@ const vehicleDetailsView={
                                                 {
                                                 },
                                                 {
+                                                    view: "button",
+                                                    type: "iconButton",
+                                                    label: "Izvještaji",
+                                                    icon: "bar-chart",
+                                                    click: 'reportView.showVehicleReportPopup',
+                                                    autowidth: true
+                                                },
+                                                {
                                                     id: "addExpense",
                                                     view: "button",
                                                     type: "iconButton",
@@ -616,5 +624,7 @@ const vehicleDetailsView={
             });
         }
     },
+
+
 
 };

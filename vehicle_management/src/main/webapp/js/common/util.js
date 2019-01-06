@@ -495,6 +495,31 @@ var util = {
     dateToStrFormat: webix.Date.dateToStr("%d.%m.%Y. %H:%i"),
     strToDateFormat: webix.Date.strToDate("%d.%m.%Y. %H:%i"),
 
+    getWeekStartAndEnd(date){
+        const firstday = new Date(date.setDate(date.getDate() - date.getDay()+1));
+        const lastday = new Date(date.setDate(date.getDate() - date.getDay()+7));
+        firstday.setHours(0,0,0);
+        lastday.setHours(23,59,59);
+        return {
+            start:firstday,
+            end:lastday
+        }
+    },
+
+    getMonthStartAndEnd(date){
+        return {
+            start:new Date(date.getFullYear(),date.getMonth(),1,0,0,0),
+            end:new Date(date.getFullYear(),date.getMonth()+1,0,23,59,59)
+        }
+    },
+
+    getYearStartAndEnd(date){
+        return {
+            start:new Date(date.getFullYear(),0,1,0,0,0),
+            end:new Date(date.getFullYear(),11,31,23,59,59)
+        }
+    }
+
 };
 
 webix.editors.$popup = {

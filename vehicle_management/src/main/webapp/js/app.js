@@ -40,7 +40,8 @@ const menyCompanyAdmin=[
         id:"user",
         icon:"user",
         value:"Korisnici"
-    }
+    },
+
 ];
 
 const menuCompanyUser=[
@@ -73,6 +74,7 @@ const menuActions = function (id) {
         case "user":
             userView.selectPanel();
             break;
+
     }
 };
 
@@ -168,6 +170,7 @@ const showApp = function () {
             break;
         case role.companyAdministrator:
             localMenuData=menyCompanyAdmin;
+            $$("showReportBtn").show();
             break;
         case role.user:
             localMenuData=menuCompanyUser;
