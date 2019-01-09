@@ -72,7 +72,7 @@ public class VehicleController extends GenericHasCompanyIdAndDeletableController
     @Transactional
     public String update(@PathVariable Integer id,@RequestBody Vehicle object) throws BadRequestException, ForbiddenException {
         Vehicle sameName=repository.findByRegistrationAndDeleted(object.getRegistration(),(byte)0);
-        if (sameName!=null)
+        if (sameName!=null && !sameName.getId().equals(id)    )
             throw new BadRequestException(registrationNotUnique);
         return super.update(id, object);
     }

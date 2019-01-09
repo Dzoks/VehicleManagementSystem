@@ -28,7 +28,7 @@ const profileView={
                     id: "profileForm",
                     view: "form",
                     elementsConfig: {
-                        labelWidth: 100,
+                        labelWidth: 120,
                         bottomPadding: 18
                     },
                     elements: [

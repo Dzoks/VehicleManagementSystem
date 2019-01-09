@@ -333,8 +333,7 @@ const vehicleView = {
     addVehicle:function () {
         const form=$$("addVehicleForm");
         if (form.validate()){
-            const vehicle=form.getValues();
-            vehicle.companyId=userData.companyId;
+            const vehicle={...form.getValues(),deleted:0,companyId:userData.companyId};
             $$("vehicleDT").add(vehicle);
             util.dismissDialog('addVehicleDialog');
         }

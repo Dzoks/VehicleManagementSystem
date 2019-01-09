@@ -5,11 +5,16 @@ import com.telegroup_ltd.vehicle_management.controller.genericController.Generic
 import com.telegroup_ltd.vehicle_management.model.Expense;
 import com.telegroup_ltd.vehicle_management.model.ExpenseType;
 import com.telegroup_ltd.vehicle_management.model.Reservation;
+import com.telegroup_ltd.vehicle_management.model.modelCustom.Report;
 import com.telegroup_ltd.vehicle_management.repository.ExpenseRepository;
+import com.telegroup_ltd.vehicle_management.util.ReportGenerator;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +27,14 @@ public class ExpenseController extends GenericHasCompanyIdAndDeletableController
 
     private final ExpenseTypeController expenseTypeController;
 
+    private final ReportGenerator reportGenerator;
+
     @Autowired
-    public ExpenseController(ExpenseRepository repo, ExpenseTypeController expenseTypeController) {
+    public ExpenseController(ExpenseRepository repo, ExpenseTypeController expenseTypeController, ReportGenerator reportGenerator) {
         super(repo);
         repository = repo;
         this.expenseTypeController = expenseTypeController;
+        this.reportGenerator = reportGenerator;
     }
 
 
@@ -66,6 +74,16 @@ public class ExpenseController extends GenericHasCompanyIdAndDeletableController
             expenses.add(expense);
         }
         return expenses;
+    }
+
+
+
+    @RequestMapping(value = "/monthReport",method = RequestMethod.POST)
+    public Report getFile(@RequestBody Reservation report) throws IOException, JRException {
+        Report download=new Report();
+        download.setName("izvjestaj."+report.getDirection());
+        download.setData(reportGenerator.generateReport(report.getDirection(),userBean.getUser().getCompanyId(),report.getStartDate(),report.getEndDate()));
+        return download;
     }
 
 }

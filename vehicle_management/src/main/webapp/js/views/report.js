@@ -230,9 +230,14 @@ const reportView={
             start_date:util.dateToStrFormat(calculatedPeriod.start),
             end_date:util.dateToStrFormat(calculatedPeriod.end)
         };
+
+        connection.sendAjax("POST","api/expense/monthReport",object).then(res=>{
+            const file=res.json();
+            const blob = util.b64toBlob(file.data);
+            saveFileAs(blob, file.name);
+        }).fail(err=>console.log(err));
     }
 
     //TODO kraj sedmice util
-    //TODO JASPER
 
 };

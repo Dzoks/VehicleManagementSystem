@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="32c6d8b0-7019-4d53-bc10-2d96e7d5b172">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MariaDB"/>
+	<parameter name="Month" class="java.lang.String"/>
+	<parameter name="CompanyId" class="java.lang.Integer"/>
+	<parameter name="StartDate" class="java.sql.Timestamp"/>
+	<parameter name="EndDate" class="java.sql.Timestamp"/>
+	<queryString language="SQL">
+		<![CDATA[select manufacturer,model,registration,
+(select COALESCE(sum(value),0) from expense e where deleted=false and vehicle_id=v.id and expense_type_id=1 and e.date between $P{StartDate} and $P{EndDate}) as fuel,
+(select COALESCE(sum(value),0) from expense e where deleted=false and vehicle_id=v.id and expense_type_id=2 and e.date between $P{StartDate} and $P{EndDate}) as service,
+(select COALESCE(sum(value),0) from expense e where deleted=false and vehicle_id=v.id and expense_type_id=3 and e.date between $P{StartDate} and $P{EndDate}) as other
+from vehicle v where company_id=$P{CompanyId} and deleted=false]]>
+	</queryString>
+	<field name="manufacturer" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="manufacturer"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vehicle"/>
+	</field>
+	<field name="model" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="model"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vehicle"/>
+	</field>
+	<field name="registration" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="registration"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vehicle"/>
+	</field>
+	<field name="fuel" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="fuel"/>
+	</field>
+	<field name="service" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="service"/>
+	</field>
+	<field name="other" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="other"/>
+	</field>
+	<group name="manufacturer">
+		<groupExpression><![CDATA[$F{manufacturer}]]></groupExpression>
+	</group>
+	<group name="model">
+		<groupExpression><![CDATA[$F{model}]]></groupExpression>
+	</group>
+	<group name="registration">
+		<groupExpression><![CDATA[$F{registration}]]></groupExpression>
+	</group>
+	<group name="fuel">
+		<groupExpression><![CDATA[$F{fuel}]]></groupExpression>
+	</group>
+	<group name="service">
+		<groupExpression><![CDATA[$F{service}]]></groupExpression>
+	</group>
+	<group name="other">
+		<groupExpression><![CDATA[$F{other}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-10" y="13" width="565" height="66" backcolor="#EF7900" uuid="3ad1658a-1407-4ae2-b907-4e916ebf5762"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="24" width="350" height="30" uuid="b31f5709-3ce8-4cc7-b055-abc4fd5a6ecb"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[MJESECNI PREGLED TROSKOVA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="350" y="24" width="180" height="30" uuid="e590248d-2ea7-4cd6-a39c-b520e163dcf8"/>
+				<textElement textAlignment="Right">
+					<font size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Month}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout"/>
+			<frame>
+				<reportElement x="-10" y="0" width="565" height="20" uuid="df7cc87d-e8de-4aa2-9b4a-39b4e9325bde"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<rectangle>
+					<reportElement x="0" y="0" width="565" height="20" backcolor="#0D3D7D" uuid="b5c5a099-b888-4189-89c2-0af8e4019464"/>
+				</rectangle>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="568ad056-06a7-4f9d-aa50-21774d235882">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5fcbcb9c-c6d4-4d7d-88a5-39b5fd958911"/>
+				</reportElement>
+				<text><![CDATA[Proizvodjac]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="20" uuid="dc8b1079-5340-4c62-9bba-b02d820e42ec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eafca758-e11f-468d-bab3-8eb781e619ee"/>
+				</reportElement>
+				<text><![CDATA[Model]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="20" uuid="ecc9d86b-b65b-46e3-a30d-f29db8c1a603">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2c07733-d592-4270-95fb-dfb584bcc1af"/>
+				</reportElement>
+				<text><![CDATA[Registracija]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="90" height="20" uuid="3e7029b6-2f6e-4acd-923a-1995d9f8da70">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07cdef95-5f6e-4055-88d2-b0b2bea55621"/>
+				</reportElement>
+				<text><![CDATA[Gorivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="90" height="20" uuid="a1679bbe-b92c-43c6-931d-6a1f2e415cf2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="821717bf-8661-4353-a95c-979f278353a9"/>
+				</reportElement>
+				<text><![CDATA[Servisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="70" height="20" uuid="4d813dfa-e77d-45f4-9f9b-37d831a758bf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe7b30cd-77e7-4386-8c43-8bf482e80592"/>
+				</reportElement>
+				<text><![CDATA[Ostalo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout"/>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="83f14a10-74e3-471a-96ac-947f249ac994">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5fcbcb9c-c6d4-4d7d-88a5-39b5fd958911"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{manufacturer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="20" uuid="35840496-745c-4be0-81b1-32d4cac276ea">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eafca758-e11f-468d-bab3-8eb781e619ee"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{model}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="100" height="20" uuid="ff2449af-f101-461f-b865-73c59b349a8a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2c07733-d592-4270-95fb-dfb584bcc1af"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{registration}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="90" height="20" uuid="d27699c3-56f5-4f02-9d75-877d57e98325">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07cdef95-5f6e-4055-88d2-b0b2bea55621"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fuel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="90" height="20" uuid="28ded353-b690-4960-a431-ea4d7157edcb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="821717bf-8661-4353-a95c-979f278353a9"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{service}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="70" height="20" uuid="c0bf3c53-22a5-4a9c-8135-5bfa4c68e8b3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe7b30cd-77e7-4386-8c43-8bf482e80592"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{other}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="-10" y="0" width="565" height="23" uuid="5d143bc2-13bb-4b99-874a-c50eeb25795b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

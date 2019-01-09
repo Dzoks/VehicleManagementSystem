@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class VehicleManagementApplication {
 
     public static void main(String[] args) {
+        
         SpringApplication.run(VehicleManagementApplication.class, args);
     }
 }

@@ -2,7 +2,7 @@
 -- Host:                         127.0.0.1
 -- Server version:               10.3.8-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             9.4.0.5125
+-- HeidiSQL Version:             9.5.0.5196
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,7 +18,6 @@ CREATE DATABASE IF NOT EXISTS `vehicle_reservation` /*!40100 DEFAULT CHARACTER S
 USE `vehicle_reservation`;
 
 -- Dumping structure for table vehicle_reservation.company
-DROP TABLE IF EXISTS `company`;
 CREATE TABLE IF NOT EXISTS `company` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
@@ -37,7 +36,6 @@ INSERT INTO `company` (`id`, `name`, `deleted`) VALUES
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.expense
-DROP TABLE IF EXISTS `expense`;
 CREATE TABLE IF NOT EXISTS `expense` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` decimal(8,2) NOT NULL,
@@ -47,21 +45,44 @@ CREATE TABLE IF NOT EXISTS `expense` (
   `company_id` int(11) NOT NULL,
   `vehicle_id` int(11) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `reservation_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `R_17` (`expense_type_id`),
   KEY `R_18` (`company_id`),
   KEY `R_19` (`vehicle_id`),
+  KEY `FK_expense_reservation` (`reservation_id`),
+  CONSTRAINT `FK_expense_reservation` FOREIGN KEY (`reservation_id`) REFERENCES `reservation` (`id`),
   CONSTRAINT `R_17` FOREIGN KEY (`expense_type_id`) REFERENCES `expense_type` (`id`),
   CONSTRAINT `R_18` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `R_19` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.expense: ~0 rows (approximately)
+-- Dumping data for table vehicle_reservation.expense: ~20 rows (approximately)
 /*!40000 ALTER TABLE `expense` DISABLE KEYS */;
+INSERT INTO `expense` (`id`, `value`, `description`, `deleted`, `expense_type_id`, `company_id`, `vehicle_id`, `date`, `reservation_id`) VALUES
+	(1, 23.10, NULL, 0, 1, 1, 2, '2018-12-18 15:03:17', NULL),
+	(2, 43.10, NULL, 0, 3, 1, 2, '2018-12-18 15:03:10', NULL),
+	(3, 10.30, NULL, 0, 2, 1, 2, '2018-12-18 15:03:22', NULL),
+	(4, 10.20, '12', 0, 1, 1, 1, '2014-11-13 17:07:00', NULL),
+	(5, 1.00, '', 0, 1, 1, 1, '2018-12-11 18:41:00', NULL),
+	(6, 10.00, '', 0, 2, 1, 1, '2018-12-26 14:08:00', NULL),
+	(7, 10.00, '', 0, 1, 1, 1, '2018-12-27 14:08:00', NULL),
+	(8, 11.00, '', 1, 1, 1, 1, '2019-01-03 20:27:00', 9),
+	(9, 11.00, '', 0, 1, 1, NULL, '2019-01-04 18:04:00', 2),
+	(10, 21.00, '', 0, 2, 1, NULL, '2019-01-02 18:04:00', 2),
+	(11, 12.00, '', 1, 1, 1, 1, '2019-01-03 18:06:00', 2),
+	(12, 250.00, '', 0, 1, 1, 1, '2019-01-04 18:21:44', 2),
+	(13, 12.00, '', 0, 3, 1, 11, '2019-01-04 18:20:22', 2),
+	(14, 32.00, '', 1, 2, 1, 1, '2019-01-04 18:20:19', 2),
+	(15, 322.00, '', 0, 3, 1, 1, '2019-01-04 18:23:00', 2),
+	(16, 12.00, '', 0, 1, 1, 1, '2019-01-04 18:23:25', 2),
+	(17, 55.00, '', 0, 1, 1, 1, '2019-01-04 18:20:13', 2),
+	(18, 1.00, '', 0, 1, 1, 1, '2019-01-04 18:23:22', 2),
+	(19, 5.00, '', 0, 1, 1, 1, '2019-01-03 18:23:00', 2),
+	(20, 600.00, '', 1, 1, 1, 1, '2019-01-01 18:44:00', 11);
 /*!40000 ALTER TABLE `expense` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.expense_type
-DROP TABLE IF EXISTS `expense_type`;
 CREATE TABLE IF NOT EXISTS `expense_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(64) NOT NULL,
@@ -77,7 +98,6 @@ INSERT INTO `expense_type` (`id`, `value`) VALUES
 /*!40000 ALTER TABLE `expense_type` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.fuel_type
-DROP TABLE IF EXISTS `fuel_type`;
 CREATE TABLE IF NOT EXISTS `fuel_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(64) NOT NULL,
@@ -92,7 +112,6 @@ INSERT INTO `fuel_type` (`id`, `value`) VALUES
 /*!40000 ALTER TABLE `fuel_type` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.location
-DROP TABLE IF EXISTS `location`;
 CREATE TABLE IF NOT EXISTS `location` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `label` varchar(64) NOT NULL,
@@ -103,22 +122,23 @@ CREATE TABLE IF NOT EXISTS `location` (
   PRIMARY KEY (`id`),
   KEY `R_11` (`company_id`),
   CONSTRAINT `R_11` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.location: ~7 rows (approximately)
+-- Dumping data for table vehicle_reservation.location: ~9 rows (approximately)
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
 INSERT INTO `location` (`id`, `label`, `lat`, `lng`, `company_id`, `deleted`) VALUES
 	(4, 'Lokacija 22', 5, 5, 3, 0),
 	(6, 'Lokacija 22', 5, 5, 3, 1),
-	(8, 'Majina kuća', 44.994626, 17.41418329999999, 1, 0),
-	(9, 'Banja Luka', 44.77315600860722, 16.75429345703128, 1, 0),
+	(8, 'SAO Kukulje', 44.994626, 17.41418329999999, 1, 0),
+	(9, 'Banja Luka', 44.769743756481915, 17.19100000000003, 1, 0),
 	(10, 'Ilova City', 44.90875851580919, 17.660021305370947, 1, 0),
 	(11, 'Hrvacani', 44.79965139999999, 17.138052399999992, 1, 1),
-	(12, 'Trn', 44.8243333, 17.171148300000027, 1, 1);
+	(12, 'Trn', 44.8243333, 17.171148300000027, 1, 1),
+	(13, 'AP Laus', 44.77686333088414, 17.17335587260743, 1, 0),
+	(14, 'Šrokedopr', 44.9778368, 16.706061599999998, 1, 1);
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.logger
-DROP TABLE IF EXISTS `logger`;
 CREATE TABLE IF NOT EXISTS `logger` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `action_type` varchar(128) NOT NULL,
@@ -133,9 +153,9 @@ CREATE TABLE IF NOT EXISTS `logger` (
   KEY `R_10` (`company_id`),
   CONSTRAINT `R_10` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `R_9` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.logger: ~95 rows (approximately)
+-- Dumping data for table vehicle_reservation.logger: ~195 rows (approximately)
 /*!40000 ALTER TABLE `logger` DISABLE KEYS */;
 INSERT INTO `logger` (`id`, `action_type`, `action_details`, `table_name`, `created`, `atomic`, `user_id`, `company_id`) VALUES
 	(1, 'create', 'Kreiran je novi entitet: Company{id=2, name=\'Scout\', deleted=0}', 'Company', '2018-08-16 13:50:30', 1, 1, NULL),
@@ -232,11 +252,110 @@ INSERT INTO `logger` (`id`, `action_type`, `action_details`, `table_name`, `crea
 	(94, 'update', 'A&#x017E;uriran je entitet: Location{id=10, name=\'Ilova City\', latitude=17.653498173046728, longitude=17.653498173046728, companyId=1, deleted=0} na novu vrijednost: Location{id=10, name=\'Ilova City\', latitude=17.652811527538915, longitude=17.652811527538915, companyId=1, deleted=0}.', 'Location', '2018-12-06 17:43:41', 1, 27, 1),
 	(95, 'update', 'A&#x017E;uriran je entitet: Location{id=10, name=\'Ilova City\', latitude=17.652811527538915, longitude=17.652811527538915, companyId=1, deleted=0} na novu vrijednost: Location{id=10, name=\'Ilova City\', latitude=17.660021305370947, longitude=17.660021305370947, companyId=1, deleted=0}.', 'Location', '2018-12-06 17:43:56', 1, 27, 1),
 	(96, 'update', 'A&#x017E;uriran je entitet: Company{id=3, name=\'Test Kompanijaca\', deleted=0} na novu vrijednost: Company{id=3, name=\'Test Kompanijac\', deleted=0}.', 'Company', '2018-12-09 17:36:48', 1, 1, NULL),
-	(97, 'create', 'Kreiran je novi entitet: Company{id=6, name=\'TEST\', deleted=0}.', 'Company', '2018-12-09 17:36:58', 1, 1, NULL);
+	(97, 'create', 'Kreiran je novi entitet: Company{id=6, name=\'TEST\', deleted=0}.', 'Company', '2018-12-09 17:36:58', 1, 1, NULL),
+	(98, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljno\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:17:28', 1, 27, 1),
+	(99, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljno\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena.\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:18:03', 1, 27, 1),
+	(100, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena.\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:19:35', 1, 27, 1),
+	(101, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-231\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:28:49', 1, 27, 1),
+	(102, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-065\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:31:02', 1, 27, 1),
+	(103, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-065\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-066\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:35:50', 1, 27, 1),
+	(104, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-066\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:35:56', 1, 27, 1),
+	(105, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-065\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:36:06', 1, 27, 1),
+	(106, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-065\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2018-12-17 15:37:07', 1, 27, 1),
+	(107, 'create', 'Kreiran je novi entitet: Expense{id=5, value=1.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-12-11 18:41:00.0}.', 'Expense', '2018-12-17 18:42:06', 1, 27, 1),
+	(108, 'delete', 'Obrisan je entitet: Expense{id=3, value=10.30, description=\'null\', deleted=1, expenseTypeId=2, companyId=1, vehicleId=2, date=2018-12-17 17:07:09.0}.', 'Expense', '2018-12-18 15:00:31', 1, 27, 1),
+	(109, 'delete', 'Obrisan je entitet: Expense{id=1, value=23.10, description=\'null\', deleted=1, expenseTypeId=1, companyId=1, vehicleId=2, date=2018-12-17 17:06:16.0}.', 'Expense', '2018-12-18 15:01:13', 1, 27, 1),
+	(110, 'delete', 'Obrisan je entitet: Expense{id=2, value=43.10, description=\'null\', deleted=1, expenseTypeId=3, companyId=1, vehicleId=2, date=2018-12-17 17:07:18.0}.', 'Expense', '2018-12-18 15:02:19', 1, 27, 1),
+	(111, 'update', 'A&#x017E;uriran je entitet: Expense{id=4, value=10.40, description=\'null\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-12-17 17:07:04.0} na novu vrijednost: Expense{id=4, value=10.2, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2023-06-10 17:07:00.0}.', 'Expense', '2018-12-18 15:35:10', 1, 27, 1),
+	(112, 'update', 'A&#x017E;uriran je entitet: Expense{id=4, value=10.20, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2023-06-10 17:07:00.0} na novu vrijednost: Expense{id=4, value=10.2, description=\'12\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2015-12-14 17:07:00.0}.', 'Expense', '2018-12-18 15:36:21', 1, 27, 1),
+	(113, 'update', 'A&#x017E;uriran je entitet: Expense{id=4, value=10.20, description=\'12\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2015-12-14 17:07:00.0} na novu vrijednost: Expense{id=4, value=10.2, description=\'12\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-11-07 17:07:00.0}.', 'Expense', '2018-12-18 15:36:53', 1, 27, 1),
+	(114, 'update', 'A&#x017E;uriran je entitet: Expense{id=4, value=10.20, description=\'12\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-11-07 17:07:00.0} na novu vrijednost: Expense{id=4, value=10.2, description=\'12\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2014-11-13 17:07:00.0}.', 'Expense', '2018-12-18 15:37:09', 1, 27, 1),
+	(115, 'create', 'Kreiran je novi entitet: Expense{id=6, value=10.00, description=\'\', deleted=0, expenseTypeId=2, companyId=1, vehicleId=1, date=2018-12-26 14:08:00.0}.', 'Expense', '2018-12-27 14:08:52', 1, 27, 1),
+	(116, 'create', 'Kreiran je novi entitet: Expense{id=7, value=10.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-12-26 14:08:00.0}.', 'Expense', '2018-12-27 14:14:53', 1, 27, 1),
+	(117, 'update', 'A&#x017E;uriran je entitet: Expense{id=7, value=10.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-12-26 14:08:00.0} na novu vrijednost: Expense{id=7, value=10, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2018-12-27 14:08:00.0}.', 'Expense', '2018-12-27 14:18:18', 1, 27, 1),
+	(118, 'create', 'Kreiran je novi entitet: Reservation{id=4, startDate=2019-01-04 00:50:00.0, endDate=2019-01-05 00:55:00.0, startMileage=null, endMileage=null, direction=\'bla\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-03 20:17:47', 1, 27, 1),
+	(123, 'create', 'Kreiran je novi entitet: Reservation{id=9, startDate=2019-01-10 01:30:00.0, endDate=2019-01-10 18:35:00.0, startMileage=null, endMileage=null, direction=\'SS\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-03 20:28:49', 1, 27, 1),
+	(124, 'create', 'Kreiran je novi entitet: Expense{id=8, value=11.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-03 20:27:00.0}.', 'Expense', '2019-01-03 20:28:49', 1, 27, 1),
+	(125, 'create', 'Kreiran je novi entitet: Reservation{id=10, startDate=2019-01-07 02:50:00.0, endDate=2019-01-05 14:55:00.0, startMileage=null, endMileage=null, direction=\'Povod\', deleted=0, companyId=1, vehicleId=1, userId=3}.', 'Reservation', '2019-01-03 21:24:20', 1, 3, 1),
+	(126, 'create', 'Kreiran je novi entitet: Reservation{id=11, startDate=2019-01-05 10:20:00.0, endDate=2019-01-05 18:25:00.0, startMileage=null, endMileage=null, direction=\'Test\', deleted=0, companyId=1, vehicleId=1, userId=3}.', 'Reservation', '2019-01-03 21:24:52', 1, 3, 1),
+	(127, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beograd\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradic\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:46:29', 1, 27, 1),
+	(128, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradic\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradic\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:48:24', 1, 27, 1),
+	(129, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradic\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:48:35', 1, 27, 1),
+	(130, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:48:43', 1, 27, 1),
+	(131, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-04 22:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:48:59', 1, 27, 1),
+	(132, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:52:51', 1, 27, 1),
+	(133, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=1, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:53:10', 1, 27, 1),
+	(134, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=11, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 17:53:17', 1, 27, 1),
+	(135, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:05:52', 1, 27, 1),
+	(136, 'create', 'Kreiran je novi entitet: Expense{id=9, value=11.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=null, date=2019-01-04 18:04:00.0}.', 'Expense', '2019-01-04 18:05:52', 1, 27, 1),
+	(137, 'create', 'Kreiran je novi entitet: Expense{id=10, value=21.00, description=\'\', deleted=0, expenseTypeId=2, companyId=1, vehicleId=null, date=2019-01-02 18:04:00.0}.', 'Expense', '2019-01-04 18:05:52', 1, 27, 1),
+	(138, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:06:51', 1, 27, 1),
+	(139, 'create', 'Kreiran je novi entitet: Expense{id=11, value=12.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-03 18:06:00.0}.', 'Expense', '2019-01-04 18:06:51', 1, 27, 1),
+	(140, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:07:29', 1, 27, 1),
+	(141, 'create', 'Kreiran je novi entitet: Expense{id=12, value=23.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-04 18:06:00.0}.', 'Expense', '2019-01-04 18:07:29', 1, 27, 1),
+	(142, 'create', 'Kreiran je novi entitet: Expense{id=13, value=123.00, description=\'\', deleted=0, expenseTypeId=3, companyId=1, vehicleId=1, date=2019-01-02 18:06:00.0}.', 'Expense', '2019-01-04 18:07:29', 1, 27, 1),
+	(143, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:08:00', 1, 27, 1),
+	(144, 'update', 'A&#x017E;uriran je entitet: Expense{id=12, value=23.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-04 18:06:00.0} na novu vrijednost: Expense{id=12, value=25, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-04 18:06:00.0}.', 'Expense', '2019-01-04 18:08:00', 1, 27, 1),
+	(145, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:09:00', 1, 27, 1),
+	(146, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:15:15', 1, 27, 1),
+	(147, 'delete', 'Obrisan je entitet: Expense{id=11, value=12.00, description=\'\', deleted=1, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-03 18:06:00.0}.', 'Expense', '2019-01-04 18:15:15', 1, 27, 1),
+	(148, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:15:25', 1, 27, 1),
+	(149, 'update', 'A&#x017E;uriran je entitet: Expense{id=12, value=25.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-04 18:06:00.0} na novu vrijednost: Expense{id=12, value=250, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=null, date=2019-01-04 18:06:00.0}.', 'Expense', '2019-01-04 18:15:25', 1, 27, 1),
+	(150, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:15:29', 1, 27, 1),
+	(151, 'update', 'A&#x017E;uriran je entitet: Expense{id=12, value=250.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=null, date=2019-01-04 18:06:00.0} na novu vrijednost: Expense{id=12, value=250, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=null, date=2019-01-04 18:06:00.0}.', 'Expense', '2019-01-04 18:15:29', 1, 27, 1),
+	(152, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:15:46', 1, 27, 1),
+	(153, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:15:53', 1, 27, 1),
+	(154, 'create', 'Kreiran je novi entitet: Expense{id=14, value=32.00, description=\'\', deleted=0, expenseTypeId=2, companyId=1, vehicleId=null, date=2019-01-02 18:14:00.0}.', 'Expense', '2019-01-04 18:15:53', 1, 27, 1),
+	(155, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:15:59', 1, 27, 1),
+	(156, 'create', 'Kreiran je novi entitet: Expense{id=15, value=32.00, description=\'\', deleted=0, expenseTypeId=2, companyId=1, vehicleId=null, date=2019-01-02 18:14:00.0}.', 'Expense', '2019-01-04 18:15:59', 1, 27, 1),
+	(157, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:17:44', 1, 27, 1),
+	(158, 'create', 'Kreiran je novi entitet: Expense{id=16, value=12.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=null, date=2019-01-03 18:17:00.0}.', 'Expense', '2019-01-04 18:17:44', 1, 27, 1),
+	(159, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:18:02', 1, 27, 1),
+	(160, 'create', 'Kreiran je novi entitet: Expense{id=17, value=55.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=null, date=2019-01-03 18:17:00.0}.', 'Expense', '2019-01-04 18:18:02', 1, 27, 1),
+	(161, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:18:20', 1, 27, 1),
+	(162, 'update', 'A&#x017E;uriran je entitet: Expense{id=13, value=123.00, description=\'\', deleted=0, expenseTypeId=3, companyId=1, vehicleId=1, date=2019-01-02 18:06:00.0} na novu vrijednost: Expense{id=13, value=12, description=\'\', deleted=0, expenseTypeId=3, companyId=1, vehicleId=null, date=2019-01-02 18:06:00.0}.', 'Expense', '2019-01-04 18:18:20', 1, 27, 1),
+	(163, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:21:00', 1, 27, 1),
+	(164, 'update', 'A&#x017E;uriran je entitet: Expense{id=15, value=32.00, description=\'\', deleted=0, expenseTypeId=2, companyId=1, vehicleId=1, date=2019-01-04 18:20:17.0} na novu vrijednost: Expense{id=15, value=320, description=\'\', deleted=0, expenseTypeId=3, companyId=1, vehicleId=2, date=2019-01-04 18:20:00.0}.', 'Expense', '2019-01-04 18:21:00', 1, 27, 1),
+	(165, 'create', 'Kreiran je novi entitet: Expense{id=18, value=1.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=2, date=2019-01-01 18:20:00.0}.', 'Expense', '2019-01-04 18:21:00', 1, 27, 1),
+	(166, 'delete', 'Obrisan je entitet: Expense{id=16, value=12.00, description=\'\', deleted=1, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-04 18:20:10.0}.', 'Expense', '2019-01-04 18:21:00', 1, 27, 1),
+	(167, 'update', 'A&#x017E;uriran je entitet: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27} na novu vrijednost: Reservation{id=2, startDate=2019-01-02 21:14:00.0, endDate=2019-01-05 09:00:00.0, startMileage=10, endMileage=60, direction=\'Banjaluka-Beogradica\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:24:06', 1, 27, 1),
+	(168, 'update', 'A&#x017E;uriran je entitet: Expense{id=15, value=320.00, description=\'\', deleted=0, expenseTypeId=3, companyId=1, vehicleId=1, date=2019-01-04 18:23:18.0} na novu vrijednost: Expense{id=15, value=322, description=\'\', deleted=0, expenseTypeId=3, companyId=1, vehicleId=1, date=2019-01-04 18:23:00.0}.', 'Expense', '2019-01-04 18:24:06', 1, 27, 1),
+	(169, 'create', 'Kreiran je novi entitet: Expense{id=19, value=5.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-03 18:23:00.0}.', 'Expense', '2019-01-04 18:24:06', 1, 27, 1),
+	(170, 'delete', 'Obrisan je entitet: Expense{id=14, value=32.00, description=\'\', deleted=1, expenseTypeId=2, companyId=1, vehicleId=1, date=2019-01-04 18:20:19.0}.', 'Expense', '2019-01-04 18:24:06', 1, 27, 1),
+	(171, 'delete', 'Obrisan je entitet: Expense{id=8, value=11.00, description=\'\', deleted=1, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-03 20:27:00.0}.', 'Expense', '2019-01-04 18:44:50', 1, 27, 1),
+	(172, 'delete', 'Obrisan je entitet: Reservation{id=9, startDate=2019-01-10 01:30:00.0, endDate=2019-01-10 18:35:00.0, startMileage=null, endMileage=null, direction=\'SS\', deleted=1, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:44:50', 1, 27, 1),
+	(173, 'update', 'A&#x017E;uriran je entitet: Reservation{id=11, startDate=2019-01-05 10:20:00.0, endDate=2019-01-05 18:25:00.0, startMileage=null, endMileage=null, direction=\'Test\', deleted=0, companyId=1, vehicleId=1, userId=3} na novu vrijednost: Reservation{id=11, startDate=2019-01-05 10:20:00.0, endDate=2019-01-05 18:25:00.0, startMileage=null, endMileage=null, direction=\'Test\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:45:21', 1, 27, 1),
+	(174, 'create', 'Kreiran je novi entitet: Expense{id=20, value=600.00, description=\'\', deleted=0, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-01 18:44:00.0}.', 'Expense', '2019-01-04 18:45:21', 1, 27, 1),
+	(175, 'delete', 'Obrisan je entitet: Expense{id=20, value=600.00, description=\'\', deleted=1, expenseTypeId=1, companyId=1, vehicleId=1, date=2019-01-01 18:44:00.0}.', 'Expense', '2019-01-04 18:45:27', 1, 27, 1),
+	(176, 'delete', 'Obrisan je entitet: Reservation{id=11, startDate=2019-01-05 10:20:00.0, endDate=2019-01-05 18:25:00.0, startMileage=null, endMileage=null, direction=\'Test\', deleted=1, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 18:45:27', 1, 27, 1),
+	(177, 'create', 'Kreiran je novi entitet: Reservation{id=12, startDate=2019-01-06 08:35:00.0, endDate=2019-01-07 08:40:00.0, startMileage=null, endMileage=null, direction=\'Test\', deleted=0, companyId=1, vehicleId=1, userId=39}.', 'Reservation', '2019-01-04 19:26:18', 1, 39, 1),
+	(178, 'create', 'Kreiran je novi entitet: Reservation{id=13, startDate=2019-01-09 14:00:00.0, endDate=2019-01-10 13:05:00.0, startMileage=null, endMileage=null, direction=\'Test\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 19:44:31', 1, 27, 1),
+	(179, 'create', 'Kreiran je novi entitet: Reservation{id=14, startDate=2019-01-10 19:40:00.0, endDate=2019-01-11 01:45:00.0, startMileage=null, endMileage=null, direction=\'Test2\', deleted=0, companyId=1, vehicleId=1, userId=27}.', 'Reservation', '2019-01-04 19:46:20', 1, 27, 1),
+	(180, 'update', 'A&#x017E;uriran je entitet: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin I\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=3, locationId=8} na novu vrijednost: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin I\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=3, locationId=8}.', 'User', '2019-01-04 21:16:07', 1, 27, 1),
+	(181, 'update', 'A&#x017E;uriran je entitet: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin I\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=1, locationId=8} na novu vrijednost: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin I\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=1, locationId=8}.', 'User', '2019-01-04 21:16:46', 1, 27, 1),
+	(182, 'update', 'A&#x017E;uriran je entitet: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin II\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=2, locationId=8} na novu vrijednost: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin II\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=2, locationId=8}.', 'User', '2019-01-04 21:17:34', 1, 27, 1),
+	(183, 'update', 'A&#x017E;uriran je entitet: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin III\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=2, locationId=8} na novu vrijednost: User{id=27, username=\'admin\', firstName=\'Djordje\', lastName=\'Turjacanin III\', registrationDate=2018-08-26 20:57:16.0, email=\'turjacanin.djordje@gmail.com\', roleId=2, statusId=1, companyId=1, notificationTypeId=2, locationId=8}.', 'User', '2019-01-04 21:44:45', 1, 27, 1),
+	(184, 'update', 'A&#x017E;uriran je entitet: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin II|\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=8} na novu vrijednost: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin II|\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=8}.', 'User', '2019-01-04 21:49:10', 1, 27, 1),
+	(185, 'update', 'A&#x017E;uriran je entitet: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin VI\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9} na novu vrijednost: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin VI\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9}.', 'User', '2019-01-04 21:49:20', 1, 27, 1),
+	(186, 'update', 'A&#x017E;uriran je entitet: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin VII\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9} na novu vrijednost: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin VII\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9}.', 'User', '2019-01-04 21:50:01', 1, 1, NULL),
+	(187, 'update', 'A&#x017E;uriran je entitet: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin A\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9} na novu vrijednost: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin A\', registrationDate=2018-08-26 20:57:16.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9}.', 'User', '2019-01-04 21:50:14', 1, 1, NULL),
+	(188, 'update', 'A&#x017E;uriran je entitet: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin X\', registrationDate=2019-01-04 21:55:43.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9} na novu vrijednost: User{id=39, username=\'user\', firstName=\'Djordje\', lastName=\'Turjacanin X\', registrationDate=2019-01-04 21:55:43.0, email=\'etf.ip.dzoks@gmail.com\', roleId=3, statusId=1, companyId=1, notificationTypeId=3, locationId=9}.', 'User', '2019-01-04 21:56:11', 1, 27, 1),
+	(189, 'update', 'A&#x017E;uriran je entitet: Location{id=9, name=\'Banja Luka\', latitude=16.75429345703128, longitude=16.75429345703128, companyId=1, deleted=0} na novu vrijednost: Location{id=9, name=\'Banja Luka\', latitude=17.19100000000003, longitude=17.19100000000003, companyId=1, deleted=0}.', 'Location', '2019-01-08 16:44:31', 1, 27, 1),
+	(190, 'create', 'Kreiran je novi entitet: Location{id=13, name=\'HRvacani\', latitude=17.461918647265634, longitude=17.461918647265634, companyId=1, deleted=0}.', 'Location', '2019-01-08 16:58:00', 1, 27, 1),
+	(191, 'update', 'A&#x017E;uriran je entitet: Location{id=13, name=\'HRvacani\', latitude=17.461918647265634, longitude=17.461918647265634, companyId=1, deleted=0} na novu vrijednost: Location{id=13, name=\'HRvacani\', latitude=17.437886054492196, longitude=17.437886054492196, companyId=1, deleted=0}.', 'Location', '2019-01-08 17:00:55', 1, 27, 1),
+	(192, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-064\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-066\', fuelTypeId=1, locationId=10}.', 'Vehicle', '2019-01-08 17:02:06', 1, 27, 1),
+	(193, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-066\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-067\', fuelTypeId=1, locationId=13}.', 'Vehicle', '2019-01-08 17:02:28', 1, 27, 1),
+	(194, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-067\', fuelTypeId=1, locationId=13} na novu vrijednost: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-067\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2019-01-08 17:28:43', 1, 27, 1),
+	(195, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-067\', fuelTypeId=1, locationId=8} na novu vrijednost: Vehicle{id=2, description=\'\', deleted=0, model=\'Kadet\', manufacturer=\'Opel\', companyId=1, registration=\'825-J-067\', fuelTypeId=1, locationId=13}.', 'Vehicle', '2019-01-08 17:29:05', 1, 27, 1),
+	(196, 'update', 'A&#x017E;uriran je entitet: Location{id=13, name=\'HRvacani\', latitude=17.437886054492196, longitude=17.437886054492196, companyId=1, deleted=0} na novu vrijednost: Location{id=13, name=\'HRvacani\', latitude=17.43857270000001, longitude=17.43857270000001, companyId=1, deleted=0}.', 'Location', '2019-01-08 17:31:24', 1, 27, 1),
+	(197, 'update', 'A&#x017E;uriran je entitet: Location{id=8, name=\'Majina kuća\', latitude=17.41418329999999, longitude=17.41418329999999, companyId=1, deleted=0} na novu vrijednost: Location{id=8, name=\'SAO Kukulje\', latitude=17.41418329999999, longitude=17.41418329999999, companyId=1, deleted=0}.', 'Location', '2019-01-08 17:39:43', 1, 27, 1),
+	(198, 'update', 'A&#x017E;uriran je entitet: Location{id=13, name=\'HRvacani\', latitude=17.43857270000001, longitude=17.43857270000001, companyId=1, deleted=0} na novu vrijednost: Location{id=13, name=\'AP Laus\', latitude=17.17335587260743, longitude=17.17335587260743, companyId=1, deleted=0}.', 'Location', '2019-01-08 17:41:03', 1, 27, 1),
+	(199, 'update', 'A&#x017E;uriran je entitet: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=10} na novu vrijednost: Vehicle{id=1, description=\'Vozila ga baba iz njemacke. Povoljna cijena. Hello\', deleted=0, model=\'Golf\', manufacturer=\'VW\', companyId=1, registration=\'823-J-064\', fuelTypeId=1, locationId=8}.', 'Vehicle', '2019-01-08 18:10:49', 1, 27, 1),
+	(200, 'create', 'Kreiran je novi entitet: Location{id=14, name=\'Šrokedopr\', latitude=16.706061599999998, longitude=16.706061599999998, companyId=1, deleted=0}.', 'Location', '2019-01-08 18:16:54', 1, 27, 1),
+	(201, 'delete', 'Obrisan je entitet: Location{id=14, name=\'Šrokedopr\', latitude=16.706061599999998, longitude=16.706061599999998, companyId=1, deleted=1}.', 'Location', '2019-01-08 18:16:59', 1, 27, 1);
 /*!40000 ALTER TABLE `logger` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.notification_type
-DROP TABLE IF EXISTS `notification_type`;
 CREATE TABLE IF NOT EXISTS `notification_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(64) NOT NULL,
@@ -252,12 +371,11 @@ INSERT INTO `notification_type` (`id`, `value`) VALUES
 /*!40000 ALTER TABLE `notification_type` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.reservation
-DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE IF NOT EXISTS `reservation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `start_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `end_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `start_mileage` int(11) NOT NULL,
+  `start_mileage` int(11) DEFAULT NULL,
   `end_mileage` int(11) DEFAULT NULL,
   `direction` varchar(512) NOT NULL,
   `deleted` tinyint(1) NOT NULL,
@@ -271,14 +389,21 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   CONSTRAINT `R_25` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `R_26` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`),
   CONSTRAINT `R_27` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.reservation: ~0 rows (approximately)
+-- Dumping data for table vehicle_reservation.reservation: ~7 rows (approximately)
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
+INSERT INTO `reservation` (`id`, `start_date`, `end_date`, `start_mileage`, `end_mileage`, `direction`, `deleted`, `company_id`, `vehicle_id`, `user_id`) VALUES
+	(1, '2018-12-27 18:37:06', '2018-12-29 18:37:06', 1, 11, 'Banjaluka-Beograd', 0, 1, 1, 27),
+	(2, '2019-01-02 21:14:00', '2019-01-05 09:00:00', 10, 60, 'Banjaluka-Beogradica', 0, 1, 1, 27),
+	(9, '2019-01-10 01:30:00', '2019-01-10 18:35:00', NULL, NULL, 'SS', 1, 1, 1, 27),
+	(11, '2019-01-05 10:20:00', '2019-01-05 18:25:00', NULL, NULL, 'Test', 1, 1, 1, 27),
+	(12, '2019-01-06 08:35:00', '2019-01-07 08:40:00', NULL, NULL, 'Test', 0, 1, 1, 39),
+	(13, '2019-01-09 14:00:00', '2019-01-10 13:05:00', NULL, NULL, 'Test', 0, 1, 1, 27),
+	(14, '2019-01-10 19:40:00', '2019-01-11 01:45:00', NULL, NULL, 'Test2', 0, 1, 1, 27);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.role
-DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(64) NOT NULL,
@@ -294,7 +419,6 @@ INSERT INTO `role` (`id`, `value`) VALUES
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.status
-DROP TABLE IF EXISTS `status`;
 CREATE TABLE IF NOT EXISTS `status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(64) NOT NULL,
@@ -310,7 +434,6 @@ INSERT INTO `status` (`id`, `value`) VALUES
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.user
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(64) DEFAULT NULL,
@@ -336,18 +459,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `R_5` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `R_6` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`),
   CONSTRAINT `R_7` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table vehicle_reservation.user: ~3 rows (approximately)
+-- Dumping data for table vehicle_reservation.user: ~4 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `username`, `password`, `first_name`, `last_name`, `registration_date`, `token`, `email`, `role_id`, `status_id`, `company_id`, `notification_type_id`, `location_id`) VALUES
 	(1, 'admin', 'C7AD44CBAD762A5DA0A452F9E854FDC1E0E7A52A38015F23F3EAB1D80B931DD472634DFAC71CD34EBC35D16AB7FB8A90C81F975113D6C7538DC69DD8DE9077EC', 'Djordje', 'Turjačanin', '2018-08-16 14:46:44', NULL, 'turjacanin.djordje@gmail.com', 1, 1, NULL, 1, NULL),
 	(3, 'putin', 'C7AD44CBAD762A5DA0A452F9E854FDC1E0E7A52A38015F23F3EAB1D80B931DD472634DFAC71CD34EBC35D16AB7FB8A90C81F975113D6C7538DC69DD8DE9077EC', 'Vladimir', 'Putin', '2018-08-26 20:57:16', NULL, 'president1@mail.ru', 2, 1, 1, 1, 10),
-	(27, 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'Djordje', 'Turjacanin II', '2018-08-26 20:57:16', NULL, 'turjacanin.djordje@gmail.com', 2, 1, 1, 3, 8);
+	(27, 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'Djordje', 'Turjacanin III', '2018-08-26 20:57:16', NULL, 'turjacanin.djordje@gmail.com', 2, 1, 1, 2, 8),
+	(39, 'user', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'Djordje', 'Turjacanin X', '2019-01-04 21:55:43', NULL, 'etf.ip.dzoks@gmail.com', 3, 1, 1, 3, 9);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for table vehicle_reservation.vehicle
-DROP TABLE IF EXISTS `vehicle`;
 CREATE TABLE IF NOT EXISTS `vehicle` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `manufacturer` varchar(64) NOT NULL,
@@ -370,8 +493,8 @@ CREATE TABLE IF NOT EXISTS `vehicle` (
 -- Dumping data for table vehicle_reservation.vehicle: ~6 rows (approximately)
 /*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
 INSERT INTO `vehicle` (`id`, `manufacturer`, `model`, `description`, `deleted`, `company_id`, `registration`, `location_id`, `fuel_type_id`) VALUES
-	(1, 'VW', 'Golf', 'Vozila ga baba iz njemacke', 0, 1, '823-J-231', 8, 1),
-	(2, 'Opel', 'Kadet', '', 0, 1, '825-J-064', 10, 1),
+	(1, 'VW', 'Golf', 'Vozila ga baba iz njemacke. Povoljna cijena. Hello', 0, 1, '823-J-064', 8, 1),
+	(2, 'Opel', 'Kadet', '', 0, 1, '825-J-067', 13, 1),
 	(11, 'sd', 'ads', '', 1, 1, 'ads', 9, 1),
 	(12, 'cdsdsa', 'adsdasdas', 'dasd', 1, 1, 'dasdas', 8, 1),
 	(13, 'saddas', 'dadas', '', 1, 1, 'das', 8, 1),

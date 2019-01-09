@@ -10,11 +10,11 @@ public class LoggerRepositoryImpl extends CustomRepositoryImpl implements Logger
 
     private static final String SQL_GET_ALL = "select l.id, l.action_type, l.action_details, l.table_name, l.created, l.user_id, l.atomic," +
             " l.company_id,c.name as company_name,u.username,r.value as role from logger l inner join user u on l.user_id = u.id" +
-            " inner join role r on u.role_id = r.id left join company c on l.company_id = c.id;";
+            " inner join role r on u.role_id = r.id left join company c on l.company_id = c.id order by l.created desc;";
 
     private static final String SQL_GET_ALL_BY_COMPANY = "select l.id, l.action_type, l.action_details, l.table_name, l.created, l.user_id, l.atomic," +
             " l.company_id,c.name as company_name,u.username,r.value as role from logger l inner join user u on l.user_id = u.id" +
-            " inner join role r on u.role_id = r.id inner join company c on l.company_id = c.id where l.company_id=?";
+            " inner join role r on u.role_id = r.id inner join company c on l.company_id = c.id where l.company_id=? order by l.created desc";
 
 
     @Override

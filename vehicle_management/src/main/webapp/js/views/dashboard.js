@@ -63,7 +63,7 @@ const locationView={
                     }
                 },
                 zoom:8,
-             //   key:"AIzaSyDLrWtIdZaoYBiQlrvI8V_4gKFH6TBJ4c4"
+                key:"AIzaSyDLrWtIdZaoYBiQlrvI8V_4gKFH6TBJ4c4"
             }
         ]
     },
@@ -84,10 +84,8 @@ const locationView={
                 locationView.markerExists=false;
                 locationView.markerToEdit=null;
                 locationView.oldMarker=null;
-
             }
         },
-
         head:{
             view: "toolbar",
             css: "panelToolbar",
@@ -163,7 +161,7 @@ const locationView={
 
     },
 
-    showAddLocationDialog:function(){
+    showAddLocationDialog(){
         if (util.popupIsntAlreadyOpened("addLocationDialog")) {
             webix.ui(webix.copy(locationView.addLocationDialog)).show();
             $$("updateLocationBtn").hide();
